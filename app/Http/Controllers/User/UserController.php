@@ -65,6 +65,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $rules =[
             'name' => 'required',
             'email' => 'required|email|unique:users',
@@ -73,7 +74,7 @@ class UserController extends Controller
         ];
 
         $validater = $request->validate($rules);
-        dd($validater);
+        // dd($validater);
         // $this->validate($request,$rules);
         $campos = $request->all();
         $campos['password']= bcrypt($request->password);
