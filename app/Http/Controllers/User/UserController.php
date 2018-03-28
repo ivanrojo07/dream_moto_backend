@@ -47,11 +47,11 @@ class UserController extends Controller
                 return response()->json(['usuario'=>$usuario],200);
             }
             else{
-                return response()->json(['message'=>'Error en la contraseña'], 400);
+                return response()->json(['failed'=>'Contraseña invalida'], 200);
             }
         }
         else{
-            return response()->json(['message'=>'El usuario no existe'], 400);
+            return response()->json(['failed'=>'El usuario no existe'], 200);
             
         }
         // dd($usuario);
