@@ -21,7 +21,7 @@ class UserController extends Controller
     {
         $usuarios = User::all();
         // return $usuario;
-        return response()->json([ 'data'=>$usuarios], 200);
+        return response()->json([ 'usuarios'=>$usuarios], 200);
         // return $this->showAll($usuarios);
     }
 
@@ -33,17 +33,18 @@ class UserController extends Controller
     public function login(Request $request)
     {
         //
+        // return response()->json([$request->all()],400);
         $data = $request->all();
         // $data['password'] = bcrypt($data->password);
         $usuario = User::where(function($query)use($data){
-            $query->where('username',$data['username'])->orWhere('email',$data['username']);
+            $query->where('username',$data['email'])->orWhere('email',$data['email']);
         })->first();
         // dd($usuario->password);
         // $hashpass = Hash::make($data['password']);
         if ($usuario) {
             if(Hash::check($data['password'], $usuario->password))
             {
-                return response()->json(['data'=>$usuario],200);
+                return response()->json(['usuario'=>$usuario],200);
             }
             else{
                 return response()->json(['message'=>'Error en la contraseña'], 400);
@@ -53,7 +54,7 @@ class UserController extends Controller
             return response()->json(['message'=>'El usuario no existe'], 400);
             
         }
-        dd($usuario);
+        // dd($usuario);
     }
 
 
@@ -65,12 +66,12 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
+        // return response()->json([$request->all()],200);
         $rules =[
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'username'=> 'required|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:6',
         ];
 
         $validater = $request->validate($rules);
@@ -83,7 +84,7 @@ class UserController extends Controller
         // $campos['verification_token'] = User::generarVerificationToken();
         $usuario = User::create($campos);
         if ($usuario){
-            return response()->json(['data'=>$usuario], 201);
+            return response()->json(['usuario'=>$usuario], 200);
         }
         else{
             return response()->json(['message'=>'Error al crear usuario'], 400);
@@ -100,7 +101,7 @@ class UserController extends Controller
     {
         $usuario = User::find($id);
         if ($usuario) {
-            return response()->json(['data'=>$usuario],200);
+            return response()->json(['usuario'=>$usuario],200);
             // return $this->showOne($usuario);
         }
         else{
@@ -168,7 +169,7 @@ class UserController extends Controller
 
         $usuario->save();
         // return $this->showOne($usuario);
-        return response()->json(['data'=>$usuario],200);
+        return response()->json(['usuario'=>$usuario],200);
     }
 
     /**
@@ -184,12 +185,12 @@ class UserController extends Controller
         $usuario->delete($usuario);
 
         // return $this->showOne($usuario);
-        return response()->json(['data'=>$usuario],200);
+        return response()->json(['usuario'=>$usuario],200);
     }
     public function verify($token){
         $user = User::where('verification_token', $token)->firstOrFail();
-        $user->verified = User::USUARIO_VERIFICADO;
-        $user->verification_token = null;
+        // $user->verified = User::USUARIO_VERIFICADO;
+        // $user->verification_token = null;
         $user->save();
         // return $this->successResponse('La cuenta ha sido verificada',200);
         return response()->json(['message'=>'La cuenta ha sido verificada'], 200);
