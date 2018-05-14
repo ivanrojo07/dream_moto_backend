@@ -18,4 +18,7 @@ Route::middleware('auth:api')->get('/user', 'User\UserController@getUser');
 Route::resource('users', 'User\UserController', ['except'=>['create', 'edit']]);
 
 Route::post('login', 'User\UserController@login')->name('login');
+
+Route::middleware('auth:api')->post('/password','User\UserController@changePassword');
+
 // Route::post('register','User\UserController@store')->name('register');
