@@ -33,7 +33,7 @@ class UserController extends Controller
     public function login(Request $request)
     {
         //
-        return response()->json([$request->all()],400);
+        // return response()->json([$request->all()],400);
         $data = $request->all();
         // $data['password'] = bcrypt($data->password);
         $usuario = User::where(function($query)use($data){
