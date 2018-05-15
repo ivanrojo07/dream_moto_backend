@@ -27,4 +27,22 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function domFiscal(){
+
+        return $this->hasOne('App\DomFiscal', 'user_id', 'id');
+
+    }
+
+    public function domEnvio(){
+
+        return $this->hasMany('App\DomEnvio', 'user_id', 'id');
+
+    }
+
+    public function tarjetas(){
+
+        return $this->hasMany('App\Tarjeta', 'user_id', 'id');
+
+    }
 }

@@ -21,4 +21,10 @@ Route::post('login', 'User\UserController@login')->name('login');
 
 Route::middleware('auth:api')->post('/password','User\UserController@changePassword');
 
+Route::middleware('auth:api')->resource('fiscales', 'Api\User\UserDomFiscalController', ['except'=>['create','show','edit']]);
+
+Route::middleware('auth:api')->resource('domicilios', 'Api\User\UserDomEnvioController', ['except'=>['create','edit']]);
+
+Route::middleware('auth:api')->resource('cards', 'Api\User\UserTarjetasController', ['except'=>['create','update','edit']]);
+
 // Route::post('register','User\UserController@store')->name('register');
