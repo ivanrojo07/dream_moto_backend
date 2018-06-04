@@ -19,6 +19,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
 </head>
 <body>
     <div id="app">
@@ -68,6 +69,14 @@
         </nav>
 
         <main class="py-4">
+           <div class="container-fluid" align="center">
+                <section>
+            <div class="title m-b-md" style="background-image: url({{asset('img/llamas2.gif')}});">
+                <img src="{{asset('img/logo.png')}}" width="569.8px" height="222.6">
+            </div>
+        </section>
+           </div>
+           
             @yield('content')
         </main>
     </div>

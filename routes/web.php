@@ -18,3 +18,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+//---------------------------------------------------------
+Route::get('contacto',function(){
+
+	return View::make('contacto.index');
+});
+Route::get('tienda',function(){
+
+	return View::make('tiendas.index');
+});
+Route::get('nosotros',function(){
+
+	return View::make('nosotros.index');
+});
