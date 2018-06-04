@@ -47,7 +47,6 @@ class UserTarjetasController extends Controller
             "tipo" => "required",
             "numero" => "required",
             "nombre" => "required",
-            "verifica" => "required",
             "expira" => "required",
         ];
         $this->validate($request,$rules);
@@ -58,17 +57,8 @@ class UserTarjetasController extends Controller
             "tipo" => $data['tipo'],
             "numero" => $data['numero'],
             "nombre" => $data['nombre'],
-            "verifica" => $data['verifica'],
             "expira" => $data['expira'],
-            "pais" => $data['pais'],
-            "calle" => $data['calle'],
-            "numext" => $data['numext'],
-            "numint" => $data['numint'],
-            "colonia" => $data['colonia'],
-            "cp" => $data['cp'],
-            "estado" => $data['estado'],
-            "municipio" => $data['municipio'],
-            
+
         ]);
 
         return response()->json([$tarjeta],200);

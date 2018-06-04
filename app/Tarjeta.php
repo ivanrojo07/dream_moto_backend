@@ -21,16 +21,6 @@ class Tarjeta extends Model
     	"tipo",
     	"numero",
     	"nombre",
-    	"pais",
-    	"calle",
-    	"numext",
-    	"numint",
-    	"colonia",
-    	"cp",
-    	"estado",
-    	"municipio",
-    	"delegacion",
-    	"verifica",
     	"expira",
 
     ];

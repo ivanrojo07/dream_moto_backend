@@ -20,17 +20,7 @@ class CreateTarjetasTable extends Migration
             $table->string('tipo');
             $table->string('numero');
             $table->string('nombre');
-            $table->string('verifica');
             $table->string('expira');
-            $table->string('pais')->nullable();
-            $table->string('calle')->nullable();
-            $table->string('numext')->nullable();
-            $table->string('numint')->nullable();
-            $table->string('colonia')->nullable();
-            $table->string('cp')->nullable();
-            $table->string('estado')->nullable();
-            $table->string('municipio')->nullable();
-            // $table->string('delegacion')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
