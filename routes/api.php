@@ -26,5 +26,7 @@ Route::middleware('auth:api')->resource('fiscales', 'Api\User\UserDomFiscalContr
 Route::middleware('auth:api')->resource('domicilios', 'Api\User\UserDomEnvioController', ['except'=>['create','edit']]);
 
 Route::middleware('auth:api')->resource('cards', 'Api\User\UserTarjetasController', ['except'=>['create','update','edit']]);
+Route::middleware('auth:api')->resource('motos','Api\User\UserMotoController',['except'=>['create','edit']]);
+Route::middleware('auth:api')->resource('motos.fotomotos','Api\User\UserMotoFotoMotoController',['except'=>['create','edit']]);
 
 // Route::post('register','User\UserController@store')->name('register');

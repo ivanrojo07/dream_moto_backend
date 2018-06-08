@@ -23,6 +23,6 @@ class VersionMoto extends Model
     ];
 
     public function modelo(){
-    	return $this->belongsTo('App\ModeloMoto','modelo_id')
+    	return $this->belongsTo('App\ModeloMoto','modelo_id');
     }
 }

@@ -45,4 +45,9 @@ class User extends Authenticatable
         return $this->hasMany('App\Tarjeta', 'user_id', 'id');
 
     }
+
+    public function motos(){
+
+        return $this->hasMany('App\Moto','user_id','id');
+    }
 }
