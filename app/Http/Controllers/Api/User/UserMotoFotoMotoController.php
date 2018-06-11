@@ -22,12 +22,12 @@ class UserMotoFotoMotoController extends Controller
     {
         //
         $user = $request->user();
-        $fotos = $moto->fotos;
         if($moto->user->id == $user->id){
+            $fotos = $moto->fotos;
             $moto->marca;
             $moto->version;
             $moto->modelo;
-            return response()->json(['moto'=>$moto,'fotos'=>$fotos],200);
+            return response()->json(['moto'=>$moto],200);
         }
         else{
             return response()->json(['message'=>'no podemos mostrar esta moto'],500);
@@ -97,29 +97,6 @@ class UserMotoFotoMotoController extends Controller
         
 
 
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\FotoMoto  $fotoMoto
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Moto $moto,Request $request, FotoMoto $fotoMoto)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\FotoMoto  $fotoMoto
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Moto $moto,Request $request, FotoMoto $fotoMoto)
-    {
-        //
     }
 
     /**
