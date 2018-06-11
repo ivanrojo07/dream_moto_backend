@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class FotoMoto extends Model
 {
     //
-    protected $table="foto_moto";
+    protected $table="foto_motos";
 
     protected $fillable=[
     	'moto_id',

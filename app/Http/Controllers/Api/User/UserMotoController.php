@@ -104,7 +104,7 @@ class UserMotoController extends Controller
             return response()->json(['moto'=>$moto],200);
         }
         else{
-            return response()->json(['message'=>'Moto no actualizada'],500)
+            return response()->json(['message'=>'Moto no actualizada'],500);
         }
 
     }
