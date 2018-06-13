@@ -17,7 +17,7 @@ class UserMotoController extends Controller
     {
         //
         $user = $request->user();
-        $motos = $user->motos()->with(['marca','modelo','version'])->get();
+        $motos = $user->motos()->get();
 
         return response()->json(['motos'=>$motos],200);
 
@@ -36,20 +36,20 @@ class UserMotoController extends Controller
         $user = $request->user();
         $data = $request->all();
         $rules =[
-            "marca"=>"required|numeric",
-            'modelo'=>"required|numeric",
-            "version"=>"required|numeric",
-            "anio"=>"required|numeric",
-            "km" =>"nullable|numeric"
+            "marca"=>"required",
+            "anio"=>"nullable|numeric",
+            "km" =>"nullable|numeric",
+            "serie" => "nullable|numeric"
         ];
         $this->validate($request,$rules);
         $moto = Moto::create([
             "user_id" => $user->id,
-            "marca_id" => $data['marca'],
-            'modelo_id' => $data['modelo'],
-            'version_id' => $data['version'],
+            "marca" => $data['marca'],
+            'modelo' => $data['modelo'],
+            'version' => $data['version'],
             'anio' => $data['anio'],
-            'km' => $data['km']
+            'km' => $data['km'],
+            'serie' => $data['serie']
         ]);
         return response()->json(['moto'=>$moto],200);
 
