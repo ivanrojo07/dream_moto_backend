@@ -18,6 +18,8 @@ class CreateProductoTable extends Migration
             $table->morphs('producto');
             $table->string('nombre');
             $table->text('descripcion')->nullable();
+            $table->unsignedInteger('cantidad');
+            $table->unsignedDecimal('precio', 8, 2);
             $table->timestamps();
         });
     }

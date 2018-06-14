@@ -49,7 +49,9 @@ class TiendaProductoController extends Controller
             "nombre" => $inputs['nombre'],
             'descripcion' => $inputs['descripcion'],
             'producto_id' => $tienda->id,
-            'producto_type' => "App\Tienda"
+            'producto_type' => "App\Tienda",
+            'cantidad' => $inputs['cantidad'],
+            'precio' => $inputs['precio']
         ]);
         return redirect()->route('tiendas.productos.create',['tienda'=>$tienda]);
     }

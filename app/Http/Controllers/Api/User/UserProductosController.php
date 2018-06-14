@@ -34,14 +34,18 @@ class UserProductosController extends Controller
         $user = $request->user();
         $inputs = $request->all();
         $rules = [
-            'nombre'=>'required'
+            'nombre'=>'required',
+            'cantidad' => 'required|numeric',
+            'precio' => 'required|numeric',
         ];
         $this->validate($request,$rules);
         $producto = Producto::create([
             "producto_id"=> $user->id,
             "producto_type"=> "App\User",
             'nombre' => $inputs['nombre'],
-            'descripcion'=> $inputs['descripcion']
+            'descripcion'=> $inputs['descripcion'],
+            'cantidad' => $inputs['cantidad'],
+            'precio' => $inputs['precio']
         ]);
         return response()->json(['producto'=>$producto],200);
     }
