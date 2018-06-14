@@ -29,6 +29,7 @@ Route::middleware('auth:api')->resource('cards', 'Api\User\UserTarjetasControlle
 Route::middleware('auth:api')->resource('motos','Api\User\UserMotoController',['except'=>['create','edit']]);
 Route::middleware('auth:api')->resource('motos.fotomotos','Api\User\UserMotoFotoMotoController',['except'=>['create','edit']]);
 Route::middleware('auth:api')->resource('productos','Api\User\UserProductosController', ['except'=>['create','edit','show']]);
+Route::middleware('auth:api')->resource('productos.fotoproducto','Api\User\UserProductosFotosController',['except'=>['create','edit','show']]);
 Route::get('marcas','Api\Moto\MarcaController@index');
 Route::get('marcas/{marca}/modelos','Api\Moto\MarcaModeloController@index');
 Route::get('modelos/{modelo}/versions','Api\Moto\ModeloVersionController@index');

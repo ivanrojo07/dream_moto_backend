@@ -93,10 +93,10 @@ class UserProductosFotosController extends Controller
     {
         //
         $user = $request->user();
-        if ($producto->producto_type == 'App\User' && $producto->producto_id == $user->id && $producto->id == $foto->producto_id) {
+        if ($producto->producto_type == 'App\User' && $producto->producto_id == $user->id && $producto->id == $fotoProducto->producto_id) {
             # code...
-            Storage::delete('productos/'.$producto->id."/".$foto->image_path);
-            $foto->delete();
+            Storage::delete('productos/'.$producto->id."/".$fotoProducto->image_path);
+            $fotoProducto->delete();
             return response()->json(['message'=>"Foto eliminada"],200);
         } else {
             # code...
