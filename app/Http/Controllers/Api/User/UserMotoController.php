@@ -75,7 +75,7 @@ class UserMotoController extends Controller
             return response()->json(['moto'=>$moto],200);
         } else {
             # code...
-            return response()->json(['message'=>"No podemos mostrar esta moto"],500);
+            return response()->json(['message'=>"No podemos mostrar esta moto"],401);
         }
         
     }
@@ -104,7 +104,7 @@ class UserMotoController extends Controller
             return response()->json(['moto'=>$moto],200);
         }
         else{
-            return response()->json(['message'=>'Moto no actualizada'],500);
+            return response()->json(['message'=>'Moto no actualizada'],401);
         }
 
     }
@@ -125,7 +125,7 @@ class UserMotoController extends Controller
             return response()->json(['message'=>"Motocicleta eliminada de tu colección"],200);
         }
         else{
-            return response()->json(['message'=>"No puedes eliminar esta moto"],500);
+            return response()->json(['message'=>"No puedes eliminar esta moto"],401);
         }
     }
 }

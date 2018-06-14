@@ -51,17 +51,6 @@ class UserProductosController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Producto  $producto
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request, Producto $producto)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -71,6 +60,29 @@ class UserProductosController extends Controller
     public function update(Request $request, Producto $producto)
     {
         //
+        $user = $request->user();
+        if ($producto->producto_type == 'App\User' && $producto->producto_id == $user->id) {
+            # code...
+            $inputs = $request->all();
+            $rules = [
+                'nombre'=>'required',
+                'cantidad' => 'required|numeric',
+                'precio' => 'required|numeric',
+            ];
+            $this->validate($request,$rules);
+            $producto->update([
+                "nombre" => $inputs['nombre'],
+                'descripcion' => $inputs['descripcion'],
+                'cantidad' => $inputs['cantidad'],
+                'precio' => $inputs['precio']
+            ]);
+            return response()->json(['producto'=>$producto],200);
+
+        } else {
+            # code...
+            return response()->json(['error'=>"No puedes actualizar este producto"],401)
+        }
+        
     }
 
     /**
@@ -82,5 +94,15 @@ class UserProductosController extends Controller
     public function destroy(Request $request,Producto $producto)
     {
         //
+        $user = $request->user();
+        if ($producto->producto_type == 'App\User' && $producto->producto_id == $user->id) {
+            # code...
+            $producto->delete();
+            return response()->json(['message'=>"Producto eliminado de tu colección"],200);
+        } else {
+            # code...
+            return response()->json(['message'=>"No puedes eliminar esta moto"],401);
+        }
+        
     }
 }

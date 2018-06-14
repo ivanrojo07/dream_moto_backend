@@ -18,7 +18,7 @@ class TiendaProductoController extends Controller
     {
         //
         $productos = $tienda->productos()->get();
-        dd($productos);
+        return view('tiendas.producto.index',['tienda'=>$tienda,'productos'=>$productos]);
     }
 
     /**
@@ -43,7 +43,11 @@ class TiendaProductoController extends Controller
     {
         //
         $inputs = $request->all();
-        $rules = ['nombre'=>"required"];
+        $rules = [
+            'nombre'=>'required',
+            'cantidad' => 'required|numeric',
+            'precio' => 'required|numeric',
+        ];
         $this->validate($request,$rules);
         $producto = Producto::create([
             "nombre" => $inputs['nombre'],
@@ -53,7 +57,7 @@ class TiendaProductoController extends Controller
             'cantidad' => $inputs['cantidad'],
             'precio' => $inputs['precio']
         ]);
-        return redirect()->route('tiendas.productos.create',['tienda'=>$tienda]);
+        return redirect()->route('tiendas.productos.index',['tienda'=>$tienda]);
     }
 
     /**
@@ -65,6 +69,7 @@ class TiendaProductoController extends Controller
     public function show(Tienda $tienda,Producto $producto)
     {
         //
+        return view('tiendas.producto.show',['producto'=>$producto,'tienda'=>$tienda]);
     }
 
     /**
@@ -76,6 +81,8 @@ class TiendaProductoController extends Controller
     public function edit(Tienda $tienda,Producto $producto)
     {
         //
+        $edit = true;
+        return view('tiendas.producto.form',['tienda'=>$tienda,'edit'=>$edit]);
     }
 
     /**
@@ -88,6 +95,20 @@ class TiendaProductoController extends Controller
     public function update(Request $request, Tienda $tienda,Producto $producto)
     {
         //
+        $inputs = $request->all();
+        $rules = [
+            'nombre'=>'required',
+            'cantidad' => 'required|numeric',
+            'precio' => 'required|numeric',
+        ];
+        $this->validate($request,$rules);
+        $producto->update([
+            "nombre" => $inputs['nombre'],
+            'descripcion' => $inputs['descripcion'],
+            'cantidad' => $inputs['cantidad'],
+            'precio' => $inputs['precio']
+        ]);
+        return redirect()->route('tiendas.productos.index',['tienda'=>$tienda]);
     }
 
     /**
