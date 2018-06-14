@@ -80,7 +80,7 @@ class UserProductosController extends Controller
 
         } else {
             # code...
-            return response()->json(['error'=>"No puedes actualizar este producto"],401)
+            return response()->json(['error'=>"No puedes actualizar este producto"],401);
         }
         
     }

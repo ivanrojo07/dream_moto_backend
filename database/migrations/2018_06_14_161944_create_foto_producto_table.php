@@ -13,8 +13,11 @@ class CreateFotoProductoTable extends Migration
      */
     public function up()
     {
-        Schema::create('foto_producto_', function (Blueprint $table) {
+        Schema::create('foto_producto', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('producto_id')->unsigned();
+            $table->foreign('producto_id')->references('id')->on('producto');
+            $table->string('image_path');
             $table->timestamps();
         });
     }

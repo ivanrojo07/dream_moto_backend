@@ -28,4 +28,8 @@ class Producto extends Model
     public function producto(){
     	return $this->morphTo();
     }
+
+    public function fotos(){
+    	return $this->hasMany('App\FotoProducto', 'producto_id','id');
+    }
 }
