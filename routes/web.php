@@ -31,3 +31,6 @@ Route::get('nosotros',function(){
 
 	return View::make('nosotros.index');
 });
+
+Route::resource('tiendas','Web\Tienda\TiendaController');
+Route::resource('tiendas.productos','Web\Tienda\TiendaProductoController');

@@ -50,4 +50,7 @@ class User extends Authenticatable
 
         return $this->hasMany('App\Moto','user_id','id');
     }
+    public function productos(){
+        return $this->morphMany('App\Producto','producto');
+    }
 }
