@@ -17,7 +17,7 @@ class UserMotoController extends Controller
     {
         //
         $user = $request->user();
-        $motos = $user->motos()->with(['marca','modelo','version'])->get();
+        $motos = $user->motos()->get();
 
         return response()->json(['motos'=>$motos],200);
 
@@ -46,12 +46,13 @@ class UserMotoController extends Controller
         $this->validate($request,$rules);
         $moto = Moto::create([
             "user_id" => $user->id,
-            "marca_id" => $data['marca'],
-            'modelo_id' => $data['modelo'],
-            'version_id' => $data['version'],
+            "marca" => $data['marca'],
+            'modelo' => $data['modelo'],
+            'version' => $data['version'],
             'anio' => $data['anio'],
             'km' => $data['km'],
             "serie" => $data['num_serie']
+
         ]);
         return response()->json(['moto'=>$moto],200);
 
@@ -77,7 +78,7 @@ class UserMotoController extends Controller
             return response()->json(['moto'=>$moto],200);
         } else {
             # code...
-            return response()->json(['message'=>"No podemos mostrar esta moto"],500);
+            return response()->json(['message'=>"No podemos mostrar esta moto"],401);
         }
         
     }
@@ -106,7 +107,7 @@ class UserMotoController extends Controller
             return response()->json(['moto'=>$moto],200);
         }
         else{
-            return response()->json(['message'=>'Moto no actualizada'],500);
+            return response()->json(['message'=>'Moto no actualizada'],401);
         }
 
     }
@@ -127,7 +128,7 @@ class UserMotoController extends Controller
             return response()->json(['message'=>"Motocicleta eliminada de tu colección"],200);
         }
         else{
-            return response()->json(['message'=>"No puedes eliminar esta moto"],500);
+            return response()->json(['message'=>"No puedes eliminar esta moto"],401);
         }
     }
 }

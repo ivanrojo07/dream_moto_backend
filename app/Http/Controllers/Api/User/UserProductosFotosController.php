@@ -2,38 +2,25 @@
 
 namespace App\Http\Controllers\Api\User;
 
-use App\FotoMoto;
+use App\FotoProducto;
 use App\Http\Controllers\Controller;
-use App\Moto;
+use App\Producto;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Validator;
-use Illuminate\Validation\Rule;
 
-
-class UserMotoFotoMotoController extends Controller
+class UserProductosFotosController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Moto $moto, Request $request)
+    public function index(Producto $producto, Request $request)
     {
         //
-        $user = $request->user();
-        if($moto->user->id == $user->id){
-            $fotos = $moto->fotos;
-            $moto->marca;
-            $moto->version;
-            $moto->modelo;
-            return response()->json(['moto'=>$moto],200);
-        }
-        else{
-            return response()->json(['message'=>'no podemos mostrar esta moto'],401);
-        }
-        // dd($fotos);
-
+        $fotos = $producto->fotos;
+        return response()->json(['fotos'=>$fotos]);
+        
+        
     }
 
     /**
@@ -42,11 +29,11 @@ class UserMotoFotoMotoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Moto $moto, Request $request)
+    public function store(Request $request, Producto $producto)
     {
         //
         $user = $request->user();
-        if ($moto->user->id == $user->id) {
+        if ($producto->producto_type == 'App\User' && $producto->producto_id == $user->id) {
             # code...
             $inputs = $request->file('images');
             // dd($inputs);
@@ -66,7 +53,7 @@ class UserMotoFotoMotoController extends Controller
                         $file_name =date("Y_m_d_His_").$image->getClientOriginalName();
                         // dd($image);
                         // dd($file_name);
-                        Storage::put('motos/'.$moto->id."/".$file_name,file_get_contents($image));
+                        Storage::put('productos/'.$moto->id."/".$file_name,file_get_contents($image));
                         $foto = FotoMoto::create([
                             'moto_id' => $moto->id,
                             'image_path' => $moto->id.'/'.$file_name,
@@ -82,31 +69,39 @@ class UserMotoFotoMotoController extends Controller
 
                 } else {
                     # code...
-                    return response()->json(['message'=>'foto(s) suibidas con exito'],200);
+                    return response()->json(['message'=>'foto(s) suibidas con exito'],201);
                 }
                 
             } else {
                 # code...
                 return response()->json(['error'=>"No identificamos los archivos"],404);
             }
-            
         } else {
             # code...
-            return response()->json(['error'=>"No tienes permitido subir imagenes de esta moto"],401);
+            return response()->json(['error'=>"No tienes permitido subir imagenes de este producto"],401);
         }
-        
-
-
     }
 
+    
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\FotoMoto  $fotoMoto
+     * @param  \App\FotoProducto  $fotoProducto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Moto $moto,Request $request,FotoMoto $fotoMoto)
+    public function destroy(Request $request, Producto $producto,FotoProducto $fotoProducto)
     {
         //
+        $user = $request->user();
+        if ($producto->producto_type == 'App\User' && $producto->producto_id == $user->id && $producto->id == $fotoProducto->producto_id) {
+            # code...
+            Storage::delete('productos/'.$producto->id."/".$fotoProducto->image_path);
+            $fotoProducto->delete();
+            return response()->json(['message'=>"Foto eliminada"],200);
+        } else {
+            # code...
+            return response()->json(['error'=>"No tienes permitido borrar imagenes de este producto"],401);
+        }
+        
     }
 }
