@@ -32,6 +32,7 @@ class UserProductosFotosController extends Controller
     public function store(Request $request, Producto $producto)
     {
         //
+        dd($request-all());
         $user = $request->user();
         if ($producto->producto_type == 'App\User' && $producto->producto_id == $user->id) {
             # code...
@@ -53,10 +54,10 @@ class UserProductosFotosController extends Controller
                         $file_name =date("Y_m_d_His_").$image->getClientOriginalName();
                         // dd($image);
                         // dd($file_name);
-                        Storage::put('productos/'.$moto->id."/".$file_name,file_get_contents($image));
-                        $foto = FotoMoto::create([
-                            'moto_id' => $moto->id,
-                            'image_path' => $moto->id.'/'.$file_name,
+                        Storage::put('productos/'.$producto->id."/".$file_name,file_get_contents($image));
+                        $foto = FotoProducto::create([
+                            'producto_id' => $producto->id,
+                            'image_path' => $producto->id.'/'.$file_name,
                         ]);  
                     }
                     else{
