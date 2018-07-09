@@ -16,7 +16,8 @@ class Moto extends Model
     	'version_id',
     	'user_id',
     	'anio',
-    	'km'
+    	'km',
+        'serie'
     ];
     protected $hidden =[
     	'created_at',
