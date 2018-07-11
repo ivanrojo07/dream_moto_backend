@@ -6,6 +6,7 @@ use App\FotoProducto;
 use App\Http\Controllers\Controller;
 use App\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserProductosFotosController extends Controller
 {
