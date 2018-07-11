@@ -32,7 +32,14 @@ class UserProductosFotosController extends Controller
     public function store(Request $request, Producto $producto)
     {
         //
-        dd($request->all());
+        $imagenes = json_decode($request->getContent(),true);
+        foreach ($imagenes as $imagens) {
+        	# code...
+        	var_dump($imagens['imagen']);
+        }
+        die();
+        // var_dump($imagenes);
+        // return response()->json([$imagenes],200);
         $user = $request->user();
         if ($producto->producto_type == 'App\User' && $producto->producto_id == $user->id) {
             # code...
