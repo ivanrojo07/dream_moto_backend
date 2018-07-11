@@ -52,7 +52,7 @@ class UserProductosFotosController extends Controller
                     'image_path' => $imageName,
                 ]);  
             }
-            return response()->json(['message'=>'foto(s) suibidas con exito'],201);
+            return response()->json(['message'=>'foto(s) subidas con exito'],201);
         }
        
     }
@@ -70,7 +70,7 @@ class UserProductosFotosController extends Controller
         $user = $request->user();
         if ($producto->producto_type == 'App\User' && $producto->producto_id == $user->id && $producto->id == $fotoProducto->producto_id) {
             # code...
-            Storage::delete('productos/'.$producto->id."/".$fotoProducto->image_path);
+            Storage::delete('/public/'.$fotoProducto->image_path);
             $fotoProducto->delete();
             return response()->json(['message'=>"Foto eliminada"],200);
         } else {
