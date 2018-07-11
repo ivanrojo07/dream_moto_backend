@@ -45,7 +45,7 @@ class UserProductosFotosController extends Controller
                 $image = str_replace(' ', '+', $image);
                 $imageName = '/'.$producto->id.'/'.str_random(10).'.'.'jpg';
                 // Storage::put(storage_path(). '/' . $imageName, base64_decode($image));
-                Storage::put($imageName, base64_decode($image));
+                Storage::put('/public'.$imageName, base64_decode($image));
 
                 $foto = FotoProducto::create([
                     'producto_id' => $producto->id,
