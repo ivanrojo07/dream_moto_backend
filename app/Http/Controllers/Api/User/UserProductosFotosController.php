@@ -32,7 +32,6 @@ class UserProductosFotosController extends Controller
     public function store(Request $request, Producto $producto)
     {
         //
-        dd($request->all());
         $user = $request->user();
         if ($producto->producto_type == 'App\User' && $producto->producto_id == $user->id) {
             # code...
