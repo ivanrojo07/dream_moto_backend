@@ -52,7 +52,7 @@ class UserProductosFotosController extends Controller
                     'image_path' => $imageName,
                 ]);  
             }
-            return response()->json(['message'=>'foto(s) suibidas con exito','foto'=>$foto],201);
+            return response()->json(['message'=>'foto(s) suibidas con exito'],201);
         }
        
     }
