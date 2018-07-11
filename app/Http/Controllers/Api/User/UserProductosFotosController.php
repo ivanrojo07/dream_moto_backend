@@ -32,54 +32,26 @@ class UserProductosFotosController extends Controller
     public function store(Request $request, Producto $producto)
     {
         //
+
         $user = $request->user();
+        $imagenes = json_decode($request->getContent(),true);
         if ($producto->producto_type == 'App\User' && $producto->producto_id == $user->id) {
-            # code...
-            $inputs = $request->file('images');
-            // dd($inputs);
-            if (!empty($inputs)) {
-                # code...
-                $rules = [
-                    'images'=>"image|mimes:jpg,jpeg,bmp,png"
-                ];
-                // dd($rules);
-                // $this.validate($request,$rules);
-                foreach ($inputs as $image) {
-                    # code...
-                    $foto = array('images' => $image);
-
-                    $imageValidator = Validator::make($foto, $rules);
-                    if (!$imageValidator->fails()) { 
-                        $file_name =date("Y_m_d_His_").$image->getClientOriginalName();
-                        // dd($image);
-                        // dd($file_name);
-                        Storage::put('productos/'.$producto->id."/".$file_name,file_get_contents($image));
-                        $foto = FotoProducto::create([
-                            'producto_id' => $producto->id,
-                            'image_path' => $producto->id.'/'.$file_name,
-                        ]);  
-                    }
-                    else{
-                        $error = true;
-                    }
-                }
-                if ($error) {
-                    # code...
-                    return response()->json(['message'=>'Alguna(s) foto(s) no pudieron ser subidas, verifiquen que sean archivos validos'],202);
-
-                } else {
-                    # code...
-                    return response()->json(['message'=>'foto(s) suibidas con exito'],201);
-                }
-                
-            } else {
-                # code...
-                return response()->json(['error'=>"No identificamos los archivos"],404);
+            foreach ($imagenes as $imagens) {
+            	# code...
+            	// var_dump($imagens['imagen']);
+                $image = $imagens['imagen'];
+                $image = str_replace('data:image/jpg;base64,', '', $image);
+                $image = str_replace(' ', '+', $image);
+                $imageName = str_random(10).'.'.'png';
+                Storage::put(storage_path(). '/' . $imageName, base64_decode($image));
+                $foto = FotoProducto::create([
+                    'producto_id' => $producto->id,
+                    'image_path' => '/'.$imageName,
+                ]);  
+                return response()->json(['message'=>'foto(s) suibidas con exito'],201);
             }
-        } else {
-            # code...
-            return response()->json(['error'=>"No tienes permitido subir imagenes de este producto"],401);
         }
+       
     }
 
     
