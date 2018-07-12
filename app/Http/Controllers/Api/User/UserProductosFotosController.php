@@ -67,6 +67,7 @@ class UserProductosFotosController extends Controller
     public function destroy(Request $request, Producto $producto,FotoProducto $fotoProducto)
     {
         //
+        // dd($fotoProducto);
         $user = $request->user();
         if ($producto->producto_type == 'App\User' && $producto->producto_id == $user->id && $producto->id == $fotoProducto->producto_id) {
             # code...
