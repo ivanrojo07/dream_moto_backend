@@ -16,6 +16,8 @@ class TiendaController extends Controller
     public function index()
     {
         //
+        $tiendas = Tienda::paginate(5);
+        return view('tiendas.index',['tiendas'=>$tiendas]);
     }
 
     /**

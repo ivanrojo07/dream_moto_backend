@@ -64,15 +64,17 @@ class UserProductosFotosController extends Controller
      * @param  \App\FotoProducto  $fotoProducto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Producto $producto,FotoProducto $fotoProducto)
+    public function destroy(Request $request, Producto $producto,$fotoproducto)
     {
         //
-        // dd($fotoProducto);
+
+        $foto = FotoProducto::find($fotoproducto);
+        // dd($foto);
         $user = $request->user();
-        if ($producto->producto_type == 'App\User' && $producto->producto_id == $user->id && $producto->id == $fotoProducto->producto_id) {
+        if ($producto->producto_type == 'App\User' && $producto->producto_id == $user->id) {
             # code...
-            Storage::delete('/public/'.$fotoProducto->image_path);
-            $fotoProducto->delete();
+            Storage::delete('/public/'.$foto->image_path);
+            $foto->delete();
             return response()->json(['message'=>"Foto eliminada"],200);
         } else {
             # code...
