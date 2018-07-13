@@ -30,8 +30,17 @@
 									<th scope="row">{{$producto->nombre}}</th>
 									<th>{{$producto->descripcion}}</th>
 									<th>{{$producto->cantidad}}</th>
-									<th>{{$producto->precio}}</th>
-									<th></th>
+									<th>${{$producto->precio}}</th>
+									<th>
+										<a href="{{ route('tiendas.productos.edit',['tienda'=>$tienda,'producto'=>$producto]) }}" class="btn btn-link">Editar producto</a>
+										<a href="{{ route('tiendas.productos.fotos.index',['tienda'=>$tienda,'producto'=>$producto]) }}" class="btn btn-link">Fotos del producto</a>
+
+										<form method="POST" action="{{ route('tiendas.productos.destroy',['tienda'=>$tienda,'producto'=>$producto]) }}">
+											@csrf
+											<input type="hidden" name="_method" value="DELETE">
+											<button type="submit" class="btn btn-link" onclick="return confirm('¿Estás seguro que desea eliminar este producto?');">Eliminar</button>
+										</form>
+									</th>
 								</tr>
 							@empty
 								{{-- empty expr --}}

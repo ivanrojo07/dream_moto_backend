@@ -21,7 +21,7 @@
 							<div class="form-group row">
 								<label for="nombre" class="col-md-4 col-form-label text-md-right">Nombre de la producto:</label>
 								<div class="col-md-6">
-									<input id="nombre" type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : ''  }}" name="nombre" value="{{ old('nombre') }}" required autofocus="">
+									<input id="nombre" type="text" class="form-control {{ $errors->has('nombre') ? ' is-invalid' : ''  }}" name="nombre" value="{{$edit ? $producto->nombre : old('nombre') }}" required autofocus="">
 									@if ($errors->has('nombre'))
 										{{-- expr --}}
 										<span class="invalid-feedback">
@@ -33,7 +33,7 @@
 							<div class="form-group row">		
 								<label for="descripcion" class="col-md-4 col-form-label text-md-right">Descripción de la producto:</label>
 								<div class="col-md-6">
-									<textarea id="descripcion" type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : ''  }}" name="descripcion" value="{{ old('descripcion') }}">{{ old('descripcion') }}</textarea>
+									<textarea id="descripcion" type="text" class="form-control {{ $errors->has('descripcion') ? ' is-invalid' : ''  }}" name="descripcion" value="{{ old('descripcion') }}">{{ $edit ? $producto->descripcion : old('descripcion') }}</textarea>
 									@if ($errors->has('descripcion'))
 										{{-- expr --}}
 										<span class="invalid-feedback">
@@ -45,7 +45,7 @@
 							<div class="form-group row">		
 								<label for="cantidad" class="col-md-4 col-form-label text-md-right">Cantidad del producto que tienes:</label>
 								<div class="col-md-6">
-									<input id="cantidad" type="number" min="1" max="100" class="form-control {{ $errors->has('cantidad') ? ' is-invalid' : ''  }}" name="cantidad" value="{{ old('cantidad') }}" required>
+									<input id="cantidad" type="number" min="1" max="100" class="form-control {{ $errors->has('cantidad') ? ' is-invalid' : ''  }}" name="cantidad" value="{{$edit ? $producto->cantidad : old('cantidad') }}" required>
 									@if ($errors->has('cantidad'))
 										{{-- expr --}}
 										<span class="invalid-feedback">
@@ -57,7 +57,7 @@
 							<div class="form-group row">		
 								<label for="precio" class="col-md-4 col-form-label text-md-right">Precio por producto:</label>
 								<div class="col-md-6">
-									<input id="precio" type="number" step="0.01" min="0" class="form-control {{ $errors->has('precio') ? ' is-invalid' : ''  }}" name="precio" value="{{ old('precio') }}" required>
+									<input id="precio" type="number" step="0.01" min="0" class="form-control {{ $errors->has('precio') ? ' is-invalid' : ''  }}" name="precio" value="{{ $edit ? $producto->precio : old('precio') }}" required>
 									@if ($errors->has('precio'))
 										{{-- expr --}}
 										<span class="invalid-feedback">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web\Tienda;
 use App\Tienda;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class TiendaController extends Controller
 {
@@ -101,5 +102,16 @@ class TiendaController extends Controller
     public function destroy(Tienda $tienda)
     {
         //
+        foreach ($tienda->productos as $producto) {
+            foreach ($producto->fotos as $foto) {
+                $delete =Storage::delete('/public/'.$foto->image_path);
+                if ($delete) {
+                    $foto->delete();
+                }
+            }
+            $producto->delete();
+        }
+        $tienda->delete();
+        return redirect()->route('tiendas.index');
     }
 }

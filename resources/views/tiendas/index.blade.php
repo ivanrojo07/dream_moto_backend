@@ -30,11 +30,17 @@
 								<tr>
 									<th scope="row">{{$tienda->nombre}}</th>
 									<th>{{$tienda->descripcion}}</th>
-									<th>{{$tienda->locacion}} <a href="{{$tienda->getMapLink()}}">Ver en GoogleMaps</a></th>
+									<th>{{$tienda->locacion}} <a href="{{$tienda->getMapLink()}}" target="_blank">Ver en GoogleMaps</a></th>
 									<th>{{$tienda->nombre_contacto}}</th>
 									<th>{{$tienda->telefono_contacto}}</th>
 									<th>
-										<a href="{{ route('tiendas.productos.index',['tienda'=>$tienda]) }}">Productos</a>
+										<a href="{{ route('tiendas.productos.index',['tienda'=>$tienda]) }}" class="btn btn-link">Productos</a>
+										<a href="{{ route('tiendas.edit',['tienda'=>$tienda]) }}" class="btn btn-link">Editar</a>
+										<form method="POST" action="{{ route('tiendas.destroy',['tienda'=>$tienda]) }}">
+											@csrf
+											<input type="hidden" name="_method" value="DELETE">
+											<button type="submit" class="btn btn-link" onclick="return confirm('¿Estás seguro que desea eliminar esta tienda?');">Eliminar</button>
+										</form>
 									</th>
 								</tr>
 							@empty

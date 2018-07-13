@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Producto;
 use App\Tienda;
 use App\FotoProducto;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class TiendaProductoController extends Controller
@@ -83,7 +84,7 @@ class TiendaProductoController extends Controller
     public function show(Tienda $tienda,Producto $producto)
     {
         //
-        return view('tiendas.producto.show',['producto'=>$producto,'tienda'=>$tienda]);
+        // return view('tiendas.producto.show',['producto'=>$producto,'tienda'=>$tienda]);
     }
 
     /**
@@ -96,7 +97,7 @@ class TiendaProductoController extends Controller
     {
         //
         $edit = true;
-        return view('tiendas.producto.form',['tienda'=>$tienda,'edit'=>$edit]);
+        return view('tiendas.producto.form',['tienda'=>$tienda,'producto'=>$producto, 'edit'=>$edit]);
     }
 
     /**
@@ -122,6 +123,16 @@ class TiendaProductoController extends Controller
             'cantidad' => $inputs['cantidad'],
             'precio' => $inputs['precio']
         ]);
+        if ($request->imagen) {
+            $imagenes = $request->imagen;
+            foreach ($imagenes as $imagen) {
+            $path_image = $imagen->storeAs('productos/'.$producto->id,str_random(10).'.jpg','public');
+            FotoProducto::create([
+                'producto_id'=>$producto->id,
+                'image_path'=>$path_image,
+            ]);
+        }
+        }
         return redirect()->route('tiendas.productos.index',['tienda'=>$tienda]);
     }
 
@@ -134,5 +145,16 @@ class TiendaProductoController extends Controller
     public function destroy(Tienda $tienda, Producto $producto)
     {
         //
+        // dd($producto);
+        if($producto->producto_id == $tienda->id && $producto->producto_type == 'App\Tienda'){
+            foreach ($producto->fotos as $foto) {
+                $delete =Storage::delete('/public/'.$foto->image_path);
+                if ($delete) {
+                    $foto->delete();
+                }
+            }
+            $producto->delete();
+        }
+        return redirect()->route('tiendas.productos.index',['tienda'=>$tienda]);
     }
 }
