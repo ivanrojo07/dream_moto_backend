@@ -9,7 +9,7 @@
 					</div>
 					<div class="card-body">
 						<h4>Producto:</h4>
-						<form method="POST" action="{{ $edit == false ? route('tiendas.productos.store',$tienda) : route('tiendas.productos.update',[$tienda,$producto]) }}">
+						<form method="POST" action="{{ $edit == false ? route('tiendas.productos.store',$tienda) : route('tiendas.productos.update',[$tienda,$producto]) }}" enctype="multipart/form-data">
 							@csrf
 
 							@if ($edit == true)
@@ -69,9 +69,12 @@
 
 
 							<div class="form-group row field_wrapper">
-								<label for='uva' class="col-md-4 col-form-label text-md-right">Uva:</label>
+								<label for='uva' class="col-md-4 col-form-label text-md-right">Fotos del producto:</label>
 								<div class="input-group col-md-6">
-							        <input type="file" name="imagen[]" class="file-input" accept="image/*">
+							        <input type="file" name="imagen[]" class="file-input" accept="image/*" @if ($edit == false)
+							        	{{-- expr --}}
+							        	required
+							        @endif>
 							        <a href="javascript:void(0);" class="add_button" title="Add field"><i class="fas fa-plus"></i></a>
 							    </div>
 							</div>
@@ -100,7 +103,7 @@
 		    var maxField = 10; //Input fields increment limitation
 		    var addButton = $('.add_button'); //Add button selector
 		    var wrapper = $('.field_wrapper'); //Input field wrapper
-		    var fieldHTML = '<div class="input-group offset-md-4 col-md-6"> <select id="uva" class="form-control" name="uva[]"><option value="">Seleccione su uva</option></select><input type="text" placeholder="Hectareas" class="form-control" name="hectarea[]" value=""/><div class="input-group-append"><span class="input-group-text"><strong>ha</strong></span></div><a href="javascript:void(0);" class="remove_button" title="Add field"><i class="fas fa-minus-circle"></i></a></div>'; //New input field html 
+		    var fieldHTML = '<div class="input-group offset-md-4 col-md-6"><input type="file" name="imagen[]" class="file-input" accept="image/*" required><a href="javascript:void(0);" class="remove_button" title="Add field"><i class="fas fa-minus-circle"></i></a></div>'; //New input field html 
 		    var x = 1; //Initial field counter is 1
 		    
 		    //Once add button is clicked

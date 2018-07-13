@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web\Tienda;
 use App\Http\Controllers\Controller;
 use App\Producto;
 use App\Tienda;
+use App\FotoProducto;
 use Illuminate\Http\Request;
 
 class TiendaProductoController extends Controller
@@ -42,21 +43,34 @@ class TiendaProductoController extends Controller
     public function store(Tienda $tienda,Request $request)
     {
         //
+        // dd($request->all());
+        // dd($imagenes);
         $inputs = $request->all();
         $rules = [
             'nombre'=>'required',
             'cantidad' => 'required|numeric',
             'precio' => 'required|numeric',
+            'imagen[]'=> 'image|mimes:jpg,jpeg,png',
         ];
+        $imagenes = $request->imagen;
         $this->validate($request,$rules);
         $producto = Producto::create([
             "nombre" => $inputs['nombre'],
             'descripcion' => $inputs['descripcion'],
-            'producto_id' => $tienda->id,
+            'producto_id' => $inputs['tienda_id'],  
             'producto_type' => "App\Tienda",
             'cantidad' => $inputs['cantidad'],
             'precio' => $inputs['precio']
         ]);
+        foreach ($imagenes as $imagen) {
+            $path_image = $imagen->storeAs('productos/'.$producto->id,str_random(10).'.jpg','public');
+            FotoProducto::create([
+                'producto_id'=>$producto->id,
+                'image_path'=>$path_image,
+            ]);
+        }
+
+
         return redirect()->route('tiendas.productos.index',['tienda'=>$tienda]);
     }
 
