@@ -57,7 +57,7 @@ class UserProductosController extends Controller
      * @param  \App\Producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Producto $producto)
+    public function update(Request $request, Producto $usuarioProducto)
     {
         //
         $user = $request->user();
@@ -91,7 +91,7 @@ class UserProductosController extends Controller
      * @param  \App\Producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request,Producto $producto)
+    public function destroy(Request $request,Producto $usuarioProducto)
     {
         //
         $user = $request->user();

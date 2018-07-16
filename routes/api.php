@@ -28,10 +28,11 @@ Route::middleware('auth:api')->resource('domicilios', 'Api\User\UserDomEnvioCont
 Route::middleware('auth:api')->resource('cards', 'Api\User\UserTarjetasController', ['except'=>['create','update','edit']]);
 Route::middleware('auth:api')->resource('motos','Api\User\UserMotoController',['except'=>['create','edit']]);
 Route::middleware('auth:api')->resource('motos.fotomotos','Api\User\UserMotoFotoMotoController',['except'=>['create','edit']]);
-Route::middleware('auth:api')->resource('productos','Api\User\UserProductosController', ['except'=>['create','edit','show']]);
+Route::middleware('auth:api')->resource('usuarioProductos','Api\User\UserProductosController', ['except'=>['create','edit','show']]);
 Route::middleware('auth:api')->resource('productos.fotoproducto','Api\User\UserProductosFotosController',['except'=>['create','edit','show']]);
 Route::get('productos/{producto}/foto','Api\User\UserProductosFotosController@index');
 Route::get('marcas','Api\Moto\MarcaController@index');
 Route::get('marcas/{marca}/modelos','Api\Moto\MarcaModeloController@index');
 Route::get('modelos/{modelo}/versions','Api\Moto\ModeloVersionController@index');
+Route::resource('productos','Api\Producto\ProductoController', ['only'=>['index']]);
 // Route::post('register','User\UserController@store')->name('register');
