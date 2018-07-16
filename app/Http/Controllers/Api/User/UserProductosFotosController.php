@@ -43,7 +43,7 @@ class UserProductosFotosController extends Controller
                 $image = $imagens['imagen'];
                 $image = str_replace('data:image/jpg;base64,', '', $image);
                 $image = str_replace(' ', '+', $image);
-                $imageName = '/'.$producto->id.'/'.str_random(10).'.'.'jpg';
+                $imageName = 'productos/'.$producto->id.'/'.str_random(10).'.'.'jpg';
                 // Storage::put(storage_path(). '/' . $imageName, base64_decode($image));
                 Storage::put('/public/productos/'.$imageName, base64_decode($image));
 
