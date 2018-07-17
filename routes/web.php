@@ -35,3 +35,4 @@ Route::get('nosotros',function(){
 Route::resource('tiendas','Web\Tienda\TiendaController');
 Route::resource('tiendas.productos','Web\Tienda\TiendaProductoController');
 Route::resource('tiendas.productos.fotos','Web\Tienda\TiendaProductoFotoController',['only'=>['index','destroy']]);
+Route::resource('handbooks','Web\Handbook\HandbookController');
