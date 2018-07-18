@@ -45,12 +45,16 @@ class HandbookController extends Controller
     {
         //
         // dd($request->all());
+            // dd($_SERVER['CONTENT_LENGTH']);
         $rules = [
             'nombre'=>'required',
             'handbook'=> 'required|file|mimes:pdf',
         ];
         $this->validate($request,$rules);
         if ($request->file('handbook')->isValid()) {
+            set_time_limit(0);
+            ini_set('memory_limit','256M');
+            ini_set('upload_max_filesize','256M');
             $file=$request->handbook;
             $path_name = str_random(10).'.pdf';
             $file->storeAs('public/handbook',$path_name);
