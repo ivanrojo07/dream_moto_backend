@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Web\Handbook;
 use App\Handbook;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+
 
 class HandbookController extends Controller
 {
@@ -42,7 +44,23 @@ class HandbookController extends Controller
     public function store(Request $request)
     {
         //
-        dd($request->all());
+        // dd($request->all());
+        $rules = [
+            'nombre'=>'required',
+            'handbook'=> 'required|file|mimes:pdf',
+        ];
+        $this->validate($request,$rules);
+        if ($request->file('handbook')->isValid()) {
+            $file=$request->handbook;
+            $path_name = str_random(10).'.pdf';
+            $file->storeAs('public/handbook',$path_name);
+            Handbook::create([
+                'nombre'=>$request->nombre,
+                'descripcion'=>$request->descripcion,
+                'path'=>$path_name
+            ]);
+        }
+        return redirect()->route('handbooks.index');
     }
 
     /**
@@ -80,7 +98,16 @@ class HandbookController extends Controller
     public function update(Request $request, Handbook $handbook)
     {
         //
-        $request->all();
+        // $request->all();
+        $rules = [
+            'nombre'=>'required',
+        ];
+        $this->validate($request,$rules);
+        $handbook->update([
+            'nombre'=>$request->nombre,
+            'descripcion'=>$request->descripcion,
+        ]);
+        return redirect()->route('handbooks.index');
     }
 
     /**
@@ -92,6 +119,11 @@ class HandbookController extends Controller
     public function destroy(Handbook $handbook)
     {
         //
+        $delete = Storage::delete('/public/handbook/'.$handbook->path);
+        if ($delete) {
+            $handbook->delete();
+        }
+        return redirect()->route('handbooks.index');
         
     }
 }

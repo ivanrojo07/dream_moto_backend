@@ -29,6 +29,14 @@
 									<th scope="row">{{$handbook->nombre}}</th>
 									<th>{{$handbook->descripcion}}</th>
 									<th>{{$handbook->created_at->format('Y-m-d')}}</th>
+									<th>
+										<a href="{{ route('handbooks.edit',['handbook'=>$handbook]) }}" class="btn btn-link">Editar</a>
+										<form method="POST" action="{{ route('handbooks.destroy',['handbook'=>$handbook]) }}" style="display: inline-block;">
+											@csrf
+											<input type="hidden" name="_method" value="DELETE">
+											<button type="submit" class="btn btn-link" onclick="return confirm('¿Estás seguro que desea eliminar este manual?');">Eliminar</button>
+										</form>
+									</th>
 								</tr>
 							@empty
 								{{-- empty expr --}}

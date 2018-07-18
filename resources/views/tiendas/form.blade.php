@@ -7,22 +7,6 @@
 					<div class="card-header">
 						Tienda
 					</div>
-					<ul class="nav nav-tabs">
-						<li class="nav-item">
-							<a class="nav-link active" href="#">Nueva tienda</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link {{$edit ? '' : 'disabled'}}" @if ($edit == true)
-								{{-- true expr --}}
-								href="{{ route('tiendas.productos.index',['tienda'=>$tienda]) }}" 
-							@else
-								{{-- false expr --}}
-								href="#" 
-								onclick="disabled('marcas')"
-							@endif>Productos de la tienda</a>
-						</li>
-						
-					</ul>
 					<div class="card-body">
 						<form method="POST" action="{{ $edit == false ? route('tiendas.store') : route('tiendas.update',$tienda) }}">
 							@csrf
