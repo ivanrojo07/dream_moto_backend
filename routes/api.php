@@ -35,4 +35,7 @@ Route::get('marcas','Api\Moto\MarcaController@index');
 Route::get('marcas/{marca}/modelos','Api\Moto\MarcaModeloController@index');
 Route::get('modelos/{modelo}/versions','Api\Moto\ModeloVersionController@index');
 Route::resource('productos','Api\Producto\ProductoController', ['only'=>['index']]);
+
+Route::resource('handbooks','Api\Handbook\HandbookController',['only'=>['index']]);
+Route::get('handbooks/{path}','Api\Handbook\HandbookController@download');
 // Route::post('register','User\UserController@store')->name('register');
