@@ -13,19 +13,13 @@ class UserRoutesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $user = $request->user();
+        $rutas = $user->rutas->orderBy('created_at','asc')->get();
+        return response()->json(['rutas'=>$rutas],200);
+        
     }
 
     /**
@@ -37,6 +31,10 @@ class UserRoutesController extends Controller
     public function store(Request $request)
     {
         //
+        $user = $request->user();
+        $ruta = json_decode($request->getContent(),true);
+        dd($ruta);
+
     }
 
     /**
