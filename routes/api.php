@@ -38,4 +38,5 @@ Route::resource('productos','Api\Producto\ProductoController', ['only'=>['index'
 
 Route::resource('handbooks','Api\Handbook\HandbookController',['only'=>['index']]);
 Route::get('handbooks/{path}','Api\Handbook\HandbookController@download');
+Route::middleware('auth:api')->resource('routes','Api\User\UserRoutesController',['except'=>['create','edit','update']]);
 // Route::post('register','User\UserController@store')->name('register');

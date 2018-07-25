@@ -53,4 +53,8 @@ class User extends Authenticatable
     public function productos(){
         return $this->morphMany('App\Producto','producto');
     }
+    public function rutas()
+    {
+        return $this->hasMany('App\Route','user_id','id');
+    }
 }
