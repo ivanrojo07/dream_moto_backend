@@ -44,7 +44,7 @@ class UserRoutesController extends Controller
             Coordenate::create([
                 'long' => $punto['lng'],
                 'lat' => $punto['lat'],
-                'route_id'=>$ruta->id
+                'route_id'=>$ruta['id']
             ]);
         }
         $ruta->coordenadas;
