@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api\User;
 
+use App\Coordenate;
+use App\Http\Controllers\Controller;
 use App\Route;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class UserRoutesController extends Controller
 {
@@ -32,8 +33,23 @@ class UserRoutesController extends Controller
     {
         //
         $user = $request->user();
-        $ruta = json_decode($request->getContent(),true);
-        dd($ruta);
+        $data = json_decode($request->getContent(),true);
+        $ruta = Route::created([
+            'nombre'=> $data['finished'],
+            'user_id'=>$user->id
+        ]);
+
+        $puntos = $data['path'];
+        foreach ($puntos as $punto) {
+            Coordenate::create([
+                'long' => $punto->lng,
+                'lat' => $punto->lat,
+                'route_id'=>$ruta->id
+            ]);
+        }
+        $ruta->coordenadas;
+
+        return response()->json(['ruta'=>$ruta],200);
 
     }
 
