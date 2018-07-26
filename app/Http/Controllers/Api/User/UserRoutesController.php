@@ -42,8 +42,8 @@ class UserRoutesController extends Controller
         $puntos = $data['path'];
         foreach ($puntos as $punto) {
             Coordenate::create([
-                'long' => $punto->lng,
-                'lat' => $punto->lat,
+                'long' => $punto['lng'],
+                'lat' => $punto['lat'],
                 'route_id'=>$ruta->id
             ]);
         }
