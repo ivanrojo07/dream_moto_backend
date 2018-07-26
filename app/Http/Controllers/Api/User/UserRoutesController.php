@@ -34,7 +34,7 @@ class UserRoutesController extends Controller
         //
         $user = $request->user();
         $data = json_decode($request->getContent(),true);
-        $ruta = Route::created([
+        $ruta = Route::create([
             'nombre'=> $data['finished'],
             'user_id'=>$user->id
         ]);
@@ -44,7 +44,7 @@ class UserRoutesController extends Controller
             Coordenate::create([
                 'long' => $punto['lng'],
                 'lat' => $punto['lat'],
-                'route_id'=>$ruta['id']
+                'route_id'=>$ruta->id
             ]);
         }
         $ruta->coordenadas;
