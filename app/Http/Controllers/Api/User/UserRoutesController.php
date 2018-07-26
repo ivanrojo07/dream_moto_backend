@@ -62,33 +62,17 @@ class UserRoutesController extends Controller
      * @param  \App\Route  $route
      * @return \Illuminate\Http\Response
      */
-    public function show(Route $route)
+    public function show(Request $request,Route $route)
     {
         //
+        $user = $request->user();
+
+        if ($user->id == $route->user_id) {
+            $route->coordenadas;
+            return response()->json(['ruta'=>$route],200);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Route  $route
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Route $route)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Route  $route
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Route $route)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -96,8 +80,18 @@ class UserRoutesController extends Controller
      * @param  \App\Route  $route
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Route $route)
+    public function destroy(Request $request,Route $route)
     {
         //
+        $user = $request->user();
+        if ($user->id == $route->user_id) {
+            $coordenadas = $route->coordenadas;
+            foreach ($coordenadas as $coordenada) {
+                $coordenada->delete();
+            }
+            $route->delete();
+
+            return response()->json(['message'=>'Ruta eliminada'],201);
+        }
     }
 }

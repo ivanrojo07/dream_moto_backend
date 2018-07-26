@@ -61,7 +61,7 @@ class UserProductosController extends Controller
     {
         //
         $user = $request->user();
-        if ($producto->producto_type == 'App\User' && $producto->producto_id == $user->id) {
+        if ($usuarioProducto->producto_type == 'App\User' && $usuarioProducto->producto_id == $user->id) {
             # code...
             $inputs = $request->all();
             $rules = [
@@ -70,13 +70,13 @@ class UserProductosController extends Controller
                 'precio' => 'required|numeric',
             ];
             $this->validate($request,$rules);
-            $producto->update([
+            $usuarioProducto->update([
                 "nombre" => $inputs['nombre'],
                 'descripcion' => $inputs['descripcion'],
                 'cantidad' => $inputs['cantidad'],
                 'precio' => $inputs['precio']
             ]);
-            return response()->json(['producto'=>$producto],200);
+            return response()->json(['producto'=>$usuarioProducto],200);
 
         } else {
             # code...
@@ -95,9 +95,9 @@ class UserProductosController extends Controller
     {
         //
         $user = $request->user();
-        if ($producto->producto_type == 'App\User' && $producto->producto_id == $user->id) {
+        if ($usuarioProducto->producto_type == 'App\User' && $usuarioProducto->producto_id == $user->id) {
             # code...
-            $producto->delete();
+            $usuarioProducto->delete();
             return response()->json(['message'=>"Producto eliminado de tu colección"],200);
         } else {
             # code...
