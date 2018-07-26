@@ -18,7 +18,7 @@ class UserRoutesController extends Controller
     {
         //
         $user = $request->user();
-        $rutas = $user->rutas->get();
+        $rutas = $user->rutas()->orderBy('created_at','asc')->get();
         return response()->json(['rutas'=>$rutas],200);
         
     }
