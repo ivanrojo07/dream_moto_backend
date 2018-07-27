@@ -15,7 +15,7 @@ class CreateCoordenateRouteTable extends Migration
     {
         Schema::create('coordenate_route', function (Blueprint $table) {
             $table->increments('id');
-            $table->double('long',20,17);
+            $table->double('lng',20,17);
             $table->double('lat',20,17);
             $table->integer('route_id')->unsigned();
             $table->foreign('route_id')->references('id')->on('route_user');

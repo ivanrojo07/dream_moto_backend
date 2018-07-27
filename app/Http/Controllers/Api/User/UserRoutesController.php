@@ -20,7 +20,7 @@ class UserRoutesController extends Controller
         $user = $request->user();
         $rutas = $user->rutas()->orderBy('created_at','asc')->get();
         foreach ($rutas as $ruta) {
-            $ruta->coordenadas;
+            $ruta->coordenadas()->get(['lat','lng']);
         }
         return response()->json(['rutas'=>$rutas],200);
         
@@ -45,7 +45,7 @@ class UserRoutesController extends Controller
         $puntos = $data['path'];
         foreach ($puntos as $punto) {
             Coordenate::create([
-                'long' => $punto['lng'],
+                'lng' => $punto['lng'],
                 'lat' => $punto['lat'],
                 'route_id'=>$ruta->id
             ]);

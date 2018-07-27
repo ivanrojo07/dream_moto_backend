@@ -10,7 +10,7 @@ class Coordenate extends Model
     protected $table='coordenate_route';
 
     protected $fillable=[
-    	'long',
+    	'lng',
     	'lat',
     	'route_id'
     ];
