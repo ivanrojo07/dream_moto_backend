@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api\User;
 
+use App\Http\Controllers\Controller;
 use App\Producto;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class UserProductosController extends Controller
 {
