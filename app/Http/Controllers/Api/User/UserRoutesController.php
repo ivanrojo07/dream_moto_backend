@@ -20,7 +20,7 @@ class UserRoutesController extends Controller
         $user = $request->user();
         $rutas = $user->rutas()->orderBy('created_at','asc')->get();
         foreach ($rutas as $ruta) {
-            $ruta->coordenadas()->with(['lat','lng']);
+            $ruta->coordenadas;
         }
         return response()->json(['rutas'=>$rutas],200);
         
