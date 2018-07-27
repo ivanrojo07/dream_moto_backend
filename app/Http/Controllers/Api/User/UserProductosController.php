@@ -97,6 +97,10 @@ class UserProductosController extends Controller
         $user = $request->user();
         if ($usuarioProducto->producto_type == 'App\User' && $usuarioProducto->producto_id == $user->id) {
             # code...
+            foreach ($usuarioProducto->fotos as $fotos) {
+                Storage::delete('/public/'.$foto->image_path);
+                $fotos->delete();
+            }
             $usuarioProducto->delete();
             return response()->json(['message'=>"Producto eliminado de tu colección"],200);
         } else {
