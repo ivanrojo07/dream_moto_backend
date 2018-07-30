@@ -57,4 +57,8 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Route','user_id','id');
     }
+    public function contactos()
+    {
+        return $this->hasMany('App\Contacto','user_id','id');
+    }
 }
