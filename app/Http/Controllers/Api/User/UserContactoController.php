@@ -6,7 +6,7 @@ use App\Contacto;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class UserContactosController extends Controller
+class UserContactoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,12 +34,24 @@ class UserContactosController extends Controller
         //
         $user = $request->user();
         $contactos = $user->contactos;
+        $rules = [
+            'telefono'=>'required|numeric',
+            'nombre'=>'nullable|string',
+            'principal'=>'nullable|boolean'
+
+        ];
+        $this->validate($request,$rules);
         $contacto = Contacto::create([
             'user_id'=>$user->id,
             'nombre'=>$request->nombre,
-            'numero'=>$request->numero,
+            'numero'=>$request->telefono,
         ]);
-        if ($contactos->length() == 0) {
+        if ($contactos->count() == 0 || $request->principal == true) {
+            $contactos =$user->contactos;
+            foreach ($contactos as $cont) {
+                $cont->principal = false;
+                $cont->save();
+            }
             $contacto->principal = true;
             $contacto->save();
         }
@@ -72,17 +84,29 @@ class UserContactosController extends Controller
     public function update(Request $request, Contacto $contacto)
     {
         //
+        // dd($request->all());
         $user = $request->user();
         if( $contacto->user_id == $user->id){
-            $contacto = Contacto::create([
-            'user_id'=>$user->id,
-            'nombre'=>$request->nombre,
-            'numero'=>$request->numero,
-            ]);
-            if ($contactos->length() == 0) {
+            if ($request->nombre || $request->telefono) {
+                $contacto->update([
+                'user_id'=>$user->id,
+                'nombre'=>$request->nombre,
+                'numero'=>$request->telefono,
+                ]);
+            }
+            if ($request->principal == true) {
+                $contactos =$user->contactos;
+                foreach ($contactos as $cont) {
+                    $cont->principal = false;
+                    $cont->save();
+                }
                 $contacto->principal = true;
                 $contacto->save();
             }
+            return response()->json(['contacto'=>$contacto],201);
+        }
+        else{
+            return response()->json(['error'=>"sin permiso para editar este usuario"],401);
         }
     }
 
@@ -92,7 +116,7 @@ class UserContactosController extends Controller
      * @param  \App\Contacto  $contacto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contacto $contacto)
+    public function destroy(Request $request, Contacto $contacto)
     {
         //
         //
