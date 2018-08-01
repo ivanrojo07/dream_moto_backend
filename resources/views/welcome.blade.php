@@ -36,6 +36,7 @@
 
                 <div class="links" align="center">
                     <a href="{{ route('tiendas.index') }}">Tiendas</a>
+                    <a href="{{ route('handbooks.index') }}">Handbooks</a>
                     <a href="{{url('contacto')}}">Contáctanos</a>
                     <a href="{{url('nosotros')}}">Acerca de Nosotros</a>
                     <a href="#">Aviso de Privacidad</a>
