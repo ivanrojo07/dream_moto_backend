@@ -140,6 +140,27 @@ class UserContactoController extends Controller
                 $contacto->save();
             }
 
+            if ($request->principal == false) {
+                $cont = $user->contactos()->first();
+                $cont->principal = true;
+                $cont->save();
+                $contacto->principal = false;
+                $contacto->save();
+            }
+            if($request->averia == false){
+                $contacto->averia = false;
+                $contacto->save();
+            }
+
+            if($request->accidente == false){
+                $contacto->accidente = false;
+                $contacto->save();
+            }
+            if($request->robo == false){
+                $contacto->robo = false;
+                $contacto->save();
+            }
+
             return response()->json(['contacto'=>$contacto],201);
         }
         else{
