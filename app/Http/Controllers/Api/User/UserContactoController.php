@@ -62,6 +62,19 @@ class UserContactoController extends Controller
             $contacto->principal = true;
             $contacto->save();
         }
+        if($request->averia == true){
+            $contacto->averia = true;
+            $contacto->save();
+        }
+
+        if($request->accidente == true){
+            $contacto->accidente = true;
+            $contacto->save();
+        }
+        if($request->robo == true){
+            $contacto->robo = true;
+            $contacto->save();
+        }
         return response()->json(['contacto'=>$contacto],201);
     }
 
@@ -111,6 +124,19 @@ class UserContactoController extends Controller
                     $cont->save();
                 }
                 $contacto->principal = true;
+                $contacto->save();
+            }
+            if($request->averia == true){
+                $contacto->averia = true;
+                $contacto->save();
+            }
+
+            if($request->accidente == true){
+                $contacto->accidente = true;
+                $contacto->save();
+            }
+            if($request->robo == true){
+                $contacto->robo = true;
                 $contacto->save();
             }
 
