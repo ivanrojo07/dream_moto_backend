@@ -32,13 +32,16 @@ class UserContactoController extends Controller
     public function store(Request $request)
     {
         //
-        dd($request->all());
+        // dd($request->all());
         $user = $request->user();
         $contactos = $user->contactos;
         $rules = [
             'telefono'=>'required|numeric',
             'nombre'=>'nullable|string',
-            'principal'=>'nullable|boolean'
+            'principal'=>'nullable|boolean',
+            'averia'=>'nullable|boolean',
+            'accidente'=>'nullable|boolean',
+            'robo'=>'nullable|boolean'
 
         ];
         $this->validate($request,$rules);
@@ -46,6 +49,9 @@ class UserContactoController extends Controller
             'user_id'=>$user->id,
             'nombre'=>$request->nombre,
             'numero'=>$request->telefono,
+            'averia'=>$request->averia,
+            'accidente'=>$request->accidente,
+            'robo'=>$request->robo
         ]);
         if ($contactos->count() == 0 || $request->principal == true) {
             $contactos =$user->contactos;
@@ -93,7 +99,9 @@ class UserContactoController extends Controller
                 'user_id'=>$user->id,
                 'nombre'=>$request->nombre,
                 'numero'=>$request->telefono,
-
+                'averia'=>$request->averia,
+                'accidente'=>$request->accidente,
+                'robo'=>$request->robo
                 ]);
             }
             if ($request->principal == true) {
@@ -103,22 +111,6 @@ class UserContactoController extends Controller
                     $cont->save();
                 }
                 $contacto->principal = true;
-                $contacto->averia=true;
-                $contacto->accidente=true;
-                $contacto->robo = true;
-                $contacto->save();
-            }
-            if ($request->averia == true) {
-                $contacto->averia == true;
-                $contacto->save();
-
-            }
-            if($request->accidente == true){
-                $contacto->accidente == true;
-                $contacto->save();
-            }
-            if ($request->robo == true) {
-                $contacto->robo == true;
                 $contacto->save();
             }
 
