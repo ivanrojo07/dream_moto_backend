@@ -10,10 +10,10 @@ class Contacto extends Model
     protected $table="contactos";
 
     protected $fillable=[
-    	'id',
     	'user_id',
     	'nombre',
     	'numero',
+    	
     ];
 
     protected $hidden=[

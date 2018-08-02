@@ -20,6 +20,9 @@ class CreateContactosTable extends Migration
             $table->string('nombre')->nullable();
             $table->string('numero');
             $table->boolean('principal')->default(false);
+            $table->boolean('averia')->default(false);
+            $table->boolean('accidente')->default(false);
+            $table->boolean('robo')->default(false);
             $table->timestamps();
         });
     }

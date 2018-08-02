@@ -92,6 +92,7 @@ class UserContactoController extends Controller
                 'user_id'=>$user->id,
                 'nombre'=>$request->nombre,
                 'numero'=>$request->telefono,
+
                 ]);
             }
             if ($request->principal == true) {
@@ -101,8 +102,25 @@ class UserContactoController extends Controller
                     $cont->save();
                 }
                 $contacto->principal = true;
+                $contacto->averia=true;
+                $contacto->accidente=true;
+                $contacto->robo = true;
                 $contacto->save();
             }
+            if ($request->averia == true) {
+                $contacto->averia == true;
+                $contacto->save();
+
+            }
+            if($request->accidente == true){
+                $contacto->accidente == true;
+                $contacto->save();
+            }
+            if ($request->robo == true) {
+                $contacto->robo == true;
+                $contacto->save();
+            }
+
             return response()->json(['contacto'=>$contacto],201);
         }
         else{
