@@ -140,7 +140,7 @@ class UserContactoController extends Controller
                 $contacto->save();
             }
 
-            if ($request->principal == false) {
+            if ($request->principal == false && $contacto->principal == true) {
                 $cont = $user->contactos()->first();
                 $cont->principal = true;
                 $cont->save();
