@@ -32,6 +32,7 @@ class UserContactoController extends Controller
     public function store(Request $request)
     {
         //
+        dd($request->all());
         $user = $request->user();
         $contactos = $user->contactos;
         $rules = [
