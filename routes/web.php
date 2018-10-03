@@ -37,6 +37,7 @@ Route::get('servicios',function(){
 
 Route::prefix('precargas')->group(function(){
 	Route::get('revisiones','Web\Precargas\RevisionController@getRevisiones')->name('revisiones');
+	Route::get('refacciones','Web\Precargas\RefaccionController@getRefacciones')->name('refacciones');
 	Route::resource('revision', 'Web\Precargas\RevisionController');
 	Route::resource('refaccion','Web\Precargas\RefaccionController');
 });

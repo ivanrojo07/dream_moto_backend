@@ -14015,7 +14015,7 @@ window.Vue = __webpack_require__(37);
 Vue.component('example-component', __webpack_require__(40));
 Vue.component('servicio-component', __webpack_require__(43));
 Vue.component('revision-component', __webpack_require__(46));
-console.log(axios);
+Vue.component('refaccion-component', __webpack_require__(54));
 var app = new Vue({
   el: '#app',
   data: {
@@ -47721,7 +47721,7 @@ function Revision(_ref) {
         getRevisiones: function getRevisiones() {
             var _this = this;
 
-            var url = "http://localhost/dream_moto_backend/public/precargas/revisiones";
+            var url = "revisiones";
             axios.get(url).then(function (response) {
                 var datas = response.data.revisiones;
                 datas.forEach(function (revision) {
@@ -47732,7 +47732,7 @@ function Revision(_ref) {
         setRevision: function setRevision(params) {
             var _this2 = this;
 
-            var url = "http://localhost/dream_moto_backend/public/precargas/revision";
+            var url = "revision";
             axios.post(url, { params: params }).then(function (response) {
                 if (response.data.revision) {
                     $('#create').modal('hide');
@@ -47745,7 +47745,7 @@ function Revision(_ref) {
         getRevision: function getRevision(id) {
             var _this3 = this;
 
-            var url = "http://localhost/dream_moto_backend/public/precargas/revision/";
+            var url = "revision/";
             axios.get(url + id).then(function (response) {
                 _this3.revision = response.data.revision;
             });
@@ -47753,7 +47753,7 @@ function Revision(_ref) {
         updateRevision: function updateRevision(id, params) {
             var _this4 = this;
 
-            var url = 'http://localhost/dream_moto_backend/public/precargas/revision/';
+            var url = 'revision/';
             axios.put(url + id, { params: params }).then(function (response) {
                 $('#edit').modal('hide');
                 var revision = _this4.revisiones.find(function (revision) {
@@ -47778,7 +47778,7 @@ function Revision(_ref) {
         deleteRevision: function deleteRevision(id) {
             var _this5 = this;
 
-            var url = "http://localhost/dream_moto_backend/public/precargas/revision/";
+            var url = "revision/";
             axios.delete(url + id).then(function (response) {
                 $('#delete').modal('hide');
                 var index = _this5.revisiones.findIndex(function (revision) {
@@ -48286,6 +48286,781 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 50 */,
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(55)
+/* template */
+var __vue_template__ = __webpack_require__(56)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/RefaccionComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7b34f0da", Component.options)
+  } else {
+    hotAPI.reload("data-v-7b34f0da", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 55 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+function Refaccion(_ref) {
+    var id = _ref.id,
+        nombre = _ref.nombre,
+        costo = _ref.costo;
+
+    this.id = id;
+    this.nombre = nombre;
+    this.costo = costo;
+}
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            refacciones: [],
+            refaccion: { 'id': '', 'nombre': '', 'costo': '' },
+            mute: false
+
+        };
+    },
+    created: function created() {
+        this.getRefacciones();
+    },
+
+    methods: {
+        getRefacciones: function getRefacciones() {
+            var _this = this;
+
+            var url = "refacciones";
+            axios.get(url).then(function (response) {
+                var datas = response.data.refacciones;
+                datas.forEach(function (refaccion) {
+                    _this.refacciones.push(new Refaccion(refaccion));
+                });
+            });
+        },
+        setRefaccion: function setRefaccion(params) {
+            var _this2 = this;
+
+            var url = "refaccion";
+            axios.post(url, { params: params }).then(function (response) {
+                if (response.data.refaccion) {
+                    $('#create').modal('hide');
+                    var refaccion = response.data.refaccion;
+                    _this2.refacciones.push(new Refaccion(refaccion));
+                    _this2.clearRefacccion();
+                }
+            });
+        },
+        getRefaccion: function getRefaccion(id) {
+            var _this3 = this;
+
+            var url = "refaccion/";
+            axios.get(url + id).then(function (response) {
+                _this3.refaccion = response.data.refaccion;
+            });
+        },
+        updateRefaccion: function updateRefaccion(id, params) {
+            var _this4 = this;
+
+            var url = 'refaccion/';
+            axios.put(url + id, { params: params }).then(function (response) {
+                $('#edit').modal('hide');
+                var refaccion = _this4.refacciones.find(function (refaccion) {
+                    return refaccion.id === id;
+                });
+                refaccion.nombre = response.data.refaccion.nombre;
+                refaccion.costo = response.data.refaccion.costo;
+                _this4.mute = false;
+            });
+        },
+        confirm: function confirm(params) {
+            this.refaccion = params;
+            $("#delete").modal('show');
+        },
+        cancel: function cancel() {
+            $('#delete').modal('hide');
+            this.clearRefacccion();
+        },
+        clearRefacccion: function clearRefacccion() {
+            this.refaccion = { 'id': '', 'nombre': '', 'costo': '' };
+        },
+        deleteRefaccion: function deleteRefaccion(id) {
+            var _this5 = this;
+
+            var url = "refaccion/";
+            axios.delete(url + id).then(function (response) {
+                $('#delete').modal('hide');
+                var index = _this5.refacciones.findIndex(function (refaccion) {
+                    return refaccion.id === id;
+                });
+                _this5.refacciones.splice(index, 1);
+                _this5.clearRefacccion();
+            });
+        }
+    },
+    mounted: function mounted() {
+        console.log('Component mounted.');
+    }
+});
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "refaccion" } }, [
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("h1", [_vm._v("Refacciones:")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c(
+            "div",
+            { staticClass: "col-4 col-md-4 col-sm-4 col-xs-4 mr-3 mt-3 mb-3" },
+            [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-dark",
+                  attrs: {
+                    type: "button",
+                    "data-toggle": "modal",
+                    "data-target": "#create"
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.clearRefacccion()
+                    }
+                  }
+                },
+                [_vm._v("Agregar refacción")]
+              )
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("table", { staticClass: "table table-dark" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.refacciones, function(refaccion) {
+                return _c("tr", [
+                  _c("th", { attrs: { scope: "row" } }, [
+                    _vm._v(_vm._s(refaccion.nombre))
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("$" + _vm._s(refaccion.costo))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-info",
+                        attrs: {
+                          "data-toggle": "modal",
+                          "data-target": "#edit"
+                        },
+                        on: {
+                          click: function($event) {
+                            _vm.getRefaccion(refaccion.id)
+                          }
+                        }
+                      },
+                      [_vm._v("Editar")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        on: {
+                          click: function($event) {
+                            _vm.confirm(refaccion)
+                          }
+                        }
+                      },
+                      [_vm._v("Eliminar")]
+                    )
+                  ])
+                ])
+              })
+            )
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        attrs: { method: "POST" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            _vm.setRefaccion(_vm.refaccion)
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "modal fade", attrs: { id: "create" } }, [
+          _c("div", { staticClass: "modal-dialog" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "col-form-label text-md-right",
+                      attrs: { for: "nombre" }
+                    },
+                    [_vm._v("Nombre de la revisión:")]
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.refaccion.nombre,
+                        expression: "refaccion.nombre"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "text",
+                      id: "nombre",
+                      name: "nombre",
+                      required: ""
+                    },
+                    domProps: { value: _vm.refaccion.nombre },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.refaccion, "nombre", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "col-form-label text-md-right",
+                      attrs: { for: "costo" }
+                    },
+                    [_vm._v("Costo de la revisión:")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-group mb-3" }, [
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.refaccion.costo,
+                          expression: "refaccion.costo"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "number",
+                        step: "0.01",
+                        id: "costo",
+                        name: "costo",
+                        required: ""
+                      },
+                      domProps: { value: _vm.refaccion.costo },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.refaccion, "costo", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm._m(3)
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(4)
+            ])
+          ])
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        attrs: { method: "PUT" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            _vm.updateRefaccion(_vm.refaccion.id, _vm.refaccion)
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "modal fade", attrs: { id: "edit" } }, [
+          _c("div", { staticClass: "modal-dialog" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(5),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "col-form-label text-md-right",
+                      attrs: { for: "nombre" }
+                    },
+                    [_vm._v("Nombre de la revisión:")]
+                  ),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.refaccion.nombre,
+                        expression: "refaccion.nombre"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "text",
+                      id: "nombre",
+                      name: "nombre",
+                      required: ""
+                    },
+                    domProps: { value: _vm.refaccion.nombre },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.refaccion, "nombre", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "col-form-label text-md-right",
+                      attrs: { for: "costo" }
+                    },
+                    [_vm._v("Costo de la revisión:")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-group mb-3" }, [
+                    _vm._m(6),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.refaccion.costo,
+                          expression: "refaccion.costo"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "number",
+                        step: "0.01",
+                        id: "costo",
+                        name: "costo",
+                        required: ""
+                      },
+                      domProps: { value: _vm.refaccion.costo },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.refaccion, "costo", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm._m(7)
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(8)
+            ])
+          ])
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "modal fade", attrs: { id: "delete" } }, [
+      _c("div", { staticClass: "modal-dialog" }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _vm._m(9),
+          _vm._v(" "),
+          _vm._m(10),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger",
+                on: {
+                  click: function($event) {
+                    _vm.deleteRefaccion(_vm.refaccion.id)
+                  }
+                }
+              },
+              [_vm._v("Eliminar")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-success",
+                on: {
+                  click: function($event) {
+                    _vm.cancel()
+                  }
+                }
+              },
+              [_vm._v("Regresar")]
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Nombre")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Costo")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Acciones")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h4", [_vm._v("Crear")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_c("span", [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c("span", { staticClass: "input-group-text" }, [_vm._v("$")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-append" }, [
+      _c("span", { staticClass: "input-group-text" }, [_vm._v("MXN")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c("input", {
+        staticClass: "btn btn-primary",
+        attrs: { type: "submit", value: "Guardar" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h4", [_vm._v("Crear")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_c("span", [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c("span", { staticClass: "input-group-text" }, [_vm._v("$")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-append" }, [
+      _c("span", { staticClass: "input-group-text" }, [_vm._v("MXN")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c("input", {
+        staticClass: "btn btn-primary",
+        attrs: { type: "submit", value: "Guardar" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h4", [_vm._v("Crear")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_c("span", [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-body" }, [
+      _c("label", [_vm._v("¿Deseas eliminar esta revisión?")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7b34f0da", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

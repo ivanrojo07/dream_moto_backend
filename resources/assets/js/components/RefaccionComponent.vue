@@ -1,11 +1,11 @@
 <template>
-	<div id="revision">
+	<div id="refaccion">
 		<div class="card">
 			<div class="card-body">
-				<h1>Revisiones:</h1>
+				<h1>Refacciones:</h1>
 				<div class="row">
 					<div class="col-4 col-md-4 col-sm-4 col-xs-4 mr-3 mt-3 mb-3">
-						<button type="button"  data-toggle="modal" data-target="#create" class="btn btn-dark" @click="clearRevision()">Agregar revisión</button>
+						<button type="button"  data-toggle="modal" data-target="#create" class="btn btn-dark" @click="clearRefacccion()">Agregar refacción</button>
 					</div>
 				</div>
 				
@@ -19,12 +19,12 @@
 						    </tr>
 					  	</thead>
 					  	<tbody>
-						    <tr v-for="revision in revisiones">
-						      	<th scope="row">{{revision.nombre}}</th>
-					      		<td>${{revision.costo}}</td>
+						    <tr v-for="refaccion in refacciones">
+						      	<th scope="row">{{refaccion.nombre}}</th>
+					      		<td>${{refaccion.costo}}</td>
 						      	<td>
-						      		<button class="btn btn-info" data-toggle="modal" data-target="#edit" @click="getRevision(revision.id)">Editar</button>
-						      		<button class="btn btn-danger" @click="confirm(revision)">Eliminar</button>
+						      		<button class="btn btn-info" data-toggle="modal" data-target="#edit" @click="getRefaccion(refaccion.id)">Editar</button>
+						      		<button class="btn btn-danger" @click="confirm(refaccion)">Eliminar</button>
 						      	</td>
 						    </tr>
 			  			</tbody>
@@ -35,7 +35,7 @@
 				</pre> -->
 			</div>
 		</div>
-		<form method="POST" v-on:submit.prevent="setRevision(revision)">
+		<form method="POST" v-on:submit.prevent="setRefaccion(refaccion)">
 			<div class="modal fade" id="create">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -48,7 +48,7 @@
 						<div class="modal-body">
 							<div class="form-group">
 								<label for="nombre" class="col-form-label text-md-right">Nombre de la revisión:</label>
-								<input type="text" id="nombre" name="nombre" v-model="revision.nombre" class="form-control" required>
+								<input type="text" id="nombre" name="nombre" v-model="refaccion.nombre" class="form-control" required>
 							</div>
 							<div class="form-group">
 								<label for="costo" class="col-form-label text-md-right">Costo de la revisión:</label>
@@ -56,7 +56,7 @@
 								<div class="input-group-prepend">
 									<span class="input-group-text">$</span>
 								</div>
-								<input type="number" step="0.01" id="costo" name="costo" v-model="revision.costo" class="form-control" required>
+								<input type="number" step="0.01" id="costo" name="costo" v-model="refaccion.costo" class="form-control" required>
 								<div class="input-group-append">
 								    <span class="input-group-text">MXN</span>
 								 </div>
@@ -71,7 +71,7 @@
 			</div>
 		</form>
 
-		<form method="PUT" v-on:submit.prevent="updateRevision(revision.id,revision)">
+		<form method="PUT" v-on:submit.prevent="updateRefaccion(refaccion.id,refaccion)">
 			<div class="modal fade" id="edit">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -84,7 +84,7 @@
 						<div class="modal-body">
 							<div class="form-group">
 								<label for="nombre" class="col-form-label text-md-right">Nombre de la revisión:</label>
-								<input type="text" id="nombre" name="nombre" v-model="revision.nombre" class="form-control" required>
+								<input type="text" id="nombre" name="nombre" v-model="refaccion.nombre" class="form-control" required>
 							</div>
 							<div class="form-group">
 								<label for="costo" class="col-form-label text-md-right">Costo de la revisión:</label>
@@ -92,7 +92,7 @@
 								<div class="input-group-prepend">
 									<span class="input-group-text">$</span>
 								</div>
-								<input type="number" step="0.01" id="costo" name="costo" v-model="revision.costo" class="form-control" required>
+								<input type="number" step="0.01" id="costo" name="costo" v-model="refaccion.costo" class="form-control" required>
 								<div class="input-group-append">
 								    <span class="input-group-text">MXN</span>
 								 </div>
@@ -120,7 +120,7 @@
 						<label>¿Deseas eliminar esta revisión?</label>
 					</div>
 					<div class="modal-footer">
-						<button class="btn btn-danger" @click="deleteRevision(revision.id)">Eliminar</button>
+						<button class="btn btn-danger" @click="deleteRefaccion(refaccion.id)">Eliminar</button>
 						<button class="btn btn-success" @click="cancel()">Regresar</button>
 					</div>
 				</div>
@@ -130,7 +130,7 @@
 </template>
 
 <script>
-function Revision({id,nombre,costo}){
+function Refaccion({id,nombre,costo}){
 	this.id = id;
 	this.nombre = nombre;
 	this.costo = costo;
@@ -138,73 +138,73 @@ function Revision({id,nombre,costo}){
     export default {
     	data(){
     		return{
-    			revisiones: [],
-    			revision: {'id':'', 'nombre':'','costo':''},
+    			refacciones: [],
+    			refaccion: {'id':'', 'nombre':'','costo':''},
     			mute: false,
     			
     		}
     	},
     	created() {
-    		this.getRevisiones();
+    		this.getRefacciones();
     	},
     	methods:{
     		
-    		getRevisiones(){
-    			let url= "revisiones";
+    		getRefacciones(){
+    			let url= "refacciones";
     			axios.get(url).then(response=>{
-    				let datas = response.data.revisiones;
-    				datas.forEach(revision=>{
-    					this.revisiones.push(new Revision(revision));
+    				let datas = response.data.refacciones;
+    				datas.forEach(refaccion=>{
+    					this.refacciones.push(new Refaccion(refaccion));
     				});
     			});
     		},
-    		setRevision(params){
-    			let url = "revision"
+    		setRefaccion(params){
+    			let url = "refaccion"
     			axios.post(url,{params}).then((response)=>{
-    				if(response.data.revision){
+    				if(response.data.refaccion){
     					$('#create').modal('hide');
-    					let revision = response.data.revision;
-    					this.revisiones.push(new Revision(revision));
-    					this.clearRevision();
+    					let refaccion = response.data.refaccion;
+    					this.refacciones.push(new Refaccion(refaccion));
+    					this.clearRefacccion();
     				}
     			});
     		},
 
-    		getRevision(id){
-    			let url = "revision/";
+    		getRefaccion(id){
+    			let url = "refaccion/";
     			axios.get(url+id).then(response=>{
-    				this.revision = response.data.revision;
+    				this.refaccion = response.data.refaccion;
     			})
     		},
-    		updateRevision(id,params){
-    			let url = 'revision/';
+    		updateRefaccion(id,params){
+    			let url = 'refaccion/';
     			axios.put(url+id,{params}).then((response)=>{
     				$('#edit').modal('hide');
-    				let revision = this.revisiones.find(revision=>revision.id=== id);
-    				revision.nombre = response.data.revision.nombre;
-    				revision.costo = response.data.revision.costo
+    				let refaccion = this.refacciones.find(refaccion=>refaccion.id=== id);
+    				refaccion.nombre = response.data.refaccion.nombre;
+    				refaccion.costo = response.data.refaccion.costo
     				this.mute = false
     			})
 
     		},
     		confirm(params){
-    			this.revision = params;
+    			this.refaccion = params;
     			$("#delete").modal('show');
     		},
     		cancel(){
     			$('#delete').modal('hide');
-    			this.clearRevision();
+    			this.clearRefacccion();
     		},
-    		clearRevision(){
-    			this.revision = {'id':'','nombre':'','costo':''};
+    		clearRefacccion(){
+    			this.refaccion = {'id':'','nombre':'','costo':''};
     		},
-    		deleteRevision(id){
-    			let url = "revision/";
+    		deleteRefaccion(id){
+    			let url = "refaccion/";
     			axios.delete(url+id).then((response)=>{
     				$('#delete').modal('hide');
-    				let index = this.revisiones.findIndex(revision=>revision.id === id);
-    				this.revisiones.splice(index,1);
-    				this.clearRevision();
+    				let index = this.refacciones.findIndex(refaccion=>refaccion.id === id);
+    				this.refacciones.splice(index,1);
+    				this.clearRefacccion();
 
     			});
     		}
