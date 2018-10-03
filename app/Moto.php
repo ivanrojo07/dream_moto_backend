@@ -52,4 +52,8 @@ class Moto extends Model
     	# code...
     	return $this->hasMany('App\FotoMoto', 'moto_id', 'id');
     }
+    public function servicios()
+    {
+        return $this->hasMany('App\Servicio','moto_id','id');
+    }
 }

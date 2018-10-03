@@ -31,6 +31,15 @@ Route::get('nosotros',function(){
 
 	return View::make('nosotros.index');
 });
+Route::get('servicios',function(){
+	return View::make('servicios.index');
+});
+
+Route::prefix('precargas')->group(function(){
+	Route::get('revisiones','Web\Precargas\RevisionController@getRevisiones')->name('revisiones');
+	Route::resource('revision', 'Web\Precargas\RevisionController');
+	Route::resource('refaccion','Web\Precargas\RefaccionController');
+});
 
 Route::resource('tiendas','Web\Tienda\TiendaController');
 Route::resource('tiendas.productos','Web\Tienda\TiendaProductoController');

@@ -16,7 +16,13 @@ window.Vue = require('vue');
  */
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
-
+Vue.component('servicio-component',require('./components/ServiciosComponent.vue'));
+Vue.component('revision-component', require('./components/RevisionComponent.vue'));
+console.log(axios);
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    data: {
+    	message:'hola'
+    }
 });
+            

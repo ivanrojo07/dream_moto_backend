@@ -28,6 +28,7 @@ class CreateMotoTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('anio')->unsigned();
             $table->integer('km')->unsigned()->nullable();
+            $table->string('motor')->nullable();
 
             $table->integer('serie')->unsigned()->nullable();
             $table->timestamps();

@@ -22,7 +22,7 @@
     
 </head>
 <body>
-    <div id="app">
+    <div >
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -68,13 +68,13 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main id="app" class="py-4">
            <div class="container-fluid" align="center">
                 <section>
-            <div class="title m-b-md" style="background-image: url({{asset('img/llamas2.gif')}});">
-                <img src="{{asset('img/logo.png')}}" width="569.8px" height="222.6">
-            </div>
-        </section>
+                    <div class="title m-b-md" style="background-image: url({{asset('img/llamas2.gif')}});">
+                        <img src="{{asset('img/logo.png')}}" width="569.8px" height="222.6">
+                    </div>
+                </section>
            </div>
            
             @yield('content')
