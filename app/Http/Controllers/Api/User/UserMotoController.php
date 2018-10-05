@@ -41,7 +41,7 @@ class UserMotoController extends Controller
             "version"=>"required",
             "anio"=>"required|numeric",
             "km" =>"nullable|numeric",
-            "num_serie"=>"nullable|numeric"
+            "serie"=>"nullable|numeric"
         ];
         $this->validate($request,$rules);
         $moto = Moto::create([
@@ -51,7 +51,7 @@ class UserMotoController extends Controller
             'version' => $data['version'],
             'anio' => $data['anio'],
             'km' => $data['km'],
-            "serie" => $data['num_serie']
+            "serie" => $data['serie']
 
         ]);
         return response()->json(['moto'=>$moto],200);
