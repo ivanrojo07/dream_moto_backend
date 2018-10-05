@@ -37,8 +37,8 @@ class UserMotoController extends Controller
         $data = $request->all();
         $rules =[
             "marca"=>"required",
-            'modelo'=>"required|numeric",
-            "version"=>"required|numeric",
+            'modelo'=>"required",
+            "version"=>"required",
             "anio"=>"required|numeric",
             "km" =>"nullable|numeric",
             "num_serie"=>"nullable|numeric"
