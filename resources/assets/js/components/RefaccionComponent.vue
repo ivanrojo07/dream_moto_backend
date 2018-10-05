@@ -1,5 +1,5 @@
 <template>
-	<div id="refaccion">
+	<div>
 		<div class="card">
 			<div class="card-body">
 				<h1>Refacciones:</h1>

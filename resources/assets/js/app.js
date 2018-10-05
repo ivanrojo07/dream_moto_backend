@@ -16,9 +16,11 @@ window.Vue = require('vue');
  */
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
-Vue.component('servicio-component',require('./components/ServiciosComponent.vue'));
+Vue.component('servicios-component',require('./components/ServiciosComponent.vue'));
 Vue.component('revision-component', require('./components/RevisionComponent.vue'));
 Vue.component('refaccion-component',require('./components/RefaccionComponent.vue'));
+Vue.component('servicio-component', require('./components/ServicioComponent.vue'));
+
 const app = new Vue({
     el: '#app',
     data: {

@@ -1,5 +1,5 @@
 <template>
-	<div id="revision">
+	<div>
 		<div class="card">
 			<div class="card-body">
 				<h1>Revisiones:</h1>

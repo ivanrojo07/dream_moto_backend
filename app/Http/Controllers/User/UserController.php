@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Validator;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Validator;
 
 class UserController extends Controller
 {
@@ -79,6 +80,37 @@ class UserController extends Controller
         // $this->validate($request,$rules);
         $campos = $request->all();
         $campos['password']= bcrypt($request->password);
+        // $campos['verified']=User::USUARIO_NO_VERIFICADO;
+        // $campos['admin'] =User::USUARIO_REGULAR;
+        // $campos['verification_token'] = User::generarVerificationToken();
+        $usuario = User::create($campos);
+        if ($usuario){
+            return response()->json(['usuario'=>$usuario], 200);
+        }
+        else{
+            return response()->json(['message'=>'Error al crear usuario'], 400);
+        }
+    }
+    public function saveUser(request $request){
+        $rules =[
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'telefono'=>'required',
+            'apmaterno'=>'required'
+            // 'username'=> 'required|unique:users',
+            // 'password' => 'required|min:6',
+        ];
+
+        // dd($request->all());
+
+        $validater = $request->validate($rules);
+        // dd($validater);
+        // $this->validate($request,$rules);
+        $campos = $request->all();
+        // dd($campos);
+        $campos['username']= "user".Carbon::now()->getTimestamp();
+        $campos['password']= bcrypt('secret');
+        // dd($campos);
         // $campos['verified']=User::USUARIO_NO_VERIFICADO;
         // $campos['admin'] =User::USUARIO_REGULAR;
         // $campos['verification_token'] = User::generarVerificationToken();
@@ -229,6 +261,18 @@ class UserController extends Controller
             
         }
 
+    }
+
+    public function searchEmail(Request $request)
+    {
+        $user = User::where('email',$request->email)->first();
+        // dd($user);
+        if($user != null){
+            return response()->json(['user'=>$user],201);
+        }
+        else{
+            return response()->json(['error'=>'Usuario no localizado'],404);
+        }
     }
 
 }

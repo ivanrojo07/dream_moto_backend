@@ -41,6 +41,8 @@ Route::prefix('precargas')->group(function(){
 	Route::resource('revision', 'Web\Precargas\RevisionController');
 	Route::resource('refaccion','Web\Precargas\RefaccionController');
 });
+Route::post('searchUser','User\UserController@searchEmail');
+Route::post('saveUser','User\UserController@saveUser');
 
 Route::resource('tiendas','Web\Tienda\TiendaController');
 Route::resource('tiendas.productos','Web\Tienda\TiendaProductoController');

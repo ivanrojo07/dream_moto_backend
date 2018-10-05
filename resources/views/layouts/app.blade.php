@@ -23,7 +23,7 @@
 </head>
 <body>
     <div >
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -34,9 +34,34 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
+                    <ul class="navbar-nav ml-auto mr-auto">
+                        <li>
+                            <a class="nav-link" href="{{ route('tiendas.index') }}">Tiendas</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="{{ route('handbooks.index') }}">Handbooks</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="{{url('contacto')}}">Contáctanos</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="{{url('nosotros')}}">Acerca de Nosotros</a>
+                        </li>
+                        <li>
+                            <div class="btn-group">
+                                <a href="#" class="nav-link dropdown-toggle" id="precargasDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Precargas</a>
+                                <div class="dropdown-menu" aria-labelledby="precargasDropdown">
+                                    <a class="dropdown-item" href="{{url('precargas/refaccion')}}">Refacciones</a>
+                                    <a class="dropdown-item" href="{{url('precargas/revision')}}">Revisiones</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="#">Aviso de Privacidad</a>
+                        </li>
                     </ul>
+                    
+                </div>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
