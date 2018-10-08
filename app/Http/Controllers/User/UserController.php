@@ -275,4 +275,59 @@ class UserController extends Controller
         }
     }
 
+    public function searchMoto(User $user,Request $request)
+    {
+        
+        $inputs = $request->all();
+        $moto = $user->motos();
+        if(isset($inputs['marca']) ){
+            $moto->where('marca',$inputs['marca']);
+
+        }
+
+        if(isset($inputs['modelo']) ){
+            $moto->where('modelo',$inputs['modelo']);
+        }
+
+        if(isset($inputs['version']) ){
+            $moto->where('version',$inputs['version']);
+        }
+
+        if(isset($inputs['anio']) ){
+            $moto->where('anio',$inputs['anio']);
+        }
+
+        if(isset($inputs['serie']) ){
+            $moto->where('serie',$inputs['serie']);
+        }
+
+        $moto = $moto->first();
+        if($moto == null){
+            return response()->json(['message'=>'moto no encontrada'],404);
+        }
+
+        else{
+            return response()->json(['moto'=>$moto],200);
+        }
+    }
+    public function saveMoto(User $user, Request $request)
+    {
+        $inputs = $request->all();
+        // dd($inputs);
+        $moto = $user->motos()->updateOrCreate(
+            [
+                'marca'=>$inputs['marca'],
+                'serie'=>$inputs['serie']
+            ],
+            [
+
+                'modelo'=>$inputs['modelo'],
+                'version'=>$inputs['version'],
+                'anio'=>$inputs['anio'],
+                'km'=>$inputs['km']
+            ]
+        );
+        return response()->json(['moto'=>$moto],201);
+    }
+
 }

@@ -35,6 +35,7 @@ Route::get('servicios',function(){
 	return View::make('servicios.index');
 });
 
+// VUEJS
 Route::prefix('precargas')->group(function(){
 	Route::get('revisiones','Web\Precargas\RevisionController@getRevisiones')->name('revisiones');
 	Route::get('refacciones','Web\Precargas\RefaccionController@getRefacciones')->name('refacciones');
@@ -43,7 +44,10 @@ Route::prefix('precargas')->group(function(){
 });
 Route::post('searchUser','User\UserController@searchEmail');
 Route::post('saveUser','User\UserController@saveUser');
-
+Route::post('user/{user}/searchMoto', 'User\UserController@searchMoto');
+Route::post('user/{user}/saveMoto','User\UserController@saveMoto');
+Route::post('saveService','Web\Servicio\ServicioController@store');
+// fin vue
 Route::resource('tiendas','Web\Tienda\TiendaController');
 Route::resource('tiendas.productos','Web\Tienda\TiendaProductoController');
 Route::resource('tiendas.productos.fotos','Web\Tienda\TiendaProductoFotoController',['only'=>['index','destroy']]);

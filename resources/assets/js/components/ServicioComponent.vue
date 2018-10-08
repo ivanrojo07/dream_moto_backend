@@ -57,41 +57,94 @@
                         <form method="POST" @submit.prevent="saveMoto(moto)">
                             <div class="row">
                                 <div class="col-4 form-group">
-                                    <label for="name" class="col-form-label text-md-right">Marca</label>
-                                    <input type="email" v-if="!moto_read"  name="email" @change="searchEmail(user.email)" v-model="user.email" class="form-control" required>
-                                    <label name="email" v-if="moto_read" class="form-control text-md-left">{{user.email}}</label>
+                                    <label for="name" class="col-form-label text-md-right">Marca:</label>
+                                    <select class="form-control" name="marca" v-if="!saveM" v-model="moto.marca" required>
+                                        <option value="">Seleccione la marca</option>
+                                        <option v-for="marca in marcas" v-model="marca.nombre">{{marca.nombre}}</option>
+                                    </select>
+                                    <label name="marca" v-if="saveM" class="form-control text-md-left">{{moto.marca}}</label>
                                 </div>
                                 <div class="col-4 form-group">
-                                    <label for="name" class="col-form-label text-md-right">Nombre</label>
-                                    <input v-if="!moto_read" type="text" name="name" v-model="user.name" class="form-control" required>
-                                    <label name="name" v-if="moto_read" class="form-control text-md-left">{{user.name}}</label>
+                                    <label for="name" class="col-form-label text-md-right">Modelo:</label>
+                                    <input v-if="!saveM" type="text" onclick="this.select()" name="modelo" v-model="moto.modelo" class="form-control" required>
+                                    <label name="modelo" v-if="saveM" class="form-control text-md-left">{{moto.modelo}}</label>
                                 </div>
                                 <div class="col-4 form-group">
-                                    <label for="name" class="col-form-label text-md-right">Apellido Paterno</label>
-                                    <input type="text" v-if="!moto_read" name="appaterno" v-model="user.appaterno" class="form-control" required>
-                                    <label name="appaterno" v-if="moto_read" class="form-control text-md-left">{{user.appaterno}}</label>
+                                    <label for="version" class="col-form-label text-md-right">Versión:</label>
+                                    <input type="text" v-if="!saveM" name="version" v-model="moto.version" class="form-control" required>
+                                    <label name="version" v-if="saveM" class="form-control text-md-left">{{moto.version}}</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-4 form-group">
-                                    <label for="name" class="col-form-label text-md-right">Apellido Materno</label>
-                                    <input type="text" v-if="!moto_read" name="apmaterno" v-model="user.apmaterno" class="form-control" required>
-                                    <label name="appaterno" v-if="moto_read" class="form-control text-md-left">{{user.apmaterno}}</label>
+                                    <label for="anio" class="col-form-label text-md-right">Año:</label>
+                                    <input type="text" v-if="!saveM" name="anio" v-model="moto.anio" class="form-control" required>
+                                    <label name="anio" v-if="saveM" class="form-control text-md-left">{{moto.anio}}</label>
                                 </div>
                                 <div class="col-4 form-group">
-                                    <label for="name" class="col-form-label text-md-right">Número telefonico/celular</label>
-                                    <input type="text" v-if="!moto_read" name="telefono" v-model="user.telefono" class="form-control" required>
-                                    <label name="telefono" v-if="moto_read" class="form-control text-md-left">{{user.telefono}}</label>
+                                    <label for="serie" class="col-form-label text-md-right">Númeron de serie:</label>
+                                    <input type="text" v-if="!saveM" name="serie" v-model="moto.serie" class="form-control" required>
+                                    <label name="serie" v-if="saveM" class="form-control text-md-left">{{moto.serie}}</label>
+                                </div>
+                                <div class="col-4 form-group">
+                                    <label for="km" class="col-form-label text-md-right">Kilometros:</label>
+                                    <input type="text" v-if="!saveM" name="km" v-model="moto.km" class="form-control" required>
+                                    <label name="km" v-if="saveM" class="form-control text-md-left">{{moto.km}}</label>
                                 </div>
                                 <div class="col-4 form-group">
                                     <div class="col-12">
-                                        <button type="button" v-if="moto_read && !saveM" @click="selectUser()" class="btn btn-dark">Guardar motocicleta</button>
-                                        <input type="submit" v-if="!moto_read && !saveM" class="btn btn-dark" value="Guardar motocicleta">
-                                        
+                                        <button type="button" v-if="!saveM" @click="selectMoto()" class="btn btn-dark">Guardar motocicleta</button>
                                     </div>
                                 </div>
                             </div>
                         </form>
+                    </div>
+                </div>
+                <div class="card" v-if="saveM">
+                    <div class="card-header">
+                        Servicio:
+                    </div>
+                    <div class="card-body">
+                        <div class="row justify-content-md-center">
+                            <div class="col-md-6">
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <label for="estado" class="col-form-label text-md-center">Estado de la motocicleta:</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="excelente" name="estado"  value="excelente" v-model="servicio.estado" class="custom-control-input">
+                                    <label class="custom-control-label" for="excelente">Excelente</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="bueno" name="estado" value="bueno" v-model="servicio.estado" class="custom-control-input">
+                                    <label class="custom-control-label" for="bueno">Bueno</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="regular" name="estado" value="regular" v-model="servicio.estado" class="custom-control-input">
+                                    <label class="custom-control-label" for="regular">Regular</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="malo" name="estado" value="malo" v-model="servicio.estado" class="custom-control-input">
+                                    <label class="custom-control-label" for="malo">Malo</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 form-group">
+                                <label for="comentario" class="col-form-label text-md-right">Comentarios:</label>
+                                <textarea rows="5" v-if="!saveS" name="comentario" v-model="servicio.comentario" class="form-control"></textarea>
+                                <label name="comentario" v-if="saveS" class="form-control text-md-left">{{servicio.comentario}}</label>
+                            </div>
+                            <div class="col-4 form-group">
+                                <label for="detalle" class="col-form-label text-md-right">Problema de la motocicleta:</label>
+                                <textarea rows="5" v-if="!saveS" name="detalle" v-model="servicio.detalle" class="form-control"></textarea>
+                                <label name="detalle" v-if="saveS" class="form-control text-md-left">{{servicio.detalle}}</label>
+                            </div>
+                            <div class="col-4 mt-5 form-group">
+                                    <div class="col-12">
+                                        <button type="button" v-if="!saveS" @click="saveService()" class="btn btn-dark">Guardar servicio</button>
+                                    </div>
+                                </div>
+                        </div>
                     </div>
                 </div>
 			</div>
@@ -153,6 +206,7 @@ function Servicio({id,nombre,costo}){
     		return{
                 user:{"id":"","name":"","appaterno":"","apmaterno":"","email":"","telefono":""},
                 moto:{"id":"","marca":"","modelo":"","version":"","user_id":"","anio":"","km":"","serie":""},
+                marcas:[],
                 servicio :{"id":"","moto_id":"","estado":"","comentario":"","detalle":"","costo_obra":"","costo_revision":"","costo_refaccion":"","total":""},
                 inServicios:[],
                 revisiones:[],
@@ -163,12 +217,38 @@ function Servicio({id,nombre,costo}){
                 user_read : false,
                 saveM:false,
                 moto_read : false,
+                saveS:false
     		}
     	},
     	created() {
     		this.getRefacciones();
             this.getRevisiones();
+            this.getMarcas();
+            // this.debounceGetMoto = _.debounce(this.searchMoto,500);
     	},
+        watch:{
+            "moto.marca": function(val){
+                var marca ={'marca':val};
+                this.searchMoto(marca);
+                // this.debounceGetMoto();
+            },
+            "moto.modelo":function(val) {
+                var modelo = {'marca': this.moto.marca, 'modelo':val};
+                this.searchMoto(modelo);
+            },
+            "moto.version":function(val){
+                var version = {'marca': this.moto.marca, 'modelo':this.moto.modelo, 'version':val};
+                this.searchMoto(version);
+            },
+            "moto.anio": function(val){
+                var anio = {'marca': this.moto.marca, 'modelo':this.moto.modelo, 'version':this.moto.version, 'anio':val};
+                this.searchMoto(anio);
+            },
+            "moto.serie": function (val){
+                var serie = {'marca': this.moto.marca, 'modelo':this.moto.modelo, 'version':this.moto.version, 'anio':this.searchMoto};
+                this.searchMoto(serie);
+            }
+        },
     	methods:{
             selectUser(){
                 this.save = true;
@@ -177,7 +257,7 @@ function Servicio({id,nombre,costo}){
             saveUser(user){
                 let url = 'saveUser';
                 axios.post(url,user).then(response=>{
-                    console.log(response);
+                    // console.log(response);
                     if(response.data.usuario){
                         this.user = new User(response.data.usuario);
                         this.save = true;
@@ -192,7 +272,7 @@ function Servicio({id,nombre,costo}){
             searchEmail(email){
                 let url = "searchUser";
                 axios.post(url,{email}).then(response=>{
-                    console.log(response);
+                    // console.log(response);
                     this.user = response.data.user;
                     this.user_read = true;
                     // this.save= true;
@@ -206,6 +286,46 @@ function Servicio({id,nombre,costo}){
                 this.user =  {id:"",name:"",appaterno:"",apmaterno:"",email:"",telefono:""};
                 this.user_read = false;
                 this.save= false;
+            },
+            getMarcas(){
+                let url="api/marcas";
+                axios.get(url).then(response=>{
+                    // console.log(response);
+                    this.marcas = response.data.marcas;
+                }).catch(error=>{
+                    console.log(error);
+                });
+            },
+            searchMoto(query){
+                // console.log(this.moto);
+                // console.log(this.user.id);
+                let url = `user/${this.user.id}/searchMoto`;
+                axios.post(url,query).then(res=>{
+                    if(res.data.moto){
+                        this.moto = new Moto(res.data.moto);
+                    }
+                }).catch(err=>{});
+
+            },
+            selectMoto(){
+                let url = `user/${this.user.id}/saveMoto`;
+                axios.post(url,this.moto).then(res=>{
+                    this.moto = new Moto(res.data.moto);
+                    this.saveM = true;
+                }).catch(err=>{
+                    console.log(err);
+                });
+            },
+            saveService(){
+                this.servicio.moto_id = this.moto.id;
+                let url = "saveService";
+                axios.post(url,this.servicio).then(res=>{
+                    this.servicio = res.data.servicio;
+                    this.saveS = true;
+                }).catch(err=>{
+                    console.log(err);
+                });
+
             },
     		getRefacciones(){
     			let url= "precargas/refacciones";

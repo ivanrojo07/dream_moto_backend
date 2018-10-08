@@ -49212,6 +49212,59 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 function User(_ref) {
     var id = _ref.id,
@@ -49299,6 +49352,7 @@ function Servicio(_ref5) {
         return {
             user: { "id": "", "name": "", "appaterno": "", "apmaterno": "", "email": "", "telefono": "" },
             moto: { "id": "", "marca": "", "modelo": "", "version": "", "user_id": "", "anio": "", "km": "", "serie": "" },
+            marcas: [],
             servicio: { "id": "", "moto_id": "", "estado": "", "comentario": "", "detalle": "", "costo_obra": "", "costo_revision": "", "costo_refaccion": "", "total": "" },
             inServicios: [],
             revisiones: [],
@@ -49308,14 +49362,40 @@ function Servicio(_ref5) {
             save: false,
             user_read: false,
             saveM: false,
-            moto_read: false
+            moto_read: false,
+            saveS: false
         };
     },
     created: function created() {
         this.getRefacciones();
         this.getRevisiones();
+        this.getMarcas();
+        // this.debounceGetMoto = _.debounce(this.searchMoto,500);
     },
 
+    watch: {
+        "moto.marca": function motoMarca(val) {
+            var marca = { 'marca': val };
+            this.searchMoto(marca);
+            // this.debounceGetMoto();
+        },
+        "moto.modelo": function motoModelo(val) {
+            var modelo = { 'marca': this.moto.marca, 'modelo': val };
+            this.searchMoto(modelo);
+        },
+        "moto.version": function motoVersion(val) {
+            var version = { 'marca': this.moto.marca, 'modelo': this.moto.modelo, 'version': val };
+            this.searchMoto(version);
+        },
+        "moto.anio": function motoAnio(val) {
+            var anio = { 'marca': this.moto.marca, 'modelo': this.moto.modelo, 'version': this.moto.version, 'anio': val };
+            this.searchMoto(anio);
+        },
+        "moto.serie": function motoSerie(val) {
+            var serie = { 'marca': this.moto.marca, 'modelo': this.moto.modelo, 'version': this.moto.version, 'anio': this.searchMoto };
+            this.searchMoto(serie);
+        }
+    },
     methods: {
         selectUser: function selectUser() {
             this.save = true;
@@ -49326,7 +49406,7 @@ function Servicio(_ref5) {
 
             var url = 'saveUser';
             axios.post(url, user).then(function (response) {
-                console.log(response);
+                // console.log(response);
                 if (response.data.usuario) {
                     _this.user = new User(response.data.usuario);
                     _this.save = true;
@@ -49341,7 +49421,7 @@ function Servicio(_ref5) {
 
             var url = "searchUser";
             axios.post(url, { email: email }).then(function (response) {
-                console.log(response);
+                // console.log(response);
                 _this2.user = response.data.user;
                 _this2.user_read = true;
                 // this.save= true;
@@ -49356,23 +49436,69 @@ function Servicio(_ref5) {
             this.user_read = false;
             this.save = false;
         },
-        getRefacciones: function getRefacciones() {
+        getMarcas: function getMarcas() {
             var _this3 = this;
+
+            var url = "api/marcas";
+            axios.get(url).then(function (response) {
+                // console.log(response);
+                _this3.marcas = response.data.marcas;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        searchMoto: function searchMoto(query) {
+            var _this4 = this;
+
+            // console.log(this.moto);
+            // console.log(this.user.id);
+            var url = "user/" + this.user.id + "/searchMoto";
+            axios.post(url, query).then(function (res) {
+                if (res.data.moto) {
+                    _this4.moto = new Moto(res.data.moto);
+                }
+            }).catch(function (err) {});
+        },
+        selectMoto: function selectMoto() {
+            var _this5 = this;
+
+            var url = "user/" + this.user.id + "/saveMoto";
+            axios.post(url, this.moto).then(function (res) {
+                _this5.moto = new Moto(res.data.moto);
+                _this5.saveM = true;
+            }).catch(function (err) {
+                console.log(err);
+            });
+        },
+        saveService: function saveService() {
+            var _this6 = this;
+
+            this.servicio.moto_id = this.moto.id;
+            var url = "saveService";
+            axios.post(url, this.servicio).then(function (res) {
+                _this6.servicio = res.data.servicio;
+                _this6.saveS = true;
+            }).catch(function (err) {
+                console.log(err);
+            });
+        },
+        getRefacciones: function getRefacciones() {
+            var _this7 = this;
 
             var url = "precargas/refacciones";
             axios.get(url).then(function (response) {
-                _this3.refacciones = response.data.refacciones;
+                _this7.refacciones = response.data.refacciones;
             });
         },
         clearRefacccion: function clearRefacccion() {
             this.refaccion = { 'id': '', 'nombre': '', 'costo': '', 'comentarios': "" };
         },
         getRevisiones: function getRevisiones() {
-            var _this4 = this;
+            var _this8 = this;
 
             var url = "precargas/revisiones";
             axios.get(url).then(function (response) {
-                _this4.revisiones = response.data.revisiones;
+                _this8.revisiones = response.data.revisiones;
             });
         },
         clearRevision: function clearRevision() {
@@ -49750,52 +49876,77 @@ var render = function() {
                             staticClass: "col-form-label text-md-right",
                             attrs: { for: "name" }
                           },
-                          [_vm._v("Marca")]
+                          [_vm._v("Marca:")]
                         ),
                         _vm._v(" "),
-                        !_vm.moto_read
-                          ? _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.user.email,
-                                  expression: "user.email"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "email",
-                                name: "email",
-                                required: ""
-                              },
-                              domProps: { value: _vm.user.email },
-                              on: {
-                                change: function($event) {
-                                  _vm.searchEmail(_vm.user.email)
-                                },
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
+                        !_vm.saveM
+                          ? _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.moto.marca,
+                                    expression: "moto.marca"
                                   }
-                                  _vm.$set(
-                                    _vm.user,
-                                    "email",
-                                    $event.target.value
-                                  )
+                                ],
+                                staticClass: "form-control",
+                                attrs: { name: "marca", required: "" },
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.moto,
+                                      "marca",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  }
                                 }
-                              }
-                            })
+                              },
+                              [
+                                _c("option", { attrs: { value: "" } }, [
+                                  _vm._v("Seleccione la marca")
+                                ]),
+                                _vm._v(" "),
+                                _vm._l(_vm.marcas, function(marca) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      model: {
+                                        value: marca.nombre,
+                                        callback: function($$v) {
+                                          _vm.$set(marca, "nombre", $$v)
+                                        },
+                                        expression: "marca.nombre"
+                                      }
+                                    },
+                                    [_vm._v(_vm._s(marca.nombre))]
+                                  )
+                                })
+                              ],
+                              2
+                            )
                           : _vm._e(),
                         _vm._v(" "),
-                        _vm.moto_read
+                        _vm.saveM
                           ? _c(
                               "label",
                               {
                                 staticClass: "form-control text-md-left",
-                                attrs: { name: "email" }
+                                attrs: { name: "marca" }
                               },
-                              [_vm._v(_vm._s(_vm.user.email))]
+                              [_vm._v(_vm._s(_vm.moto.marca))]
                             )
                           : _vm._e()
                       ]),
@@ -49807,34 +49958,35 @@ var render = function() {
                             staticClass: "col-form-label text-md-right",
                             attrs: { for: "name" }
                           },
-                          [_vm._v("Nombre")]
+                          [_vm._v("Modelo:")]
                         ),
                         _vm._v(" "),
-                        !_vm.moto_read
+                        !_vm.saveM
                           ? _c("input", {
                               directives: [
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.user.name,
-                                  expression: "user.name"
+                                  value: _vm.moto.modelo,
+                                  expression: "moto.modelo"
                                 }
                               ],
                               staticClass: "form-control",
                               attrs: {
                                 type: "text",
-                                name: "name",
+                                onclick: "this.select()",
+                                name: "modelo",
                                 required: ""
                               },
-                              domProps: { value: _vm.user.name },
+                              domProps: { value: _vm.moto.modelo },
                               on: {
                                 input: function($event) {
                                   if ($event.target.composing) {
                                     return
                                   }
                                   _vm.$set(
-                                    _vm.user,
-                                    "name",
+                                    _vm.moto,
+                                    "modelo",
                                     $event.target.value
                                   )
                                 }
@@ -49842,14 +49994,14 @@ var render = function() {
                             })
                           : _vm._e(),
                         _vm._v(" "),
-                        _vm.moto_read
+                        _vm.saveM
                           ? _c(
                               "label",
                               {
                                 staticClass: "form-control text-md-left",
-                                attrs: { name: "name" }
+                                attrs: { name: "modelo" }
                               },
-                              [_vm._v(_vm._s(_vm.user.name))]
+                              [_vm._v(_vm._s(_vm.moto.modelo))]
                             )
                           : _vm._e()
                       ]),
@@ -49859,36 +50011,36 @@ var render = function() {
                           "label",
                           {
                             staticClass: "col-form-label text-md-right",
-                            attrs: { for: "name" }
+                            attrs: { for: "version" }
                           },
-                          [_vm._v("Apellido Paterno")]
+                          [_vm._v("Versión:")]
                         ),
                         _vm._v(" "),
-                        !_vm.moto_read
+                        !_vm.saveM
                           ? _c("input", {
                               directives: [
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.user.appaterno,
-                                  expression: "user.appaterno"
+                                  value: _vm.moto.version,
+                                  expression: "moto.version"
                                 }
                               ],
                               staticClass: "form-control",
                               attrs: {
                                 type: "text",
-                                name: "appaterno",
+                                name: "version",
                                 required: ""
                               },
-                              domProps: { value: _vm.user.appaterno },
+                              domProps: { value: _vm.moto.version },
                               on: {
                                 input: function($event) {
                                   if ($event.target.composing) {
                                     return
                                   }
                                   _vm.$set(
-                                    _vm.user,
-                                    "appaterno",
+                                    _vm.moto,
+                                    "version",
                                     $event.target.value
                                   )
                                 }
@@ -49896,14 +50048,14 @@ var render = function() {
                             })
                           : _vm._e(),
                         _vm._v(" "),
-                        _vm.moto_read
+                        _vm.saveM
                           ? _c(
                               "label",
                               {
                                 staticClass: "form-control text-md-left",
-                                attrs: { name: "appaterno" }
+                                attrs: { name: "version" }
                               },
-                              [_vm._v(_vm._s(_vm.user.appaterno))]
+                              [_vm._v(_vm._s(_vm.moto.version))]
                             )
                           : _vm._e()
                       ])
@@ -49915,36 +50067,36 @@ var render = function() {
                           "label",
                           {
                             staticClass: "col-form-label text-md-right",
-                            attrs: { for: "name" }
+                            attrs: { for: "anio" }
                           },
-                          [_vm._v("Apellido Materno")]
+                          [_vm._v("Año:")]
                         ),
                         _vm._v(" "),
-                        !_vm.moto_read
+                        !_vm.saveM
                           ? _c("input", {
                               directives: [
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.user.apmaterno,
-                                  expression: "user.apmaterno"
+                                  value: _vm.moto.anio,
+                                  expression: "moto.anio"
                                 }
                               ],
                               staticClass: "form-control",
                               attrs: {
                                 type: "text",
-                                name: "apmaterno",
+                                name: "anio",
                                 required: ""
                               },
-                              domProps: { value: _vm.user.apmaterno },
+                              domProps: { value: _vm.moto.anio },
                               on: {
                                 input: function($event) {
                                   if ($event.target.composing) {
                                     return
                                   }
                                   _vm.$set(
-                                    _vm.user,
-                                    "apmaterno",
+                                    _vm.moto,
+                                    "anio",
                                     $event.target.value
                                   )
                                 }
@@ -49952,14 +50104,14 @@ var render = function() {
                             })
                           : _vm._e(),
                         _vm._v(" "),
-                        _vm.moto_read
+                        _vm.saveM
                           ? _c(
                               "label",
                               {
                                 staticClass: "form-control text-md-left",
-                                attrs: { name: "appaterno" }
+                                attrs: { name: "anio" }
                               },
-                              [_vm._v(_vm._s(_vm.user.apmaterno))]
+                              [_vm._v(_vm._s(_vm.moto.anio))]
                             )
                           : _vm._e()
                       ]),
@@ -49969,36 +50121,36 @@ var render = function() {
                           "label",
                           {
                             staticClass: "col-form-label text-md-right",
-                            attrs: { for: "name" }
+                            attrs: { for: "serie" }
                           },
-                          [_vm._v("Número telefonico/celular")]
+                          [_vm._v("Númeron de serie:")]
                         ),
                         _vm._v(" "),
-                        !_vm.moto_read
+                        !_vm.saveM
                           ? _c("input", {
                               directives: [
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.user.telefono,
-                                  expression: "user.telefono"
+                                  value: _vm.moto.serie,
+                                  expression: "moto.serie"
                                 }
                               ],
                               staticClass: "form-control",
                               attrs: {
                                 type: "text",
-                                name: "telefono",
+                                name: "serie",
                                 required: ""
                               },
-                              domProps: { value: _vm.user.telefono },
+                              domProps: { value: _vm.moto.serie },
                               on: {
                                 input: function($event) {
                                   if ($event.target.composing) {
                                     return
                                   }
                                   _vm.$set(
-                                    _vm.user,
-                                    "telefono",
+                                    _vm.moto,
+                                    "serie",
                                     $event.target.value
                                   )
                                 }
@@ -50006,21 +50158,67 @@ var render = function() {
                             })
                           : _vm._e(),
                         _vm._v(" "),
-                        _vm.moto_read
+                        _vm.saveM
                           ? _c(
                               "label",
                               {
                                 staticClass: "form-control text-md-left",
-                                attrs: { name: "telefono" }
+                                attrs: { name: "serie" }
                               },
-                              [_vm._v(_vm._s(_vm.user.telefono))]
+                              [_vm._v(_vm._s(_vm.moto.serie))]
+                            )
+                          : _vm._e()
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-4 form-group" }, [
+                        _c(
+                          "label",
+                          {
+                            staticClass: "col-form-label text-md-right",
+                            attrs: { for: "km" }
+                          },
+                          [_vm._v("Kilometros:")]
+                        ),
+                        _vm._v(" "),
+                        !_vm.saveM
+                          ? _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.moto.km,
+                                  expression: "moto.km"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text", name: "km", required: "" },
+                              domProps: { value: _vm.moto.km },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(_vm.moto, "km", $event.target.value)
+                                }
+                              }
+                            })
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.saveM
+                          ? _c(
+                              "label",
+                              {
+                                staticClass: "form-control text-md-left",
+                                attrs: { name: "km" }
+                              },
+                              [_vm._v(_vm._s(_vm.moto.km))]
                             )
                           : _vm._e()
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "col-4 form-group" }, [
                         _c("div", { staticClass: "col-12" }, [
-                          _vm.moto_read && !_vm.saveM
+                          !_vm.saveM
                             ? _c(
                                 "button",
                                 {
@@ -50028,28 +50226,334 @@ var render = function() {
                                   attrs: { type: "button" },
                                   on: {
                                     click: function($event) {
-                                      _vm.selectUser()
+                                      _vm.selectMoto()
                                     }
                                   }
                                 },
                                 [_vm._v("Guardar motocicleta")]
                               )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          !_vm.moto_read && !_vm.saveM
-                            ? _c("input", {
-                                staticClass: "btn btn-dark",
-                                attrs: {
-                                  type: "submit",
-                                  value: "Guardar motocicleta"
-                                }
-                              })
                             : _vm._e()
                         ])
                       ])
                     ])
                   ]
                 )
+              ])
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.saveM
+          ? _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-header" }, [
+                _vm._v(
+                  "\n                        Servicio:\n                    "
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "row justify-content-md-center" }, [
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "custom-control custom-radio custom-control-inline"
+                      },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.servicio.estado,
+                              expression: "servicio.estado"
+                            }
+                          ],
+                          staticClass: "custom-control-input",
+                          attrs: {
+                            type: "radio",
+                            id: "excelente",
+                            name: "estado",
+                            value: "excelente"
+                          },
+                          domProps: {
+                            checked: _vm._q(_vm.servicio.estado, "excelente")
+                          },
+                          on: {
+                            change: function($event) {
+                              _vm.$set(_vm.servicio, "estado", "excelente")
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass: "custom-control-label",
+                            attrs: { for: "excelente" }
+                          },
+                          [_vm._v("Excelente")]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "custom-control custom-radio custom-control-inline"
+                      },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.servicio.estado,
+                              expression: "servicio.estado"
+                            }
+                          ],
+                          staticClass: "custom-control-input",
+                          attrs: {
+                            type: "radio",
+                            id: "bueno",
+                            name: "estado",
+                            value: "bueno"
+                          },
+                          domProps: {
+                            checked: _vm._q(_vm.servicio.estado, "bueno")
+                          },
+                          on: {
+                            change: function($event) {
+                              _vm.$set(_vm.servicio, "estado", "bueno")
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass: "custom-control-label",
+                            attrs: { for: "bueno" }
+                          },
+                          [_vm._v("Bueno")]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "custom-control custom-radio custom-control-inline"
+                      },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.servicio.estado,
+                              expression: "servicio.estado"
+                            }
+                          ],
+                          staticClass: "custom-control-input",
+                          attrs: {
+                            type: "radio",
+                            id: "regular",
+                            name: "estado",
+                            value: "regular"
+                          },
+                          domProps: {
+                            checked: _vm._q(_vm.servicio.estado, "regular")
+                          },
+                          on: {
+                            change: function($event) {
+                              _vm.$set(_vm.servicio, "estado", "regular")
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass: "custom-control-label",
+                            attrs: { for: "regular" }
+                          },
+                          [_vm._v("Regular")]
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "custom-control custom-radio custom-control-inline"
+                      },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.servicio.estado,
+                              expression: "servicio.estado"
+                            }
+                          ],
+                          staticClass: "custom-control-input",
+                          attrs: {
+                            type: "radio",
+                            id: "malo",
+                            name: "estado",
+                            value: "malo"
+                          },
+                          domProps: {
+                            checked: _vm._q(_vm.servicio.estado, "malo")
+                          },
+                          on: {
+                            change: function($event) {
+                              _vm.$set(_vm.servicio, "estado", "malo")
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass: "custom-control-label",
+                            attrs: { for: "malo" }
+                          },
+                          [_vm._v("Malo")]
+                        )
+                      ]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-4 form-group" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-form-label text-md-right",
+                        attrs: { for: "comentario" }
+                      },
+                      [_vm._v("Comentarios:")]
+                    ),
+                    _vm._v(" "),
+                    !_vm.saveS
+                      ? _c("textarea", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.servicio.comentario,
+                              expression: "servicio.comentario"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { rows: "5", name: "comentario" },
+                          domProps: { value: _vm.servicio.comentario },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.servicio,
+                                "comentario",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.saveS
+                      ? _c(
+                          "label",
+                          {
+                            staticClass: "form-control text-md-left",
+                            attrs: { name: "comentario" }
+                          },
+                          [_vm._v(_vm._s(_vm.servicio.comentario))]
+                        )
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-4 form-group" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-form-label text-md-right",
+                        attrs: { for: "detalle" }
+                      },
+                      [_vm._v("Problema de la motocicleta:")]
+                    ),
+                    _vm._v(" "),
+                    !_vm.saveS
+                      ? _c("textarea", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.servicio.detalle,
+                              expression: "servicio.detalle"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { rows: "5", name: "detalle" },
+                          domProps: { value: _vm.servicio.detalle },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.servicio,
+                                "detalle",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.saveS
+                      ? _c(
+                          "label",
+                          {
+                            staticClass: "form-control text-md-left",
+                            attrs: { name: "detalle" }
+                          },
+                          [_vm._v(_vm._s(_vm.servicio.detalle))]
+                        )
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-4 mt-5 form-group" }, [
+                    _c("div", { staticClass: "col-12" }, [
+                      !_vm.saveS
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-dark",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  _vm.saveService()
+                                }
+                              }
+                            },
+                            [_vm._v("Guardar servicio")]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
+                ])
               ])
             ])
           : _vm._e()
@@ -50067,6 +50571,25 @@ var staticRenderFns = [
     return _c("div", { staticClass: "card-header" }, [
       _c("h4", [_vm._v("Datos del cliente:")])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "custom-control custom-radio custom-control-inline" },
+      [
+        _c(
+          "label",
+          {
+            staticClass: "col-form-label text-md-center",
+            attrs: { for: "estado" }
+          },
+          [_vm._v("Estado de la motocicleta:")]
+        )
+      ]
+    )
   }
 ]
 render._withStripped = true

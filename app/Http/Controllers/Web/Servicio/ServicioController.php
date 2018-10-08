@@ -37,6 +37,19 @@ class ServicioController extends Controller
     public function store(Request $request)
     {
         //
+        $rules=[
+            'estado'=>"required",
+            'detalle'=>'required'
+        ];
+        $this->validate($request,$rules);
+        $servicio = Servicio::create([
+            'moto_id'=>$request->input('moto_id'),
+            'estado'=>$request->input('estado'),
+            'comentario'=>$request->input('comentario'),
+            'detalle'=>$request->input('detalle')
+        ]);
+        return response()->json(['servicio'=>$servicio]);
+        // $servicio = Servicio::create($request->all());
     }
 
     /**
