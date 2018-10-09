@@ -49265,6 +49265,156 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 function User(_ref) {
     var id = _ref.id,
@@ -49350,13 +49500,14 @@ function Servicio(_ref5) {
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
+            servicio: { "id": "", "moto_id": "", "estado": "", "comentario": "", "detalle": "", "costo_obra": "", "costo_revision": "", "costo_refaccion": "", "total": "" },
+            revisionS: { 'nombre': '', 'costo': '' },
+            revisiones: [],
             user: { "id": "", "name": "", "appaterno": "", "apmaterno": "", "email": "", "telefono": "" },
             moto: { "id": "", "marca": "", "modelo": "", "version": "", "user_id": "", "anio": "", "km": "", "serie": "" },
             marcas: [],
-            servicio: { "id": "", "moto_id": "", "estado": "", "comentario": "", "detalle": "", "costo_obra": "", "costo_revision": "", "costo_refaccion": "", "total": "" },
-            inServicios: [],
-            revisiones: [],
-            revision: { 'id': '', 'nombre': '', 'costo': '', 'comentarios': "" },
+            inServicioRev: [],
+            inServicioRef: [],
             refacciones: [],
             refaccion: { 'id': '', 'nombre': '', 'costo': '', 'comentarios': "" },
             save: false,
@@ -49394,41 +49545,71 @@ function Servicio(_ref5) {
         "moto.serie": function motoSerie(val) {
             var serie = { 'marca': this.moto.marca, 'modelo': this.moto.modelo, 'version': this.moto.version, 'anio': this.searchMoto };
             this.searchMoto(serie);
+        },
+        "revisionS": function revisionS(val) {
+            if (val == "") {
+                // console.log("si");
+                this.revisionS = { 'id': '', 'nombre': '', 'costo': '', 'comentarios': "" };
+            }
         }
     },
     methods: {
+        setRefaccion: function setRefaccion(refaccion) {
+            var _this = this;
+
+            console.log(refaccion);
+            var url = "inServicio/" + this.servicio.id + "/refaccion";
+            axios.post(url, refaccion).then(function (res) {
+                console.log(res);
+                _this.servicio = res.data.servicio;
+                _this.inServicioRef = res.data.refacciones;
+            }).catch(function (err) {
+                console.log(err);
+            });
+        },
+        setRevision: function setRevision(revision) {
+            var _this2 = this;
+
+            var url = "inServicio/" + this.servicio.id + "/revision";
+            axios.post(url, revision).then(function (res) {
+                _this2.servicio = res.data.servicio;
+                _this2.inServicioRev = res.data.revisiones;
+            }).catch(function (err) {
+                console.log(err);
+            });
+        },
         selectUser: function selectUser() {
             this.save = true;
             this.user_read = true;
         },
         saveUser: function saveUser(user) {
-            var _this = this;
+            var _this3 = this;
 
             var url = 'saveUser';
             axios.post(url, user).then(function (response) {
                 // console.log(response);
                 if (response.data.usuario) {
-                    _this.user = new User(response.data.usuario);
-                    _this.save = true;
-                    _this.user_read = true;
+                    _this3.user = new User(response.data.usuario);
+                    _this3.save = true;
+                    _this3.user_read = true;
                 }
             }).catch(function (error) {
                 console.log(error);
             });
         },
         searchEmail: function searchEmail(email) {
-            var _this2 = this;
+            var _this4 = this;
 
             var url = "searchUser";
             axios.post(url, { email: email }).then(function (response) {
                 // console.log(response);
-                _this2.user = response.data.user;
-                _this2.user_read = true;
+                _this4.user = response.data.user;
+                _this4.user_read = true;
                 // this.save= true;
             }).catch(function (error) {
                 console.log(error);
-                _this2.user_read = false;
-                _this2.user = { id: "", name: "", appaterno: "", apmaterno: "", email: email, telefono: "" };
+                _this4.user_read = false;
+                _this4.user = { id: "", name: "", appaterno: "", apmaterno: "", email: email, telefono: "" };
             });
         },
         clearUser: function clearUser() {
@@ -49437,68 +49618,68 @@ function Servicio(_ref5) {
             this.save = false;
         },
         getMarcas: function getMarcas() {
-            var _this3 = this;
+            var _this5 = this;
 
             var url = "api/marcas";
             axios.get(url).then(function (response) {
                 // console.log(response);
-                _this3.marcas = response.data.marcas;
+                _this5.marcas = response.data.marcas;
             }).catch(function (error) {
                 console.log(error);
             });
         },
         searchMoto: function searchMoto(query) {
-            var _this4 = this;
+            var _this6 = this;
 
             // console.log(this.moto);
             // console.log(this.user.id);
             var url = "user/" + this.user.id + "/searchMoto";
             axios.post(url, query).then(function (res) {
                 if (res.data.moto) {
-                    _this4.moto = new Moto(res.data.moto);
+                    _this6.moto = new Moto(res.data.moto);
                 }
             }).catch(function (err) {});
         },
         selectMoto: function selectMoto() {
-            var _this5 = this;
+            var _this7 = this;
 
             var url = "user/" + this.user.id + "/saveMoto";
             axios.post(url, this.moto).then(function (res) {
-                _this5.moto = new Moto(res.data.moto);
-                _this5.saveM = true;
+                _this7.moto = new Moto(res.data.moto);
+                _this7.saveM = true;
             }).catch(function (err) {
                 console.log(err);
             });
         },
         saveService: function saveService() {
-            var _this6 = this;
+            var _this8 = this;
 
             this.servicio.moto_id = this.moto.id;
             var url = "saveService";
             axios.post(url, this.servicio).then(function (res) {
-                _this6.servicio = res.data.servicio;
-                _this6.saveS = true;
+                _this8.servicio = res.data.servicio;
+                _this8.saveS = true;
             }).catch(function (err) {
                 console.log(err);
             });
         },
         getRefacciones: function getRefacciones() {
-            var _this7 = this;
+            var _this9 = this;
 
             var url = "precargas/refacciones";
             axios.get(url).then(function (response) {
-                _this7.refacciones = response.data.refacciones;
+                _this9.refacciones = response.data.refacciones;
             });
         },
         clearRefacccion: function clearRefacccion() {
             this.refaccion = { 'id': '', 'nombre': '', 'costo': '', 'comentarios': "" };
         },
         getRevisiones: function getRevisiones() {
-            var _this8 = this;
+            var _this10 = this;
 
             var url = "precargas/revisiones";
             axios.get(url).then(function (response) {
-                _this8.revisiones = response.data.revisiones;
+                _this10.revisiones = response.data.revisiones;
             });
         },
         clearRevision: function clearRevision() {
@@ -50255,181 +50436,203 @@ var render = function() {
                   _c("div", { staticClass: "col-md-6" }, [
                     _vm._m(1),
                     _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "custom-control custom-radio custom-control-inline"
-                      },
-                      [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.servicio.estado,
-                              expression: "servicio.estado"
-                            }
-                          ],
-                          staticClass: "custom-control-input",
-                          attrs: {
-                            type: "radio",
-                            id: "excelente",
-                            name: "estado",
-                            value: "excelente"
-                          },
-                          domProps: {
-                            checked: _vm._q(_vm.servicio.estado, "excelente")
-                          },
-                          on: {
-                            change: function($event) {
-                              _vm.$set(_vm.servicio, "estado", "excelente")
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
+                    _vm.saveS
+                      ? _c(
                           "label",
                           {
-                            staticClass: "custom-control-label",
-                            attrs: { for: "excelente" }
+                            staticClass: "form-control text-md-left disabled",
+                            attrs: { name: "estado", disabled: "" }
                           },
-                          [_vm._v("Excelente")]
+                          [_vm._v(_vm._s(_vm.servicio.estado))]
                         )
-                      ]
-                    ),
+                      : _vm._e(),
                     _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "custom-control custom-radio custom-control-inline"
-                      },
-                      [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.servicio.estado,
-                              expression: "servicio.estado"
-                            }
-                          ],
-                          staticClass: "custom-control-input",
-                          attrs: {
-                            type: "radio",
-                            id: "bueno",
-                            name: "estado",
-                            value: "bueno"
-                          },
-                          domProps: {
-                            checked: _vm._q(_vm.servicio.estado, "bueno")
-                          },
-                          on: {
-                            change: function($event) {
-                              _vm.$set(_vm.servicio, "estado", "bueno")
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
+                    !_vm.saveS
+                      ? _c(
+                          "div",
                           {
-                            staticClass: "custom-control-label",
-                            attrs: { for: "bueno" }
+                            staticClass:
+                              "custom-control custom-radio custom-control-inline"
                           },
-                          [_vm._v("Bueno")]
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.servicio.estado,
+                                  expression: "servicio.estado"
+                                }
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "radio",
+                                id: "excelente",
+                                name: "estado",
+                                value: "excelente"
+                              },
+                              domProps: {
+                                checked: _vm._q(
+                                  _vm.servicio.estado,
+                                  "excelente"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.$set(_vm.servicio, "estado", "excelente")
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "custom-control-label",
+                                attrs: { for: "excelente" }
+                              },
+                              [_vm._v("Excelente")]
+                            )
+                          ]
                         )
-                      ]
-                    ),
+                      : _vm._e(),
                     _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "custom-control custom-radio custom-control-inline"
-                      },
-                      [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.servicio.estado,
-                              expression: "servicio.estado"
-                            }
-                          ],
-                          staticClass: "custom-control-input",
-                          attrs: {
-                            type: "radio",
-                            id: "regular",
-                            name: "estado",
-                            value: "regular"
-                          },
-                          domProps: {
-                            checked: _vm._q(_vm.servicio.estado, "regular")
-                          },
-                          on: {
-                            change: function($event) {
-                              _vm.$set(_vm.servicio, "estado", "regular")
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
+                    !_vm.saveS
+                      ? _c(
+                          "div",
                           {
-                            staticClass: "custom-control-label",
-                            attrs: { for: "regular" }
+                            staticClass:
+                              "custom-control custom-radio custom-control-inline"
                           },
-                          [_vm._v("Regular")]
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.servicio.estado,
+                                  expression: "servicio.estado"
+                                }
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "radio",
+                                id: "bueno",
+                                name: "estado",
+                                value: "bueno"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.servicio.estado, "bueno")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.$set(_vm.servicio, "estado", "bueno")
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "custom-control-label",
+                                attrs: { for: "bueno" }
+                              },
+                              [_vm._v("Bueno")]
+                            )
+                          ]
                         )
-                      ]
-                    ),
+                      : _vm._e(),
                     _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "custom-control custom-radio custom-control-inline"
-                      },
-                      [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.servicio.estado,
-                              expression: "servicio.estado"
-                            }
-                          ],
-                          staticClass: "custom-control-input",
-                          attrs: {
-                            type: "radio",
-                            id: "malo",
-                            name: "estado",
-                            value: "malo"
-                          },
-                          domProps: {
-                            checked: _vm._q(_vm.servicio.estado, "malo")
-                          },
-                          on: {
-                            change: function($event) {
-                              _vm.$set(_vm.servicio, "estado", "malo")
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
+                    !_vm.saveS
+                      ? _c(
+                          "div",
                           {
-                            staticClass: "custom-control-label",
-                            attrs: { for: "malo" }
+                            staticClass:
+                              "custom-control custom-radio custom-control-inline"
                           },
-                          [_vm._v("Malo")]
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.servicio.estado,
+                                  expression: "servicio.estado"
+                                }
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "radio",
+                                id: "regular",
+                                name: "estado",
+                                value: "regular"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.servicio.estado, "regular")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.$set(_vm.servicio, "estado", "regular")
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "custom-control-label",
+                                attrs: { for: "regular" }
+                              },
+                              [_vm._v("Regular")]
+                            )
+                          ]
                         )
-                      ]
-                    )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    !_vm.saveS
+                      ? _c(
+                          "div",
+                          {
+                            staticClass:
+                              "custom-control custom-radio custom-control-inline"
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.servicio.estado,
+                                  expression: "servicio.estado"
+                                }
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "radio",
+                                id: "malo",
+                                name: "estado",
+                                value: "malo"
+                              },
+                              domProps: {
+                                checked: _vm._q(_vm.servicio.estado, "malo")
+                              },
+                              on: {
+                                change: function($event) {
+                                  _vm.$set(_vm.servicio, "estado", "malo")
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "custom-control-label",
+                                attrs: { for: "malo" }
+                              },
+                              [_vm._v("Malo")]
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ])
                 ]),
                 _vm._v(" "),
@@ -50444,44 +50647,35 @@ var render = function() {
                       [_vm._v("Comentarios:")]
                     ),
                     _vm._v(" "),
-                    !_vm.saveS
-                      ? _c("textarea", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.servicio.comentario,
-                              expression: "servicio.comentario"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { rows: "5", name: "comentario" },
-                          domProps: { value: _vm.servicio.comentario },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.servicio,
-                                "comentario",
-                                $event.target.value
-                              )
-                            }
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.servicio.comentario,
+                          expression: "servicio.comentario"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        rows: "5",
+                        name: "comentario",
+                        disabled: _vm.saveS
+                      },
+                      domProps: { value: _vm.servicio.comentario },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
                           }
-                        })
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.saveS
-                      ? _c(
-                          "label",
-                          {
-                            staticClass: "form-control text-md-left",
-                            attrs: { name: "comentario" }
-                          },
-                          [_vm._v(_vm._s(_vm.servicio.comentario))]
-                        )
-                      : _vm._e()
+                          _vm.$set(
+                            _vm.servicio,
+                            "comentario",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-4 form-group" }, [
@@ -50494,44 +50688,31 @@ var render = function() {
                       [_vm._v("Problema de la motocicleta:")]
                     ),
                     _vm._v(" "),
-                    !_vm.saveS
-                      ? _c("textarea", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.servicio.detalle,
-                              expression: "servicio.detalle"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { rows: "5", name: "detalle" },
-                          domProps: { value: _vm.servicio.detalle },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.servicio,
-                                "detalle",
-                                $event.target.value
-                              )
-                            }
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.servicio.detalle,
+                          expression: "servicio.detalle"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        rows: "5",
+                        name: "detalle",
+                        disabled: _vm.saveS
+                      },
+                      domProps: { value: _vm.servicio.detalle },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
                           }
-                        })
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.saveS
-                      ? _c(
-                          "label",
-                          {
-                            staticClass: "form-control text-md-left",
-                            attrs: { name: "detalle" }
-                          },
-                          [_vm._v(_vm._s(_vm.servicio.detalle))]
-                        )
-                      : _vm._e()
+                          _vm.$set(_vm.servicio, "detalle", $event.target.value)
+                        }
+                      }
+                    })
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-4 mt-5 form-group" }, [
@@ -50553,6 +50734,463 @@ var render = function() {
                         : _vm._e()
                     ])
                   ])
+                ])
+              ])
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.saveS
+          ? _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-header" }, [
+                _vm._v(
+                  "\n                        Servicio a realizar:\n                    "
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "card-header" }, [
+                  _vm._v(
+                    "\n                            Revisiones:\n                        "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group"
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-form-label text-md-right",
+                          attrs: { for: "revision" }
+                        },
+                        [_vm._v("Revisión:")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.revisionS,
+                              expression: "revisionS"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { name: "revision", required: "" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.revisionS = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "" } }, [
+                            _vm._v("Otro")
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.revisiones, function(revision) {
+                            return _c(
+                              "option",
+                              { domProps: { value: revision } },
+                              [_vm._v(_vm._s(revision.nombre))]
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  !_vm.revisionS.id
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group"
+                        },
+                        [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-form-label text-md-right",
+                              attrs: { for: "otro" }
+                            },
+                            [_vm._v("otro:")]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.revisionS.nombre,
+                                expression: "revisionS.nombre"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text", name: "otro" },
+                            domProps: { value: _vm.revisionS.nombre },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.revisionS,
+                                  "nombre",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group"
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-form-label text-md-right",
+                          attrs: { for: "costo" }
+                        },
+                        [_vm._v("Costo:")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "input-group mb-3" }, [
+                        _vm._m(2),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.revisionS.costo,
+                              expression: "revisionS.costo"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "number", step: "0.01", name: "obra" },
+                          domProps: { value: _vm.revisionS.costo },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.revisionS,
+                                "costo",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm._m(3)
+                      ])
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      on: {
+                        click: function($event) {
+                          _vm.setRevision(_vm.revisionS)
+                        }
+                      }
+                    },
+                    [_vm._v("Agregar")]
+                  )
+                ]),
+                _vm._v(" "),
+                _vm._m(4)
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "card-header" }, [
+                  _vm._v(
+                    "\n                            Refacciones:\n                        "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group"
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-form-label text-md-right",
+                          attrs: { for: "refaccion" }
+                        },
+                        [_vm._v("Refacción:")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.refaccion,
+                              expression: "refaccion"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { name: "refaccion", required: "" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.refaccion = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "" } }, [
+                            _vm._v("Otro")
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.refacciones, function(refaccion) {
+                            return _c(
+                              "option",
+                              { domProps: { value: refaccion } },
+                              [_vm._v(_vm._s(refaccion.nombre))]
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group"
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-form-label text-md-right",
+                          attrs: { for: "costo" }
+                        },
+                        [_vm._v("Costo:")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "input-group mb-3" }, [
+                        _vm._m(5),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.refaccion.costo,
+                              expression: "refaccion.costo"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "number", step: "0.01", name: "obra" },
+                          domProps: { value: _vm.refaccion.costo },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.refaccion,
+                                "costo",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm._m(6)
+                      ])
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      on: {
+                        click: function($event) {
+                          _vm.setRefaccion(_vm.refaccion)
+                        }
+                      }
+                    },
+                    [_vm._v("Agregar")]
+                  )
+                ]),
+                _vm._v(" "),
+                _vm._m(7)
+              ])
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.saveS
+          ? _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-header" }, [
+                _vm._v(
+                  "\n                        Costos:\n                    "
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "row justify-content-md-center" }, [
+                  _c(
+                    "div",
+                    { staticClass: "col col-lg-4 col-sm-5 col-md-4 col-xl-4" },
+                    [
+                      _c("div", { staticClass: "input-group mb-3" }, [
+                        _vm._m(8),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.servicio.costo_obra,
+                              expression: "servicio.costo_obra"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "number", step: "0.01", name: "obra" },
+                          domProps: { value: _vm.servicio.costo_obra },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.servicio,
+                                "costo_obra",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm._m(9)
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "col offset-col-lg-2 offset-col-sm-1 offset-col-md-1 offset-col-xl-1 col-lg-4 col-sm-5 col-md-4 col-xl-4"
+                    },
+                    [
+                      _c("div", { staticClass: "input-group mb-3" }, [
+                        _vm._m(10),
+                        _vm._v(" "),
+                        _c("label", {
+                          staticClass: "form-control input-group-text",
+                          attrs: { name: "revision" },
+                          domProps: {
+                            textContent: _vm._s(_vm.servicio.costo_revision)
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm._m(11)
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "w-100" }),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "col offset-col-lg-2 offset-col-sm-1 offset-col-md-1 offset-col-xl-1 col-lg-4 col-sm-5 col-md-4 col-xl-4"
+                    },
+                    [
+                      _c("div", { staticClass: "input-group mb-3" }, [
+                        _vm._m(12),
+                        _vm._v(" "),
+                        _c("label", {
+                          staticClass: "form-control input-group-text",
+                          attrs: { name: "refaccion" },
+                          domProps: {
+                            textContent: _vm._s(_vm.servicio.costo_refaccion)
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm._m(13)
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "col offset-col-lg-2 offset-col-sm-1 offset-col-md-1 offset-col-xl-1 col-lg-4 col-sm-5 col-md-4 col-xl-4"
+                    },
+                    [
+                      _c("div", { staticClass: "input-group mb-3" }, [
+                        _vm._m(14),
+                        _vm._v(" "),
+                        _c("label", {
+                          staticClass: "form-control input-group-text",
+                          attrs: { name: "total" },
+                          domProps: { textContent: _vm._s(_vm.servicio.total) }
+                        }),
+                        _vm._v(" "),
+                        _vm._m(15)
+                      ])
+                    ]
+                  )
                 ])
               ])
             ])
@@ -50590,6 +51228,152 @@ var staticRenderFns = [
         )
       ]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c("span", { staticClass: "input-group-text" }, [_vm._v("$")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-append" }, [
+      _c("span", { staticClass: "input-group-text" }, [_vm._v("MXN")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-8" }, [
+        _c("table", { staticClass: "table" }, [
+          _c("thead", [
+            _c("tr", [
+              _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+              _vm._v(" "),
+              _c("th", { attrs: { scope: "col" } }, [_vm._v("Revisión")]),
+              _vm._v(" "),
+              _c("th", { attrs: { scope: "col" } }, [_vm._v("Costo")])
+            ])
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c("span", { staticClass: "input-group-text" }, [_vm._v("$")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-append" }, [
+      _c("span", { staticClass: "input-group-text" }, [_vm._v("MXN")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-8" }, [
+        _c("table", { staticClass: "table" }, [
+          _c("thead", [
+            _c("tr", [
+              _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+              _vm._v(" "),
+              _c("th", { attrs: { scope: "col" } }, [_vm._v("Refacción")]),
+              _vm._v(" "),
+              _c("th", { attrs: { scope: "col" } }, [_vm._v("Costo")])
+            ])
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c("label", { staticClass: "input-group-text" }, [
+        _vm._v("Mano de obra:")
+      ]),
+      _vm._v(" "),
+      _c("span", { staticClass: "input-group-text" }, [_vm._v("$")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-append" }, [
+      _c("span", { staticClass: "input-group-text" }, [_vm._v("MXN")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c("label", { staticClass: "input-group-text" }, [_vm._v("Revision:")]),
+      _vm._v(" "),
+      _c("span", { staticClass: "input-group-text" }, [_vm._v("$")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-append" }, [
+      _c("span", { staticClass: "input-group-text" }, [_vm._v("MXN")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c("label", { staticClass: "input-group-text" }, [_vm._v("Refacción:")]),
+      _vm._v(" "),
+      _c("span", { staticClass: "input-group-text" }, [_vm._v("$")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-append" }, [
+      _c("span", { staticClass: "input-group-text" }, [_vm._v("MXN")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c("label", { staticClass: "input-group-text" }, [_vm._v("Total:")]),
+      _vm._v(" "),
+      _c("span", { staticClass: "input-group-text" }, [_vm._v("$")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-append" }, [
+      _c("span", { staticClass: "input-group-text" }, [_vm._v("MXN")])
+    ])
   }
 ]
 render._withStripped = true

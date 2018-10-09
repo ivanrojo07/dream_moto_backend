@@ -47,6 +47,8 @@ Route::post('saveUser','User\UserController@saveUser');
 Route::post('user/{user}/searchMoto', 'User\UserController@searchMoto');
 Route::post('user/{user}/saveMoto','User\UserController@saveMoto');
 Route::post('saveService','Web\Servicio\ServicioController@store');
+Route::post('inServicio/{servicio}/revision','Web\Servicio\ServicioController@setRevision');
+Route::post('inServicio/{servicio}/refaccion','Web\Servicio\ServicioController@setRefaccion');
 // fin vue
 Route::resource('tiendas','Web\Tienda\TiendaController');
 Route::resource('tiendas.productos','Web\Tienda\TiendaProductoController');

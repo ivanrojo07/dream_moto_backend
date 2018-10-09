@@ -34,5 +34,23 @@ class Servicio extends Model
    	public function inServicio(){
    		return $this->hasMany('App\InServicio');
    	}
+      public function setTotal(){
+         $revisiones =  $this->inServicio()->where('tipo_servicio','revision')->get();
+
+         $costo_rev = 0.00;
+         foreach ($revisiones as $rev) {
+            $costo_rev += $rev->costo;
+         }
+         $refacciones =  $this->inServicio()->where('tipo_servicio','refaccion')->get();
+         
+         $costo_ref = 0.00;
+         foreach ($refacciones as $ref) {
+            $costo_ref += $ref->costo;
+         }
+         $this->costo_refaccion = $costo_ref;
+         $this->costo_revision = $costo_rev;
+         $total = $this->costo_revision+$this->costo_obra+$this->costo_refaccion;
+         $this->total = $total;
+      }
 
 }

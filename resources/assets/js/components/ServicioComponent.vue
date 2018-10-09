@@ -110,19 +110,20 @@
                                 <div class="custom-control custom-radio custom-control-inline">
                                     <label for="estado" class="col-form-label text-md-center">Estado de la motocicleta:</label>
                                 </div>
-                                <div class="custom-control custom-radio custom-control-inline">
+                                <label name="estado" v-if="saveS" class="form-control text-md-left disabled" disabled>{{servicio.estado}}</label>
+                                <div v-if="!saveS" class="custom-control custom-radio custom-control-inline">
                                     <input type="radio" id="excelente" name="estado"  value="excelente" v-model="servicio.estado" class="custom-control-input">
                                     <label class="custom-control-label" for="excelente">Excelente</label>
                                 </div>
-                                <div class="custom-control custom-radio custom-control-inline">
+                                <div v-if="!saveS" class="custom-control custom-radio custom-control-inline">
                                     <input type="radio" id="bueno" name="estado" value="bueno" v-model="servicio.estado" class="custom-control-input">
                                     <label class="custom-control-label" for="bueno">Bueno</label>
                                 </div>
-                                <div class="custom-control custom-radio custom-control-inline">
+                                <div v-if="!saveS" class="custom-control custom-radio custom-control-inline">
                                     <input type="radio" id="regular" name="estado" value="regular" v-model="servicio.estado" class="custom-control-input">
                                     <label class="custom-control-label" for="regular">Regular</label>
                                 </div>
-                                <div class="custom-control custom-radio custom-control-inline">
+                                <div v-if="!saveS" class="custom-control custom-radio custom-control-inline">
                                     <input type="radio" id="malo" name="estado" value="malo" v-model="servicio.estado" class="custom-control-input">
                                     <label class="custom-control-label" for="malo">Malo</label>
                                 </div>
@@ -131,19 +132,168 @@
                         <div class="row">
                             <div class="col-4 form-group">
                                 <label for="comentario" class="col-form-label text-md-right">Comentarios:</label>
-                                <textarea rows="5" v-if="!saveS" name="comentario" v-model="servicio.comentario" class="form-control"></textarea>
-                                <label name="comentario" v-if="saveS" class="form-control text-md-left">{{servicio.comentario}}</label>
+                                <textarea rows="5"  name="comentario" v-model="servicio.comentario" class="form-control" :disabled="saveS"></textarea>
                             </div>
                             <div class="col-4 form-group">
                                 <label for="detalle" class="col-form-label text-md-right">Problema de la motocicleta:</label>
-                                <textarea rows="5" v-if="!saveS" name="detalle" v-model="servicio.detalle" class="form-control"></textarea>
-                                <label name="detalle" v-if="saveS" class="form-control text-md-left">{{servicio.detalle}}</label>
+                                <textarea rows="5"  name="detalle" v-model="servicio.detalle" class="form-control" :disabled="saveS"></textarea>
                             </div>
                             <div class="col-4 mt-5 form-group">
                                     <div class="col-12">
                                         <button type="button" v-if="!saveS" @click="saveService()" class="btn btn-dark">Guardar servicio</button>
                                     </div>
                                 </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" v-if="saveS">
+                    <div class="card-header">
+                        Servicio a realizar:
+                    </div>
+                    <div class="card-body">
+                        <div class="card-header">
+                            Revisiones:
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group">
+                                <label for="revision" class="col-form-label text-md-right">Revisión:</label>
+                                <select class="form-control" name="revision" v-model="revisionS" required>
+                                    <option value="">Otro</option>
+                                    <option v-for="revision in revisiones" :value="revision">{{revision.nombre}}</option>
+                                </select>
+                            </div>
+                            <div v-if="!revisionS.id" class="col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group">
+                                 <label for="otro" class="col-form-label text-md-right">otro:</label>
+                                 <input type="text" name="otro" class="form-control" v-model="revisionS.nombre">
+                             </div>
+                             <div class="col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group">
+                                 <label for="costo" class="col-form-label text-md-right">Costo:</label>
+                                 <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <input type="number" step="0.01" v-model="revisionS.costo" class="form-control" name="obra">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">MXN</span>
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-success" @click="setRevision(revisionS)">Agregar</button>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Revisión</th>
+                                            <th scope="col">Costo</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-header">
+                            Refacciones:
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group">
+                                <label for="refaccion" class="col-form-label text-md-right">Refacción:</label>
+                                <select class="form-control" name="refaccion" v-model="refaccion" required>
+                                    <option value="">Otro</option>
+                                    <option v-for="refaccion in refacciones" :value="refaccion">{{refaccion.nombre}}</option>
+                                </select>
+                            </div>
+                             <div class="col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group">
+                                 <label for="costo" class="col-form-label text-md-right">Costo:</label>
+                                 <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <input type="number" step="0.01" v-model="refaccion.costo" class="form-control" name="obra">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">MXN</span>
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-success" @click="setRefaccion(refaccion)">Agregar</button>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Refacción</th>
+                                            <th scope="col">Costo</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" v-if="saveS">
+                    <div class="card-header">
+                        Costos:
+                    </div>
+                    <div class="card-body">
+                        <div class="row justify-content-md-center">
+                            <div class="col col-lg-4 col-sm-5 col-md-4 col-xl-4">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text">Mano de obra:</label>
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <input type="number" step="0.01" v-model="servicio.costo_obra" class="form-control" name="obra">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">MXN</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col offset-col-lg-2 offset-col-sm-1 offset-col-md-1 offset-col-xl-1 col-lg-4 col-sm-5 col-md-4 col-xl-4">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text">Revision:</label>
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <label v-text="servicio.costo_revision" class="form-control input-group-text" name="revision"></label>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">MXN</span>
+                                    </div>
+                                </div>
+                            </div>
+                       <div class="w-100"></div>
+                            <div class="col offset-col-lg-2 offset-col-sm-1 offset-col-md-1 offset-col-xl-1 col-lg-4 col-sm-5 col-md-4 col-xl-4">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text">Refacción:</label>
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <label v-text="servicio.costo_refaccion" class="form-control input-group-text" name="refaccion"></label>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">MXN</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col offset-col-lg-2 offset-col-sm-1 offset-col-md-1 offset-col-xl-1 col-lg-4 col-sm-5 col-md-4 col-xl-4">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text">Total:</label>
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <label v-text="servicio.total" class="form-control input-group-text" name="total"></label>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">MXN</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -203,14 +353,15 @@ function Servicio({id,nombre,costo}){
 }
     export default {
     	data(){
-    		return{
+            return{
+                servicio :{"id":"","moto_id":"","estado":"","comentario":"","detalle":"","costo_obra":"","costo_revision":"","costo_refaccion":"","total":""},
+                revisionS:{'nombre':'','costo':''},
+                revisiones:[],
                 user:{"id":"","name":"","appaterno":"","apmaterno":"","email":"","telefono":""},
                 moto:{"id":"","marca":"","modelo":"","version":"","user_id":"","anio":"","km":"","serie":""},
                 marcas:[],
-                servicio :{"id":"","moto_id":"","estado":"","comentario":"","detalle":"","costo_obra":"","costo_revision":"","costo_refaccion":"","total":""},
-                inServicios:[],
-                revisiones:[],
-                revision:{'id':'', 'nombre':'','costo':'','comentarios':""},
+                inServicioRev:[],
+                inServicioRef:[],
                 refacciones: [],
                 refaccion: {'id':'', 'nombre':'','costo':'','comentarios':""},
                 save:false,
@@ -247,9 +398,40 @@ function Servicio({id,nombre,costo}){
             "moto.serie": function (val){
                 var serie = {'marca': this.moto.marca, 'modelo':this.moto.modelo, 'version':this.moto.version, 'anio':this.searchMoto};
                 this.searchMoto(serie);
+            },
+            "revisionS":function(val){
+                if(val == ""){
+                    // console.log("si");
+                    this.revisionS = {'id':'', 'nombre':'','costo':'','comentarios':""};
+                }
             }
         },
     	methods:{
+            setRefaccion(refaccion){
+                console.log(refaccion)
+                let url=`inServicio/${this.servicio.id}/refaccion`;
+               axios.post(url,refaccion).then(
+                res=>{
+                    console.log(res);
+                    this.servicio = res.data.servicio;
+                    this.inServicioRef = res.data.refacciones
+                })
+               .catch(err=>{
+                    console.log(err);
+               });
+            },
+            setRevision(revision){
+               let url=`inServicio/${this.servicio.id}/revision`;
+               axios.post(url,revision).then(
+                res=>{
+                    this.servicio = res.data.servicio;
+                    this.inServicioRev = res.data.revisiones;
+
+                })
+               .catch(err=>{
+                    console.log(err);
+               });
+            },
             selectUser(){
                 this.save = true;
                 this.user_read= true;
