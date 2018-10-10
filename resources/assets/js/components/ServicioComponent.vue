@@ -157,13 +157,13 @@
                         <div class="row">
                             <div class="col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group">
                                 <label for="revision" class="col-form-label text-md-right">Revisión:</label>
-                                <select class="form-control" name="revision" v-model="revisionS" required>
+                                <select class="form-control" name="revision" v-model="searchrev" required>
                                     <option value="">Otro</option>
-                                    <option v-for="revision in revisiones" :value="revision">{{revision.nombre}}</option>
+                                    <option v-for="revision in revisiones" v-model="revision.nombre">{{revision.nombre}}</option>
                                 </select>
                             </div>
-                            <div v-if="!revisionS.id" class="col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group">
-                                 <label for="otro" class="col-form-label text-md-right">otro:</label>
+                            <div v-if="!searchrev" class="col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group">
+                                 <label for="otro" class="col-form-label text-md-right">Otro:</label>
                                  <input type="text" name="otro" class="form-control" v-model="revisionS.nombre">
                              </div>
                              <div class="col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group">
@@ -180,19 +180,33 @@
                              </div>
                         </div>
                         <div class="row">
-                            <button class="btn btn-success" @click="setRevision(revisionS)">Agregar</button>
-                        </div>
-                        <div class="row">
                             <div class="col-8">
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col">#</th>
+                                            <!-- <th scope="col">#</th> -->
                                             <th scope="col">Revisión</th>
                                             <th scope="col">Costo</th>
+                                            <th scope="col"></th>
                                         </tr>
                                     </thead>
+                                    <tbody>
+                                        <tr v-for="inserrev in inServicioRev">
+                                            <th scope="row" >{{inserrev.nombre}}</th>
+                                            <td>{{inserrev.costo}}</td>
+                                            <td>
+                                                <button class="btn btn-danger" @click="deleteInServicio(inserrev.id)">Eliminar</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                 </table>
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-dark" @click="setRevision(revisionS)">Agregar</button>
+
+                                <div class="mt-5">
+                                    <label class="col-form-label-lg">Total de revisiones: ${{servicio.costo_revision}} MXN</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -203,11 +217,15 @@
                         <div class="row">
                             <div class="col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group">
                                 <label for="refaccion" class="col-form-label text-md-right">Refacción:</label>
-                                <select class="form-control" name="refaccion" v-model="refaccion" required>
+                                <select class="form-control" name="refaccion" v-model="searchref" required>
                                     <option value="">Otro</option>
-                                    <option v-for="refaccion in refacciones" :value="refaccion">{{refaccion.nombre}}</option>
+                                    <option v-for="refaccion in refacciones" v-model="refaccion.nombre">{{refaccion.nombre}}</option>
                                 </select>
                             </div>
+                             <div v-if="!searchref" class="col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group">
+                                 <label for="otro" class="col-form-label text-md-right">Otro:</label>
+                                 <input type="text" name="otro" class="form-control" v-model="refaccion.nombre">
+                             </div>
                              <div class="col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group">
                                  <label for="costo" class="col-form-label text-md-right">Costo:</label>
                                  <div class="input-group mb-3">
@@ -220,21 +238,40 @@
                                     </div>
                                 </div>
                              </div>
-                        </div>
-                        <div class="row">
-                            <button class="btn btn-success" @click="setRefaccion(refaccion)">Agregar</button>
+                             <div class="col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group">
+                                 <label for="comentario" class="col-form-label text-md-right">Comentario:</label>
+                                 <textarea name="comentario" class="form-control" rows="5" v-model="refaccion.comentario"></textarea>
+                             </div>
                         </div>
                         <div class="row">
                             <div class="col-8">
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col">#</th>
+                                            <!-- <th scope="col">#</th> -->
                                             <th scope="col">Refacción</th>
                                             <th scope="col">Costo</th>
+                                            <th scope="col"></th>
                                         </tr>
                                     </thead>
+                                    <tbody>
+                                        <tr v-for="inserref in inServicioRef">
+                                            <th scope="row" >{{inserref.nombre}}</th>
+                                            <td>{{inserref.costo}}</td>
+                                            <td>
+                                                <button class="btn btn-danger" @click="deleteInServicio(inserref.id)">Eliminar</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                 </table>
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-dark" @click="setRefaccion(refaccion)">Agregar</button>
+
+                                <div class="mt-5">
+                                    <label class="col-form-label-lg">Total de refacciones: {{servicio.costo_refaccion}}</label>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -269,7 +306,7 @@
                                     </div>
                                 </div>
                             </div>
-                       <div class="w-100"></div>
+                        <div class="w-100"></div>
                             <div class="col offset-col-lg-2 offset-col-sm-1 offset-col-md-1 offset-col-xl-1 col-lg-4 col-sm-5 col-md-4 col-xl-4">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
@@ -295,12 +332,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row justify-content-md-center">
+                            <div class="col-md-auto">
+                                <button class="btn btn-dark" @click="updateService()">Guardar Servicio</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 			</div>
-        <pre>
+        <!-- <pre>
             {{ $data }}
-        </pre>
+        </pre> -->
         </div>
 	</div>
 </template>
@@ -354,16 +396,18 @@ function Servicio({id,nombre,costo}){
     export default {
     	data(){
             return{
-                servicio :{"id":"","moto_id":"","estado":"","comentario":"","detalle":"","costo_obra":"","costo_revision":"","costo_refaccion":"","total":""},
+                servicio :{"id":"","moto_id":"","estado":"","comentario":"","detalle":"","costo_obra":0.00,"costo_revision":"","costo_refaccion":"","total":""},
                 revisionS:{'nombre':'','costo':''},
                 revisiones:[],
+                refaccion: {'id':'', 'nombre':'','costo':'','comentarios':""},
+                refacciones: [],
+                searchref:"",
+                searchrev:"",
+                inServicioRev:[],
+                inServicioRef:[],
                 user:{"id":"","name":"","appaterno":"","apmaterno":"","email":"","telefono":""},
                 moto:{"id":"","marca":"","modelo":"","version":"","user_id":"","anio":"","km":"","serie":""},
                 marcas:[],
-                inServicioRev:[],
-                inServicioRef:[],
-                refacciones: [],
-                refaccion: {'id':'', 'nombre':'','costo':'','comentarios':""},
                 save:false,
                 user_read : false,
                 saveM:false,
@@ -399,14 +443,60 @@ function Servicio({id,nombre,costo}){
                 var serie = {'marca': this.moto.marca, 'modelo':this.moto.modelo, 'version':this.moto.version, 'anio':this.searchMoto};
                 this.searchMoto(serie);
             },
-            "revisionS":function(val){
+            "searchrev":function(val){
                 if(val == ""){
-                    // console.log("si");
-                    this.revisionS = {'id':'', 'nombre':'','costo':'','comentarios':""};
+                    this.revisionS = {'nombre':'','costo':''};
                 }
+                else{
+
+                    this.searchRevision(val);
+                }
+                // console.log(this.revisionS);
+            },
+            "searchref":function(val){
+                if(val == ""){
+                     this.refaccion = {'id':'', 'nombre':'','costo':'','comentarios':""};
+                }
+                else{
+                    this.searchRefaccion(val);
+                    
+                }
+                // console.log(this.revisionS);
+            },
+            'servicio.costo_obra':function(oldval,val){
+                if (val == "") {
+                    this.servicio.total = 0 + parseFloat(this.servicio.costo_refaccion)+parseFloat(this.servicio.costo_revision);
+                }
+                this.servicio.total = parseFloat(this.servicio.costo_obra) + parseFloat(this.servicio.costo_refaccion)+parseFloat(this.servicio.costo_revision);
             }
         },
     	methods:{
+            updateService(){
+                console.log(this.servicio);
+                this.servicio.costo_obra = parseFloat(this.servicio.costo_obra);
+                let url=`updateService/${this.servicio.id}`
+                axios.put(url,this.servicio).then(res=>{
+                    console.log(res);
+                    if(res.data.status == 'creado'){
+                        alert("servicio creado");
+                        window.location.href="servicios";
+                    }
+                }).catch(err=>{
+                    console.log(error);
+                });
+            },
+            deleteInServicio(id){
+                console.log(id);
+                let url = `inServicio/${this.servicio.id}/delete/${id}`;
+                axios.delete(url).then(res=>{
+                    console.log(res);
+                    this.servicio = res.data.servicio;
+                    this.inServicioRef = res.data.refacciones
+                    this.inServicioRev = res.data.revisiones;
+                }).catch(err=>{
+                    console.log(err);
+                });
+            },
             setRefaccion(refaccion){
                 console.log(refaccion)
                 let url=`inServicio/${this.servicio.id}/refaccion`;
@@ -415,10 +505,34 @@ function Servicio({id,nombre,costo}){
                     console.log(res);
                     this.servicio = res.data.servicio;
                     this.inServicioRef = res.data.refacciones
+                    this.refaccion = {'id':'', 'nombre':'','costo':'','comentarios':""};
                 })
                .catch(err=>{
                     console.log(err);
                });
+            },
+            searchRefaccion(rev){
+                console.log(rev);
+                var find = this.refacciones.find(refaccion=>{
+                    return refaccion.nombre === rev;
+                });
+                if(find){
+                    this.refaccion.id = find.id;
+                    this.refaccion.nombre = find.nombre;
+                    this.refaccion.costo = find.costo;
+                }
+            },
+            searchRevision(rev){
+                console.log(rev);
+                var find = this.revisiones.find(revision=>{
+                    return revision.nombre === rev;
+                });
+                if(find){
+                    this.revisionS.id = find.id;
+                    this.revisionS.nombre = find.nombre;
+                    this.revisionS.costo = find.costo;
+                }
+                
             },
             setRevision(revision){
                let url=`inServicio/${this.servicio.id}/revision`;
@@ -426,7 +540,7 @@ function Servicio({id,nombre,costo}){
                 res=>{
                     this.servicio = res.data.servicio;
                     this.inServicioRev = res.data.revisiones;
-
+                    this.revisionS = {'nombre':'','costo':''};
                 })
                .catch(err=>{
                     console.log(err);
@@ -527,6 +641,7 @@ function Servicio({id,nombre,costo}){
             clearRevision(){
                 this.revision = {'id':'', 'nombre':'','costo':'','comentarios':""};
             },
+
     	},
         mounted() {
             console.log('Component mounted.');            

@@ -47,8 +47,10 @@ Route::post('saveUser','User\UserController@saveUser');
 Route::post('user/{user}/searchMoto', 'User\UserController@searchMoto');
 Route::post('user/{user}/saveMoto','User\UserController@saveMoto');
 Route::post('saveService','Web\Servicio\ServicioController@store');
+Route::put('updateService/{servicio}','Web\Servicio\ServicioController@update');
 Route::post('inServicio/{servicio}/revision','Web\Servicio\ServicioController@setRevision');
 Route::post('inServicio/{servicio}/refaccion','Web\Servicio\ServicioController@setRefaccion');
+Route::delete('inServicio/{servicio}/delete/{inServicio}', "Web\Servicio\ServicioController@deleteInServicio");
 // fin vue
 Route::resource('tiendas','Web\Tienda\TiendaController');
 Route::resource('tiendas.productos','Web\Tienda\TiendaProductoController');

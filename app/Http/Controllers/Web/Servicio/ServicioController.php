@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Web\Servicio;
 
+use App\Http\Controllers\Controller;
+use App\InServicio;
 use App\Servicio;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class ServicioController extends Controller
 {
@@ -89,6 +90,25 @@ class ServicioController extends Controller
     public function update(Request $request, Servicio $servicio)
     {
         //
+        // dd($request->all());
+
+        $servicio->update(
+            [
+                'estado'=>$request->estado,
+                'comentario'=>$request->comentario,
+                'detalle'=>$request->detalle,
+                'costo_obra'=>(float)$request->costo_obra,
+                'costo_revision'=>$request->costo_revision,
+                'costo_refaccion'=>$request->costo_refaccion,
+                'total'=>$request->total
+
+            ]
+        );
+        // $servicio->total = $servicio->costo_revision+$servicio->costo_obra+$servicio->costo_refaccion;
+        $servicio->setTotal();
+        $servicio->save();
+        // dd($servicio);
+        return response()->json(['servicio'=>$servicio,'status'=>'creado'],201);
     }
 
     /**
@@ -139,5 +159,17 @@ class ServicioController extends Controller
         $servicio->setTotal();
         $refacciones = $servicio->inServicio()->where("tipo_servicio",'refaccion')->get();
         return response()->json(['servicio'=>$servicio,'refacciones'=>$refacciones],201);
+    }
+
+    public function deleteInServicio(Servicio $servicio, InServicio $inServicio)
+    {
+        if($inServicio->servicio == $servicio){
+            $inServicio->delete();
+        }
+        $revisiones = $servicio->inServicio()->where("tipo_servicio",'revision')->get();
+        $refacciones = $servicio->inServicio()->where("tipo_servicio",'refaccion')->get();
+        $servicio->setTotal();
+        return response()->json(['servicio'=>$servicio,'revisiones'=>$revisiones,'refacciones'=>$refacciones],200);
+        
     }
 }

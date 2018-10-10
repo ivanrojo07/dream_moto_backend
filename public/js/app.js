@@ -49415,6 +49415,48 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 function User(_ref) {
     var id = _ref.id,
@@ -49500,16 +49542,18 @@ function Servicio(_ref5) {
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            servicio: { "id": "", "moto_id": "", "estado": "", "comentario": "", "detalle": "", "costo_obra": "", "costo_revision": "", "costo_refaccion": "", "total": "" },
+            servicio: { "id": "", "moto_id": "", "estado": "", "comentario": "", "detalle": "", "costo_obra": 0.00, "costo_revision": "", "costo_refaccion": "", "total": "" },
             revisionS: { 'nombre': '', 'costo': '' },
             revisiones: [],
+            refaccion: { 'id': '', 'nombre': '', 'costo': '', 'comentarios': "" },
+            refacciones: [],
+            searchref: "",
+            searchrev: "",
+            inServicioRev: [],
+            inServicioRef: [],
             user: { "id": "", "name": "", "appaterno": "", "apmaterno": "", "email": "", "telefono": "" },
             moto: { "id": "", "marca": "", "modelo": "", "version": "", "user_id": "", "anio": "", "km": "", "serie": "" },
             marcas: [],
-            inServicioRev: [],
-            inServicioRef: [],
-            refacciones: [],
-            refaccion: { 'id': '', 'nombre': '', 'costo': '', 'comentarios': "" },
             save: false,
             user_read: false,
             saveM: false,
@@ -49546,34 +49590,103 @@ function Servicio(_ref5) {
             var serie = { 'marca': this.moto.marca, 'modelo': this.moto.modelo, 'version': this.moto.version, 'anio': this.searchMoto };
             this.searchMoto(serie);
         },
-        "revisionS": function revisionS(val) {
+        "searchrev": function searchrev(val) {
             if (val == "") {
-                // console.log("si");
-                this.revisionS = { 'id': '', 'nombre': '', 'costo': '', 'comentarios': "" };
+                this.revisionS = { 'nombre': '', 'costo': '' };
+            } else {
+
+                this.searchRevision(val);
             }
+            // console.log(this.revisionS);
+        },
+        "searchref": function searchref(val) {
+            if (val == "") {
+                this.refaccion = { 'id': '', 'nombre': '', 'costo': '', 'comentarios': "" };
+            } else {
+                this.searchRefaccion(val);
+            }
+            // console.log(this.revisionS);
+        },
+        'servicio.costo_obra': function servicioCosto_obra(oldval, val) {
+            if (val == "") {
+                this.servicio.total = 0 + parseFloat(this.servicio.costo_refaccion) + parseFloat(this.servicio.costo_revision);
+            }
+            this.servicio.total = parseFloat(this.servicio.costo_obra) + parseFloat(this.servicio.costo_refaccion) + parseFloat(this.servicio.costo_revision);
         }
     },
     methods: {
-        setRefaccion: function setRefaccion(refaccion) {
+        updateService: function updateService() {
+            console.log(this.servicio);
+            this.servicio.costo_obra = parseFloat(this.servicio.costo_obra);
+            var url = "updateService/" + this.servicio.id;
+            axios.put(url, this.servicio).then(function (res) {
+                console.log(res);
+                if (res.data.status == 'creado') {
+                    alert("servicio creado");
+                    window.location.href = "servicios";
+                }
+            }).catch(function (err) {
+                console.log(error);
+            });
+        },
+        deleteInServicio: function deleteInServicio(id) {
             var _this = this;
+
+            console.log(id);
+            var url = "inServicio/" + this.servicio.id + "/delete/" + id;
+            axios.delete(url).then(function (res) {
+                console.log(res);
+                _this.servicio = res.data.servicio;
+                _this.inServicioRef = res.data.refacciones;
+                _this.inServicioRev = res.data.revisiones;
+            }).catch(function (err) {
+                console.log(err);
+            });
+        },
+        setRefaccion: function setRefaccion(refaccion) {
+            var _this2 = this;
 
             console.log(refaccion);
             var url = "inServicio/" + this.servicio.id + "/refaccion";
             axios.post(url, refaccion).then(function (res) {
                 console.log(res);
-                _this.servicio = res.data.servicio;
-                _this.inServicioRef = res.data.refacciones;
+                _this2.servicio = res.data.servicio;
+                _this2.inServicioRef = res.data.refacciones;
+                _this2.refaccion = { 'id': '', 'nombre': '', 'costo': '', 'comentarios': "" };
             }).catch(function (err) {
                 console.log(err);
             });
         },
+        searchRefaccion: function searchRefaccion(rev) {
+            console.log(rev);
+            var find = this.refacciones.find(function (refaccion) {
+                return refaccion.nombre === rev;
+            });
+            if (find) {
+                this.refaccion.id = find.id;
+                this.refaccion.nombre = find.nombre;
+                this.refaccion.costo = find.costo;
+            }
+        },
+        searchRevision: function searchRevision(rev) {
+            console.log(rev);
+            var find = this.revisiones.find(function (revision) {
+                return revision.nombre === rev;
+            });
+            if (find) {
+                this.revisionS.id = find.id;
+                this.revisionS.nombre = find.nombre;
+                this.revisionS.costo = find.costo;
+            }
+        },
         setRevision: function setRevision(revision) {
-            var _this2 = this;
+            var _this3 = this;
 
             var url = "inServicio/" + this.servicio.id + "/revision";
             axios.post(url, revision).then(function (res) {
-                _this2.servicio = res.data.servicio;
-                _this2.inServicioRev = res.data.revisiones;
+                _this3.servicio = res.data.servicio;
+                _this3.inServicioRev = res.data.revisiones;
+                _this3.revisionS = { 'nombre': '', 'costo': '' };
             }).catch(function (err) {
                 console.log(err);
             });
@@ -49583,33 +49696,33 @@ function Servicio(_ref5) {
             this.user_read = true;
         },
         saveUser: function saveUser(user) {
-            var _this3 = this;
+            var _this4 = this;
 
             var url = 'saveUser';
             axios.post(url, user).then(function (response) {
                 // console.log(response);
                 if (response.data.usuario) {
-                    _this3.user = new User(response.data.usuario);
-                    _this3.save = true;
-                    _this3.user_read = true;
+                    _this4.user = new User(response.data.usuario);
+                    _this4.save = true;
+                    _this4.user_read = true;
                 }
             }).catch(function (error) {
                 console.log(error);
             });
         },
         searchEmail: function searchEmail(email) {
-            var _this4 = this;
+            var _this5 = this;
 
             var url = "searchUser";
             axios.post(url, { email: email }).then(function (response) {
                 // console.log(response);
-                _this4.user = response.data.user;
-                _this4.user_read = true;
+                _this5.user = response.data.user;
+                _this5.user_read = true;
                 // this.save= true;
             }).catch(function (error) {
                 console.log(error);
-                _this4.user_read = false;
-                _this4.user = { id: "", name: "", appaterno: "", apmaterno: "", email: email, telefono: "" };
+                _this5.user_read = false;
+                _this5.user = { id: "", name: "", appaterno: "", apmaterno: "", email: email, telefono: "" };
             });
         },
         clearUser: function clearUser() {
@@ -49618,68 +49731,68 @@ function Servicio(_ref5) {
             this.save = false;
         },
         getMarcas: function getMarcas() {
-            var _this5 = this;
+            var _this6 = this;
 
             var url = "api/marcas";
             axios.get(url).then(function (response) {
                 // console.log(response);
-                _this5.marcas = response.data.marcas;
+                _this6.marcas = response.data.marcas;
             }).catch(function (error) {
                 console.log(error);
             });
         },
         searchMoto: function searchMoto(query) {
-            var _this6 = this;
+            var _this7 = this;
 
             // console.log(this.moto);
             // console.log(this.user.id);
             var url = "user/" + this.user.id + "/searchMoto";
             axios.post(url, query).then(function (res) {
                 if (res.data.moto) {
-                    _this6.moto = new Moto(res.data.moto);
+                    _this7.moto = new Moto(res.data.moto);
                 }
             }).catch(function (err) {});
         },
         selectMoto: function selectMoto() {
-            var _this7 = this;
+            var _this8 = this;
 
             var url = "user/" + this.user.id + "/saveMoto";
             axios.post(url, this.moto).then(function (res) {
-                _this7.moto = new Moto(res.data.moto);
-                _this7.saveM = true;
+                _this8.moto = new Moto(res.data.moto);
+                _this8.saveM = true;
             }).catch(function (err) {
                 console.log(err);
             });
         },
         saveService: function saveService() {
-            var _this8 = this;
+            var _this9 = this;
 
             this.servicio.moto_id = this.moto.id;
             var url = "saveService";
             axios.post(url, this.servicio).then(function (res) {
-                _this8.servicio = res.data.servicio;
-                _this8.saveS = true;
+                _this9.servicio = res.data.servicio;
+                _this9.saveS = true;
             }).catch(function (err) {
                 console.log(err);
             });
         },
         getRefacciones: function getRefacciones() {
-            var _this9 = this;
+            var _this10 = this;
 
             var url = "precargas/refacciones";
             axios.get(url).then(function (response) {
-                _this9.refacciones = response.data.refacciones;
+                _this10.refacciones = response.data.refacciones;
             });
         },
         clearRefacccion: function clearRefacccion() {
             this.refaccion = { 'id': '', 'nombre': '', 'costo': '', 'comentarios': "" };
         },
         getRevisiones: function getRevisiones() {
-            var _this10 = this;
+            var _this11 = this;
 
             var url = "precargas/revisiones";
             axios.get(url).then(function (response) {
-                _this10.revisiones = response.data.revisiones;
+                _this11.revisiones = response.data.revisiones;
             });
         },
         clearRevision: function clearRevision() {
@@ -50778,8 +50891,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.revisionS,
-                              expression: "revisionS"
+                              value: _vm.searchrev,
+                              expression: "searchrev"
                             }
                           ],
                           staticClass: "form-control",
@@ -50794,7 +50907,7 @@ var render = function() {
                                   var val = "_value" in o ? o._value : o.value
                                   return val
                                 })
-                              _vm.revisionS = $event.target.multiple
+                              _vm.searchrev = $event.target.multiple
                                 ? $$selectedVal
                                 : $$selectedVal[0]
                             }
@@ -50808,7 +50921,15 @@ var render = function() {
                           _vm._l(_vm.revisiones, function(revision) {
                             return _c(
                               "option",
-                              { domProps: { value: revision } },
+                              {
+                                model: {
+                                  value: revision.nombre,
+                                  callback: function($$v) {
+                                    _vm.$set(revision, "nombre", $$v)
+                                  },
+                                  expression: "revision.nombre"
+                                }
+                              },
                               [_vm._v(_vm._s(revision.nombre))]
                             )
                           })
@@ -50818,7 +50939,7 @@ var render = function() {
                     ]
                   ),
                   _vm._v(" "),
-                  !_vm.revisionS.id
+                  !_vm.searchrev
                     ? _c(
                         "div",
                         {
@@ -50832,7 +50953,7 @@ var render = function() {
                               staticClass: "col-form-label text-md-right",
                               attrs: { for: "otro" }
                             },
-                            [_vm._v("otro:")]
+                            [_vm._v("Otro:")]
                           ),
                           _vm._v(" "),
                           _c("input", {
@@ -50916,21 +51037,65 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "row" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-success",
-                      on: {
-                        click: function($event) {
-                          _vm.setRevision(_vm.revisionS)
+                  _c("div", { staticClass: "col-8" }, [
+                    _c("table", { staticClass: "table" }, [
+                      _vm._m(4),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.inServicioRev, function(inserrev) {
+                          return _c("tr", [
+                            _c("th", { attrs: { scope: "row" } }, [
+                              _vm._v(_vm._s(inserrev.nombre))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(inserrev.costo))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-danger",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.deleteInServicio(inserrev.id)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Eliminar")]
+                              )
+                            ])
+                          ])
+                        })
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-4" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-dark",
+                        on: {
+                          click: function($event) {
+                            _vm.setRevision(_vm.revisionS)
+                          }
                         }
-                      }
-                    },
-                    [_vm._v("Agregar")]
-                  )
-                ]),
-                _vm._v(" "),
-                _vm._m(4)
+                      },
+                      [_vm._v("Agregar")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "mt-5" }, [
+                      _c("label", { staticClass: "col-form-label-lg" }, [
+                        _vm._v(
+                          "Total de revisiones: $" +
+                            _vm._s(_vm.servicio.costo_revision) +
+                            " MXN"
+                        )
+                      ])
+                    ])
+                  ])
+                ])
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "card-body" }, [
@@ -50964,8 +51129,8 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.refaccion,
-                              expression: "refaccion"
+                              value: _vm.searchref,
+                              expression: "searchref"
                             }
                           ],
                           staticClass: "form-control",
@@ -50980,7 +51145,7 @@ var render = function() {
                                   var val = "_value" in o ? o._value : o.value
                                   return val
                                 })
-                              _vm.refaccion = $event.target.multiple
+                              _vm.searchref = $event.target.multiple
                                 ? $$selectedVal
                                 : $$selectedVal[0]
                             }
@@ -50994,7 +51159,15 @@ var render = function() {
                           _vm._l(_vm.refacciones, function(refaccion) {
                             return _c(
                               "option",
-                              { domProps: { value: refaccion } },
+                              {
+                                model: {
+                                  value: refaccion.nombre,
+                                  callback: function($$v) {
+                                    _vm.$set(refaccion, "nombre", $$v)
+                                  },
+                                  expression: "refaccion.nombre"
+                                }
+                              },
                               [_vm._v(_vm._s(refaccion.nombre))]
                             )
                           })
@@ -51003,6 +51176,52 @@ var render = function() {
                       )
                     ]
                   ),
+                  _vm._v(" "),
+                  !_vm.searchref
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group"
+                        },
+                        [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-form-label text-md-right",
+                              attrs: { for: "otro" }
+                            },
+                            [_vm._v("Otro:")]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.refaccion.nombre,
+                                expression: "refaccion.nombre"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text", name: "otro" },
+                            domProps: { value: _vm.refaccion.nombre },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.refaccion,
+                                  "nombre",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]
+                      )
+                    : _vm._e(),
                   _vm._v(" "),
                   _c(
                     "div",
@@ -51052,25 +51271,112 @@ var render = function() {
                         _vm._m(6)
                       ])
                     ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group"
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-form-label text-md-right",
+                          attrs: { for: "comentario" }
+                        },
+                        [_vm._v("Comentario:")]
+                      ),
+                      _vm._v(" "),
+                      _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.refaccion.comentario,
+                            expression: "refaccion.comentario"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { name: "comentario", rows: "5" },
+                        domProps: { value: _vm.refaccion.comentario },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.refaccion,
+                              "comentario",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]
                   )
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "row" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-success",
-                      on: {
-                        click: function($event) {
-                          _vm.setRefaccion(_vm.refaccion)
+                  _c("div", { staticClass: "col-8" }, [
+                    _c("table", { staticClass: "table" }, [
+                      _vm._m(7),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.inServicioRef, function(inserref) {
+                          return _c("tr", [
+                            _c("th", { attrs: { scope: "row" } }, [
+                              _vm._v(_vm._s(inserref.nombre))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(inserref.costo))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-danger",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.deleteInServicio(inserref.id)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Eliminar")]
+                              )
+                            ])
+                          ])
+                        })
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-4" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-dark",
+                        on: {
+                          click: function($event) {
+                            _vm.setRefaccion(_vm.refaccion)
+                          }
                         }
-                      }
-                    },
-                    [_vm._v("Agregar")]
-                  )
-                ]),
-                _vm._v(" "),
-                _vm._m(7)
+                      },
+                      [_vm._v("Agregar")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "mt-5" }, [
+                      _c("label", { staticClass: "col-form-label-lg" }, [
+                        _vm._v(
+                          "Total de refacciones: " +
+                            _vm._s(_vm.servicio.costo_refaccion)
+                        )
+                      ])
+                    ])
+                  ])
+                ])
               ])
             ])
           : _vm._e(),
@@ -51191,13 +51497,28 @@ var render = function() {
                       ])
                     ]
                   )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row justify-content-md-center" }, [
+                  _c("div", { staticClass: "col-md-auto" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-dark",
+                        on: {
+                          click: function($event) {
+                            _vm.updateService()
+                          }
+                        }
+                      },
+                      [_vm._v("Guardar Servicio")]
+                    )
+                  ])
                 ])
               ])
             ])
           : _vm._e()
-      ]),
-      _vm._v(" "),
-      _c("pre", [_vm._v("            " + _vm._s(_vm.$data) + "\n        ")])
+      ])
     ])
   ])
 }
@@ -51249,19 +51570,13 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-8" }, [
-        _c("table", { staticClass: "table" }, [
-          _c("thead", [
-            _c("tr", [
-              _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
-              _vm._v(" "),
-              _c("th", { attrs: { scope: "col" } }, [_vm._v("Revisión")]),
-              _vm._v(" "),
-              _c("th", { attrs: { scope: "col" } }, [_vm._v("Costo")])
-            ])
-          ])
-        ])
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Revisión")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Costo")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } })
       ])
     ])
   },
@@ -51285,19 +51600,13 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-8" }, [
-        _c("table", { staticClass: "table" }, [
-          _c("thead", [
-            _c("tr", [
-              _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
-              _vm._v(" "),
-              _c("th", { attrs: { scope: "col" } }, [_vm._v("Refacción")]),
-              _vm._v(" "),
-              _c("th", { attrs: { scope: "col" } }, [_vm._v("Costo")])
-            ])
-          ])
-        ])
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Refacción")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Costo")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } })
       ])
     ])
   },
