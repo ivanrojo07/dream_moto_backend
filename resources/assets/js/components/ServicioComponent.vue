@@ -474,12 +474,12 @@ function Servicio({id,nombre,costo}){
             updateService(){
                 console.log(this.servicio);
                 this.servicio.costo_obra = parseFloat(this.servicio.costo_obra);
-                let url=`updateService/${this.servicio.id}`
+                let url=`../updateService/${this.servicio.id}`
                 axios.put(url,this.servicio).then(res=>{
                     console.log(res);
                     if(res.data.status == 'creado'){
                         alert("servicio creado");
-                        window.location.href="servicios";
+                        window.location.href="../servicios";
                     }
                 }).catch(err=>{
                     console.log(error);
@@ -487,7 +487,7 @@ function Servicio({id,nombre,costo}){
             },
             deleteInServicio(id){
                 console.log(id);
-                let url = `inServicio/${this.servicio.id}/delete/${id}`;
+                let url = `../inServicio/${this.servicio.id}/delete/${id}`;
                 axios.delete(url).then(res=>{
                     console.log(res);
                     this.servicio = res.data.servicio;
@@ -499,7 +499,7 @@ function Servicio({id,nombre,costo}){
             },
             setRefaccion(refaccion){
                 console.log(refaccion)
-                let url=`inServicio/${this.servicio.id}/refaccion`;
+                let url=`../inServicio/${this.servicio.id}/refaccion`;
                axios.post(url,refaccion).then(
                 res=>{
                     console.log(res);
@@ -535,7 +535,7 @@ function Servicio({id,nombre,costo}){
                 
             },
             setRevision(revision){
-               let url=`inServicio/${this.servicio.id}/revision`;
+               let url=`../inServicio/${this.servicio.id}/revision`;
                axios.post(url,revision).then(
                 res=>{
                     this.servicio = res.data.servicio;
@@ -551,7 +551,7 @@ function Servicio({id,nombre,costo}){
                 this.user_read= true;
             },
             saveUser(user){
-                let url = 'saveUser';
+                let url = '../saveUser';
                 axios.post(url,user).then(response=>{
                     // console.log(response);
                     if(response.data.usuario){
@@ -566,7 +566,7 @@ function Servicio({id,nombre,costo}){
                 
             },
             searchEmail(email){
-                let url = "searchUser";
+                let url = "../searchUser";
                 axios.post(url,{email}).then(response=>{
                     // console.log(response);
                     this.user = response.data.user;
@@ -584,7 +584,7 @@ function Servicio({id,nombre,costo}){
                 this.save= false;
             },
             getMarcas(){
-                let url="api/marcas";
+                let url="../api/marcas";
                 axios.get(url).then(response=>{
                     // console.log(response);
                     this.marcas = response.data.marcas;
@@ -595,7 +595,7 @@ function Servicio({id,nombre,costo}){
             searchMoto(query){
                 // console.log(this.moto);
                 // console.log(this.user.id);
-                let url = `user/${this.user.id}/searchMoto`;
+                let url = `../user/${this.user.id}/searchMoto`;
                 axios.post(url,query).then(res=>{
                     if(res.data.moto){
                         this.moto = new Moto(res.data.moto);
@@ -604,7 +604,7 @@ function Servicio({id,nombre,costo}){
 
             },
             selectMoto(){
-                let url = `user/${this.user.id}/saveMoto`;
+                let url = `../user/${this.user.id}/saveMoto`;
                 axios.post(url,this.moto).then(res=>{
                     this.moto = new Moto(res.data.moto);
                     this.saveM = true;
@@ -614,7 +614,7 @@ function Servicio({id,nombre,costo}){
             },
             saveService(){
                 this.servicio.moto_id = this.moto.id;
-                let url = "saveService";
+                let url = "../saveService";
                 axios.post(url,this.servicio).then(res=>{
                     this.servicio = res.data.servicio;
                     this.saveS = true;
@@ -624,7 +624,7 @@ function Servicio({id,nombre,costo}){
 
             },
     		getRefacciones(){
-    			let url= "precargas/refacciones";
+    			let url= "../precargas/refacciones";
     			axios.get(url).then(response=>{
     				this.refacciones=response.data.refacciones;
     			});
@@ -633,7 +633,7 @@ function Servicio({id,nombre,costo}){
                 this.refaccion = {'id':'', 'nombre':'','costo':'','comentarios':""};
             },
             getRevisiones(){
-                let url = "precargas/revisiones";
+                let url = "../precargas/revisiones";
                 axios.get(url).then(response=>{
                     this.revisiones=response.data.revisiones;
                 })

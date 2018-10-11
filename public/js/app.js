@@ -14018,12 +14018,44 @@ Vue.component('revision-component', __webpack_require__(46));
 Vue.component('refaccion-component', __webpack_require__(49));
 Vue.component('servicio-component', __webpack_require__(52));
 
+// Vue.filter('formatDate', {
+// 		read: function (val) {
+//     	return formatDate(parseDate(val));
+// 	},
+// 	  write: function (val, oldVal) {
+//       var d = parseDate(val);
+// 	  return d ? formatDate(d) : val
+// 	}  
+// });
+
 var app = new Vue({
   el: '#app',
   data: {
     message: 'hola'
   }
 });
+
+// // super simple pt-BR date parser
+// function parseDate(str) {
+//   if(str === null || isDate(str)) return str || null;
+//   var p = str.match(/^(\d{1,2})\/?(\d{1,2})?\/?(\d{2,4})?$/);
+//   if(!p) return null;
+//   return new Date(parseInt(p[3] || new Date().getFullYear()), parseInt(p[2] || (new Date().getMonth() + 1)) - 1, parseInt(p[1]), 0, 0, 0, 0);
+// }
+
+// super simple pt-BR date format
+function formatDate(dt) {
+  if (dt == null) return '';
+  var f = function f(d) {
+    return d < 10 ? '0' + d : d;
+  };
+  return f(dt.getDate()) + '/' + f(dt.getMonth() + 1) + '/' + dt.getFullYear();
+}
+
+// // is object a date?
+// function isDate(d) {
+//     return Object.prototype.toString.call(d) === '[object Date]';
+// }
 
 /***/ }),
 /* 14 */
@@ -47475,11 +47507,264 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        console.log('Component mounted.');
-    }
+				data: function data() {
+								return {
+												servicio: {
+																"id": null,
+																"estado": "",
+																"comentario": "",
+																"detalle": "",
+																"costo_obra": "",
+																"costo_revision": "",
+																"costo_refaccion": "",
+																"total": "",
+																"updated_at": "",
+																"in_servicio": [{
+																				"id": null,
+																				"tipo_servicio": "",
+																				"servicio_id": null,
+																				"nombre": "",
+																				"costo": "",
+																				"comentario": null
+																}, {
+																				"id": null,
+																				"tipo_servicio": "",
+																				"servicio_id": null,
+																				"nombre": "",
+																				"costo": "",
+																				"comentario": ""
+																}],
+																"moto": {
+																				"id": null,
+																				"marca": "",
+																				"modelo": "",
+																				"version": "",
+																				"user_id": null,
+																				"anio": null,
+																				"km": null,
+																				"motor": null,
+																				"serie": "",
+																				"user": {
+																								"id": null,
+																								"username": "",
+																								"name": "",
+																								"appaterno": "",
+																								"apmaterno": "",
+																								"email": "",
+																								"telefono": ""
+																				}
+																}
+												},
+												servicios: []
+								};
+				},
+
+				methods: {
+								setServicio: function setServicio(servicio) {
+												this.servicio = servicio;
+												$("#showservicio").modal("show");
+								},
+								getServicios: function getServicios() {
+												var _this = this;
+
+												console.log('getServicios');
+												var url = "getService";
+												axios.get(url).then(function (res) {
+																_this.servicios = res.data.servicios;
+												}).catch(function (err) {
+																console.log(err);
+												});
+								}
+				},
+				filters: {
+								'formatDate': function formatDate(val) {
+												if (val == null) return '';
+												var date = new Date(val);
+												// console.log(date);
+												return date.getDate() + "/" + date.getMonth() + '/' + date.getFullYear();
+								}
+				},
+				created: function created() {
+								this.getServicios();
+				},
+				mounted: function mounted() {
+								console.log('Component mounted');
+				}
 });
 
 /***/ }),
@@ -47490,16 +47775,545 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "card" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-body" }, [
+      _c("table", { staticClass: "table" }, [
+        _vm._m(1),
+        _vm._v(" "),
+        _c(
+          "tbody",
+          _vm._l(_vm.servicios, function(servicio) {
+            return _c("tr", [
+              _c("th", { attrs: { scope: "row" } }, [
+                _vm._v(_vm._s(_vm._f("formatDate")(servicio.updated_at)))
+              ]),
+              _vm._v(" "),
+              _c("td", [
+                _vm._v(
+                  _vm._s(servicio.moto.user.name) +
+                    " " +
+                    _vm._s(servicio.moto.user.appaterno) +
+                    " " +
+                    _vm._s(
+                      servicio.moto.user.apmaterno
+                        ? servicio.moto.user.apmaterno
+                        : ""
+                    )
+                )
+              ]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(servicio.moto.serie))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(servicio.moto.km))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(servicio.moto.marca))]),
+              _vm._v(" "),
+              _c("td", [
+                _vm._v(_vm._s(servicio.moto.modelo) + " " + _vm._s(_vm.index))
+              ]),
+              _vm._v(" "),
+              _c("td", [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-dark",
+                    attrs: { "data-toggle": "collapse" },
+                    on: {
+                      click: function($event) {
+                        _vm.setServicio(servicio)
+                      }
+                    }
+                  },
+                  [_vm._v("información del servicio")]
+                )
+              ])
+            ])
+          })
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "modal fade", attrs: { id: "showservicio" } }, [
+      _c("div", { staticClass: "modal-dialog modal-lg" }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _c("div", { staticClass: "modal-header" }, [
+            _c("h4", [
+              _vm._v(
+                "Servicio: " +
+                  _vm._s(_vm._f("formatDate")(_vm.servicio.updated_at))
+              )
+            ]),
+            _vm._v(" "),
+            _vm._m(2)
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-body" }, [
+            _vm._m(3),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-4 form-group" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-form-label text-md-right",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v("Nombre:")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-control text-md-left",
+                    attrs: { name: "email" }
+                  },
+                  [_vm._v(_vm._s(_vm.servicio.moto.user.name))]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-4 form-group" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-form-label text-md-right",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v("Apellido paterno")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-control text-md-left",
+                    attrs: { name: "email" }
+                  },
+                  [_vm._v(_vm._s(_vm.servicio.moto.user.appaterno))]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-4 form-group" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-form-label text-md-right",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v("Apellido materno")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-control text-md-left",
+                    attrs: { name: "email" }
+                  },
+                  [_vm._v(_vm._s(_vm.servicio.moto.user.apmaterno))]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-4 form-group" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-form-label text-md-right",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v("Correo electronico:")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-control text-md-left",
+                    attrs: { name: "email" }
+                  },
+                  [_vm._v(_vm._s(_vm.servicio.moto.user.email))]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-4 form-group" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-form-label text-md-right",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v("Telefono:")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-control text-md-left",
+                    attrs: { name: "email" }
+                  },
+                  [_vm._v(_vm._s(_vm.servicio.moto.user.telefono))]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(4),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-4 form-group" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-form-label text-md-right",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v("Marca:")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-control text-md-left",
+                    attrs: { name: "email" }
+                  },
+                  [_vm._v(_vm._s(_vm.servicio.moto.marca))]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-4 form-group" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-form-label text-md-right",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v("Modelo:")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-control text-md-left",
+                    attrs: { name: "email" }
+                  },
+                  [_vm._v(_vm._s(_vm.servicio.moto.modelo))]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-4 form-group" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-form-label text-md-right",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v("Versión:")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-control text-md-left",
+                    attrs: { name: "email" }
+                  },
+                  [_vm._v(_vm._s(_vm.servicio.moto.version))]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-4 form-group" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-form-label text-md-right",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v("Año:")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-control text-md-left",
+                    attrs: { name: "email" }
+                  },
+                  [_vm._v(_vm._s(_vm.servicio.moto.anio))]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-4 form-group" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-form-label text-md-right",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v("Número de serie:")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-control text-md-left",
+                    attrs: { name: "email" }
+                  },
+                  [_vm._v(_vm._s(_vm.servicio.moto.serie))]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-4 form-group" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-form-label text-md-right",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v("Kilometros recorridos:")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-control text-md-left",
+                    attrs: { name: "email" }
+                  },
+                  [_vm._v(_vm._s(_vm.servicio.moto.km))]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(5),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-4 form-group" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-form-label text-md-right",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v("Estado de la motocicleta:")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "form-control text-md-left",
+                    attrs: { name: "email" }
+                  },
+                  [_vm._v(_vm._s(_vm.servicio.estado))]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-4 form-group" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-form-label text-md-right",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v("Detalles de la motocicleta:")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "textarea",
+                  {
+                    staticClass: "form-control text-md-left",
+                    attrs: { name: "email", rows: "5", disabled: "" }
+                  },
+                  [_vm._v(_vm._s(_vm.servicio.detalle))]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-4 form-group" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-form-label text-md-right",
+                    attrs: { for: "name" }
+                  },
+                  [_vm._v("Comentarios del mecanico:")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "textarea",
+                  {
+                    staticClass: "form-control text-md-left",
+                    attrs: { name: "email", rows: "5", disabled: "" }
+                  },
+                  [_vm._v(_vm._s(_vm.servicio.comentario))]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(6),
+            _vm._v(" "),
+            _c("div", { staticClass: "row mr-5 ml-5" }, [
+              _c("table", { staticClass: "table" }, [
+                _vm._m(7),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  [
+                    _vm._l(_vm.servicio.in_servicio, function(inserv) {
+                      return _c("tr", [
+                        _c("th", { attrs: { scope: "row" } }, [
+                          _vm._v(_vm._s(inserv.tipo_servicio))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(inserv.nombre))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(inserv.costo))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(inserv.comentario))])
+                      ])
+                    }),
+                    _vm._v(" "),
+                    _c("tr", [
+                      _c("th"),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Total de mano de obra:")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v(_vm._s(_vm.servicio.costo_obra))]),
+                      _vm._v(" "),
+                      _c("th")
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
+                      _c("th"),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Total de revisiones:")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v(_vm._s(_vm.servicio.costo_revision))]),
+                      _vm._v(" "),
+                      _c("th")
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
+                      _c("th"),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Total de refacciones:")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v(_vm._s(_vm.servicio.costo_refaccion))]),
+                      _vm._v(" "),
+                      _c("th")
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
+                      _c("th"),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("Total:")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v(_vm._s(_vm.servicio.total))]),
+                      _vm._v(" "),
+                      _c("th")
+                    ])
+                  ],
+                  2
+                )
+              ])
+            ])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("pre", [_vm._v("\t\t\t" + _vm._s(_vm.$data) + "\n\t\t")])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c("h1", [_vm._v("Servicios:")])
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h1", [_vm._v("Servicios:")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "thead-dark" }, [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("fecha")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Usuario")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("#Serie")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Km")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Marca")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Modelo")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: { type: "button", "data-dismiss": "modal" }
+      },
+      [_c("span", [_vm._v("×")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-4 form-group" }, [
+        _c("h4", [_vm._v("Cliente:")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-4 form-group" }, [
+        _c("h4", [_vm._v("Motocicleta")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-4 form-group" }, [
+        _c("h4", [_vm._v("Datos del servicio:")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-4 form-group" }, [
+        _c("h4", [_vm._v("Servicios realizados:")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "thead-dark" }, [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Tipo de servicio:")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Servicio")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Costo")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Comentario")])
       ])
     ])
   }
@@ -49618,12 +50432,12 @@ function Servicio(_ref5) {
         updateService: function updateService() {
             console.log(this.servicio);
             this.servicio.costo_obra = parseFloat(this.servicio.costo_obra);
-            var url = "updateService/" + this.servicio.id;
+            var url = "../updateService/" + this.servicio.id;
             axios.put(url, this.servicio).then(function (res) {
                 console.log(res);
                 if (res.data.status == 'creado') {
                     alert("servicio creado");
-                    window.location.href = "servicios";
+                    window.location.href = "../servicios";
                 }
             }).catch(function (err) {
                 console.log(error);
@@ -49633,7 +50447,7 @@ function Servicio(_ref5) {
             var _this = this;
 
             console.log(id);
-            var url = "inServicio/" + this.servicio.id + "/delete/" + id;
+            var url = "../inServicio/" + this.servicio.id + "/delete/" + id;
             axios.delete(url).then(function (res) {
                 console.log(res);
                 _this.servicio = res.data.servicio;
@@ -49647,7 +50461,7 @@ function Servicio(_ref5) {
             var _this2 = this;
 
             console.log(refaccion);
-            var url = "inServicio/" + this.servicio.id + "/refaccion";
+            var url = "../inServicio/" + this.servicio.id + "/refaccion";
             axios.post(url, refaccion).then(function (res) {
                 console.log(res);
                 _this2.servicio = res.data.servicio;
@@ -49682,7 +50496,7 @@ function Servicio(_ref5) {
         setRevision: function setRevision(revision) {
             var _this3 = this;
 
-            var url = "inServicio/" + this.servicio.id + "/revision";
+            var url = "../inServicio/" + this.servicio.id + "/revision";
             axios.post(url, revision).then(function (res) {
                 _this3.servicio = res.data.servicio;
                 _this3.inServicioRev = res.data.revisiones;
@@ -49698,7 +50512,7 @@ function Servicio(_ref5) {
         saveUser: function saveUser(user) {
             var _this4 = this;
 
-            var url = 'saveUser';
+            var url = '../saveUser';
             axios.post(url, user).then(function (response) {
                 // console.log(response);
                 if (response.data.usuario) {
@@ -49713,7 +50527,7 @@ function Servicio(_ref5) {
         searchEmail: function searchEmail(email) {
             var _this5 = this;
 
-            var url = "searchUser";
+            var url = "../searchUser";
             axios.post(url, { email: email }).then(function (response) {
                 // console.log(response);
                 _this5.user = response.data.user;
@@ -49733,7 +50547,7 @@ function Servicio(_ref5) {
         getMarcas: function getMarcas() {
             var _this6 = this;
 
-            var url = "api/marcas";
+            var url = "../api/marcas";
             axios.get(url).then(function (response) {
                 // console.log(response);
                 _this6.marcas = response.data.marcas;
@@ -49746,7 +50560,7 @@ function Servicio(_ref5) {
 
             // console.log(this.moto);
             // console.log(this.user.id);
-            var url = "user/" + this.user.id + "/searchMoto";
+            var url = "../user/" + this.user.id + "/searchMoto";
             axios.post(url, query).then(function (res) {
                 if (res.data.moto) {
                     _this7.moto = new Moto(res.data.moto);
@@ -49756,7 +50570,7 @@ function Servicio(_ref5) {
         selectMoto: function selectMoto() {
             var _this8 = this;
 
-            var url = "user/" + this.user.id + "/saveMoto";
+            var url = "../user/" + this.user.id + "/saveMoto";
             axios.post(url, this.moto).then(function (res) {
                 _this8.moto = new Moto(res.data.moto);
                 _this8.saveM = true;
@@ -49768,7 +50582,7 @@ function Servicio(_ref5) {
             var _this9 = this;
 
             this.servicio.moto_id = this.moto.id;
-            var url = "saveService";
+            var url = "../saveService";
             axios.post(url, this.servicio).then(function (res) {
                 _this9.servicio = res.data.servicio;
                 _this9.saveS = true;
@@ -49779,7 +50593,7 @@ function Servicio(_ref5) {
         getRefacciones: function getRefacciones() {
             var _this10 = this;
 
-            var url = "precargas/refacciones";
+            var url = "../precargas/refacciones";
             axios.get(url).then(function (response) {
                 _this10.refacciones = response.data.refacciones;
             });
@@ -49790,7 +50604,7 @@ function Servicio(_ref5) {
         getRevisiones: function getRevisiones() {
             var _this11 = this;
 
-            var url = "precargas/revisiones";
+            var url = "../precargas/revisiones";
             axios.get(url).then(function (response) {
                 _this11.revisiones = response.data.revisiones;
             });

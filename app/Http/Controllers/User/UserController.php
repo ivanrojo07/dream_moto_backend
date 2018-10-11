@@ -92,6 +92,7 @@ class UserController extends Controller
         }
     }
     public function saveUser(request $request){
+        // dd($request->all());
         $rules =[
             'name' => 'required',
             'email' => 'required|email|unique:users',

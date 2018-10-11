@@ -34,6 +34,9 @@ Route::get('nosotros',function(){
 Route::get('servicios',function(){
 	return View::make('servicios.index');
 });
+Route::get('servicios/create',function(){
+	return View::make('servicios.create');
+});
 
 // VUEJS
 Route::prefix('precargas')->group(function(){
@@ -42,6 +45,7 @@ Route::prefix('precargas')->group(function(){
 	Route::resource('revision', 'Web\Precargas\RevisionController');
 	Route::resource('refaccion','Web\Precargas\RefaccionController');
 });
+Route::get('getService','Web\Servicio\ServicioController@index');
 Route::post('searchUser','User\UserController@searchEmail');
 Route::post('saveUser','User\UserController@saveUser');
 Route::post('user/{user}/searchMoto', 'User\UserController@searchMoto');

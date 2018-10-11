@@ -17,6 +17,8 @@ class ServicioController extends Controller
     public function index()
     {
         //
+        $servicios = Servicio::with(['inServicio','moto','moto.user'])->get();
+        return response()->json(['servicios'=>$servicios],200);
     }
 
     /**
