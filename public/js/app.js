@@ -48212,9 +48212,7 @@ var render = function() {
           ])
         ])
       ])
-    ]),
-    _vm._v(" "),
-    _c("pre", [_vm._v("\t\t\t" + _vm._s(_vm.$data) + "\n\t\t")])
+    ])
   ])
 }
 var staticRenderFns = [

@@ -173,9 +173,9 @@
 				</div>
 			</div>
 		</div>
-		<pre>
+		<!-- <pre>
 			{{$data}}
-		</pre>
+		</pre> -->
 	</div>
 </template>
 <script>
