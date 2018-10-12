@@ -42,6 +42,6 @@ Route::middleware('auth:api')->resource('routes','Api\User\UserRoutesController'
 Route::middleware('auth:api')->resource('contactos','Api\User\UserContactoController',['except'=>['create','edit']]);
 
 Route::middleware('auth:api')->get('servicios','Api\User\UserServiciosController@misServicios');
-Route::middleware('auth:api')->get('servicio/{servicio}','Api\User\UserServiciosController@servicio');
-Route::middleware('auth:api')->get('servicio/moto/{moto}','Api\User\UserServiciosController@motoServicios');
+Route::middleware('auth:api')->get('servicios/{servicio}','Api\User\UserServiciosController@servicio');
+Route::middleware('auth:api')->get('servicios/moto/{moto}','Api\User\UserServiciosController@motoServicios');
 // Route::post('register','User\UserController@store')->name('register');
