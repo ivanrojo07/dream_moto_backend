@@ -19,7 +19,7 @@ class UserServiciosController extends Controller
         //
         $user = $request->user();
         $servicios = $user->motos()->with(['servicios','servicios.inServicio'])->get();
-        return response()->json([$servicios],201);
+        return response()->json(['servicios'=>$servicios],201);
 
     }
     /**
@@ -36,7 +36,7 @@ class UserServiciosController extends Controller
         // dd($servicio->moto->user);
         if ($servicio->moto->user->id == $user->id) {
             // dd($servicio);
-            return response()->json([$servicio],201);
+            return response()->json(['servicio'=>$servicio],201);
         }
     }
 
@@ -55,7 +55,7 @@ class UserServiciosController extends Controller
         }
         $user = $request->user();
         if($moto->user->id == $user->id){
-            return response()->json([$moto],201);
+            return response()->json(['moto'=>$moto],201);
         }
     }
 }
