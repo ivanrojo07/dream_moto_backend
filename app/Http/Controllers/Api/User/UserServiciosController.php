@@ -18,7 +18,14 @@ class UserServiciosController extends Controller
     {
         //
         $user = $request->user();
-        $servicios = $user->motos()->with(['servicios','servicios.inServicio'])->get();
+        $user_id = $user->id;
+
+        $servicios = Servicio::whereHas('Moto',function($q) use ($user_id){
+            $q->where('user_id',$user_id);
+        })->with(['moto','moto.user','inServicio'])->get();
+        // dd($servicios);
+        // // $servicios = $servicios->moto()->where('user_id',$user->id)->get();
+        // $servicios = $user->motos()->with(['servicios','servicios.inServicio'])->get();
         return response()->json(['servicios'=>$servicios],201);
 
     }
