@@ -47680,6 +47680,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 				data: function data() {
@@ -47749,6 +47752,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 												}).catch(function (err) {
 																console.log(err);
 												});
+								},
+								createServicio: function createServicio() {
+												window.location.href = "./servicios/create";
 								}
 				},
 				filters: {
@@ -47776,11 +47782,26 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "card" }, [
-    _vm._m(0),
+    _c("div", { staticClass: "card-header" }, [
+      _c("h1", [_vm._v("Servicios:")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn ml-4 btn-dark",
+          on: {
+            click: function($event) {
+              _vm.createServicio()
+            }
+          }
+        },
+        [_vm._v("Nuevo Servicio")]
+      )
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "card-body" }, [
       _c("table", { staticClass: "table" }, [
-        _vm._m(1),
+        _vm._m(0),
         _vm._v(" "),
         _c(
           "tbody",
@@ -47846,11 +47867,11 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _vm._m(2)
+            _vm._m(1)
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "modal-body" }, [
-            _vm._m(3),
+            _vm._m(2),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
               _c("div", { staticClass: "col-4 form-group" }, [
@@ -47954,7 +47975,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(4),
+            _vm._m(3),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
               _c("div", { staticClass: "col-4 form-group" }, [
@@ -48078,7 +48099,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(5),
+            _vm._m(4),
             _vm._v(" "),
             _c("div", { staticClass: "row" }, [
               _c("div", { staticClass: "col-4 form-group" }, [
@@ -48142,11 +48163,11 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(6),
+            _vm._m(5),
             _vm._v(" "),
             _c("div", { staticClass: "row mr-5 ml-5" }, [
               _c("table", { staticClass: "table" }, [
-                _vm._m(7),
+                _vm._m(6),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -48216,14 +48237,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h1", [_vm._v("Servicios:")])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

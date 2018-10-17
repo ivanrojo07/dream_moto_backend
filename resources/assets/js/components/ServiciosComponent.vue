@@ -2,6 +2,9 @@
 	<div class="card">
 		<div class="card-header">
 			<h1>Servicios:</h1>
+			<!-- <div class="row"> -->
+				<button @click="createServicio()" class="btn ml-4 btn-dark">Nuevo Servicio</button>
+			<!-- </div> -->
 		</div>
 		<div class="card-body">
 			<table class="table">
@@ -250,6 +253,9 @@
     					console.log(err);
     				});
     		},
+    		createServicio(){
+    			window.location.href="./servicios/create";
+    		}
     	},
     	filters:{
     		'formatDate':function(val){

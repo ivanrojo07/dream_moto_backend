@@ -33,7 +33,7 @@ Route::get('nosotros',function(){
 });
 Route::get('servicios',function(){
 	return View::make('servicios.index');
-});
+})->name("servicios");
 Route::get('servicios/create',function(){
 	return View::make('servicios.create');
 });
