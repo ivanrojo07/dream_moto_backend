@@ -56,13 +56,16 @@ class UserServiciosController extends Controller
      public function motoServicios(Request $request,Moto $moto)
     {
         //
-        $moto->servicios;
-        foreach ($moto->servicios as $servicio) {
-            $servicio->inServicio;
-        }
+        
         $user = $request->user();
+        $servicios = Servicio::whereHas('Moto',function($q) use ($user,$moto){
+            $q->where([
+                ['user_id',$user->id],
+                ['id',$moto->id]
+            ]);
+        })->with(['moto','moto.user','inServicio'])->get();
         if($moto->user->id == $user->id){
-            return response()->json(['moto'=>$moto],201);
+            return response()->json(['servicios'=>$servicios],201);
         }
     }
 }
