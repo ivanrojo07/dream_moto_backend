@@ -50282,6 +50282,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 function User(_ref) {
     var id = _ref.id,
@@ -50368,10 +50379,11 @@ function Servicio(_ref5) {
     data: function data() {
         return {
             servicio: { "id": "", "moto_id": "", "estado": "", "comentario": "", "detalle": "", "costo_obra": 0.00, "costo_revision": "", "costo_refaccion": "", "total": "" },
-            revisionS: { 'nombre': '', 'costo': '' },
+            revisionS: { 'nombre': '', 'costo': '', 'comentario': '' },
             revisiones: [],
-            refaccion: { 'id': '', 'nombre': '', 'costo': '', 'comentarios': "" },
+            refaccion: { 'id': '', 'nombre': '', 'costo': '', 'comentario': "" },
             refacciones: [],
+            searchMarca: "",
             searchref: "",
             searchrev: "",
             inServicioRev: [],
@@ -50394,20 +50406,28 @@ function Servicio(_ref5) {
     },
 
     watch: {
-        "moto.marca": function motoMarca(val) {
-            var marca = { 'marca': val };
-            this.searchMoto(marca);
+        "searchMarca": function searchMarca(val) {
+            if (val) {
+                console.log('si entra');
+                console.log("val", val);
+                var marca = { 'marca': val };
+                this.searchMoto(marca);
+            }
+
             // this.debounceGetMoto();
         },
         "moto.modelo": function motoModelo(val) {
+            if (searchMarca) {}
             var modelo = { 'marca': this.moto.marca, 'modelo': val };
             this.searchMoto(modelo);
         },
         "moto.version": function motoVersion(val) {
+            if (searchMarca) {}
             var version = { 'marca': this.moto.marca, 'modelo': this.moto.modelo, 'version': val };
             this.searchMoto(version);
         },
         "moto.anio": function motoAnio(val) {
+            if (searchMarca) {}
             var anio = { 'marca': this.moto.marca, 'modelo': this.moto.modelo, 'version': this.moto.version, 'anio': val };
             this.searchMoto(anio);
         },
@@ -50417,7 +50437,7 @@ function Servicio(_ref5) {
         },
         "searchrev": function searchrev(val) {
             if (val == "") {
-                this.revisionS = { 'nombre': '', 'costo': '' };
+                this.revisionS = { 'nombre': '', 'costo': '', 'comentario': '' };
             } else {
 
                 this.searchRevision(val);
@@ -50569,14 +50589,22 @@ function Servicio(_ref5) {
         searchMoto: function searchMoto(query) {
             var _this7 = this;
 
-            // console.log(this.moto);
             // console.log(this.user.id);
             var url = "../user/" + this.user.id + "/searchMoto";
+            console.log(query);
+
             axios.post(url, query).then(function (res) {
                 if (res.data.moto) {
                     _this7.moto = new Moto(res.data.moto);
+                } else {
+                    // if(Object.keys(query)){
+
+                    //     this.moto =  {"id":"","marca":query.marca,"modelo":query.modelo,"version":query.version,"user_id":"","anio":query.anio,"km":query.km,"serie":query.serie};
+                    // }
                 }
-            }).catch(function (err) {});
+            }).catch(function (err) {
+                // this.moto =  {"id":"","marca":query.marca,"modelo":query.modelo,"version":query.version,"user_id":"","anio":query.anio,"km":query.km,"serie":query.serie};
+            });
         },
         selectMoto: function selectMoto() {
             var _this8 = this;
@@ -51006,8 +51034,8 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.moto.marca,
-                                    expression: "moto.marca"
+                                    value: _vm.searchMarca,
+                                    expression: "searchMarca"
                                   }
                                 ],
                                 staticClass: "form-control",
@@ -51023,13 +51051,9 @@ var render = function() {
                                           "_value" in o ? o._value : o.value
                                         return val
                                       })
-                                    _vm.$set(
-                                      _vm.moto,
-                                      "marca",
-                                      $event.target.multiple
-                                        ? $$selectedVal
-                                        : $$selectedVal[0]
-                                    )
+                                    _vm.searchMarca = $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
                                   }
                                 }
                               },
@@ -51066,6 +51090,99 @@ var render = function() {
                                 attrs: { name: "marca" }
                               },
                               [_vm._v(_vm._s(_vm.moto.marca))]
+                            )
+                          : _vm._e()
+                      ]),
+                      _vm._v(" "),
+                      !_vm.searchMarca
+                        ? _c("div", { staticClass: "col-4 form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "col-form-label text-md-right",
+                                attrs: { for: "otro" }
+                              },
+                              [_vm._v("Otra marca:")]
+                            ),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.moto.marca,
+                                  expression: "moto.marca"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text", name: "otro" },
+                              domProps: { value: _vm.moto.marca },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.moto,
+                                    "marca",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-4 form-group" }, [
+                        _c(
+                          "label",
+                          {
+                            staticClass: "col-form-label text-md-right",
+                            attrs: { for: "serie" }
+                          },
+                          [_vm._v("Númeron de serie:")]
+                        ),
+                        _vm._v(" "),
+                        !_vm.saveM
+                          ? _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.moto.serie,
+                                  expression: "moto.serie"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "text",
+                                name: "serie",
+                                required: ""
+                              },
+                              domProps: { value: _vm.moto.serie },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.moto,
+                                    "serie",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.saveM
+                          ? _c(
+                              "label",
+                              {
+                                staticClass: "form-control text-md-left",
+                                attrs: { name: "serie" }
+                              },
+                              [_vm._v(_vm._s(_vm.moto.serie))]
                             )
                           : _vm._e()
                       ]),
@@ -51123,8 +51240,10 @@ var render = function() {
                               [_vm._v(_vm._s(_vm.moto.modelo))]
                             )
                           : _vm._e()
-                      ]),
-                      _vm._v(" "),
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "row" }, [
                       _c("div", { staticClass: "col-4 form-group" }, [
                         _c(
                           "label",
@@ -51177,10 +51296,8 @@ var render = function() {
                               [_vm._v(_vm._s(_vm.moto.version))]
                             )
                           : _vm._e()
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "row" }, [
+                      ]),
+                      _vm._v(" "),
                       _c("div", { staticClass: "col-4 form-group" }, [
                         _c(
                           "label",
@@ -51231,60 +51348,6 @@ var render = function() {
                                 attrs: { name: "anio" }
                               },
                               [_vm._v(_vm._s(_vm.moto.anio))]
-                            )
-                          : _vm._e()
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-4 form-group" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-form-label text-md-right",
-                            attrs: { for: "serie" }
-                          },
-                          [_vm._v("Númeron de serie:")]
-                        ),
-                        _vm._v(" "),
-                        !_vm.saveM
-                          ? _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.moto.serie,
-                                  expression: "moto.serie"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "text",
-                                name: "serie",
-                                required: ""
-                              },
-                              domProps: { value: _vm.moto.serie },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.moto,
-                                    "serie",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.saveM
-                          ? _c(
-                              "label",
-                              {
-                                staticClass: "form-control text-md-left",
-                                attrs: { name: "serie" }
-                              },
-                              [_vm._v(_vm._s(_vm.moto.serie))]
                             )
                           : _vm._e()
                       ]),
@@ -51688,7 +51751,7 @@ var render = function() {
               _c("div", { staticClass: "card-body" }, [
                 _c("div", { staticClass: "card-header" }, [
                   _vm._v(
-                    "\n                            Revisiones:\n                        "
+                    "\n                            Revisiones o reparaciones:\n                        "
                   )
                 ]),
                 _vm._v(" "),
@@ -51706,7 +51769,7 @@ var render = function() {
                           staticClass: "col-form-label text-md-right",
                           attrs: { for: "revision" }
                         },
-                        [_vm._v("Revisión:")]
+                        [_vm._v("Revisión/Reparacion:")]
                       ),
                       _vm._v(" "),
                       _c(
@@ -51857,6 +51920,50 @@ var render = function() {
                         _vm._v(" "),
                         _vm._m(3)
                       ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group"
+                    },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-form-label text-md-right",
+                          attrs: { for: "comentario" }
+                        },
+                        [_vm._v("Comentario:")]
+                      ),
+                      _vm._v(" "),
+                      _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.revisionS.comentario,
+                            expression: "revisionS.comentario"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { name: "comentario", rows: "5" },
+                        domProps: { value: _vm.revisionS.comentario },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.revisionS,
+                              "comentario",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
                     ]
                   )
                 ]),
@@ -52441,7 +52548,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "input-group-prepend" }, [
       _c("label", { staticClass: "input-group-text" }, [
-        _vm._v("Mano de obra:")
+        _vm._v("Mano de obra adicional:")
       ]),
       _vm._v(" "),
       _c("span", { staticClass: "input-group-text" }, [_vm._v("$")])

@@ -29,8 +29,7 @@ class CreateMotoTable extends Migration
             $table->integer('anio')->unsigned();
             $table->integer('km')->unsigned()->nullable();
             $table->string('motor')->nullable();
-
-            $table->string('serie')->nullable();
+            $table->string('serie',22)->nullable();
             $table->timestamps();
         });
     }

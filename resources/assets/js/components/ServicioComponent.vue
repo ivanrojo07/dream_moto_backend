@@ -58,34 +58,41 @@
                             <div class="row">
                                 <div class="col-4 form-group">
                                     <label for="name" class="col-form-label text-md-right">Marca:</label>
-                                    <select class="form-control" name="marca" v-if="!saveM" v-model="moto.marca" required>
+                                    <select class="form-control" name="marca" v-if="!saveM" v-model="searchMarca" required>
                                         <option value="">Seleccione la marca</option>
                                         <option v-for="marca in marcas" v-model="marca.nombre">{{marca.nombre}}</option>
                                     </select>
+
                                     <label name="marca" v-if="saveM" class="form-control text-md-left">{{moto.marca}}</label>
+                                </div>
+                                <div class="col-4 form-group" v-if="!searchMarca">
+                                    <label for="otro" class="col-form-label text-md-right">Otra marca:</label>
+                                 <input type="text" name="otro" class="form-control" v-model="moto.marca">
+                                </div>
+                                 <div class="col-4 form-group">
+                                    <label for="serie" class="col-form-label text-md-right">Númeron de serie:</label>
+                                    <input type="text" v-if="!saveM" name="serie" v-model="moto.serie" class="form-control" required>
+                                    <label name="serie" v-if="saveM" class="form-control text-md-left">{{moto.serie}}</label>
                                 </div>
                                 <div class="col-4 form-group">
                                     <label for="name" class="col-form-label text-md-right">Modelo:</label>
                                     <input v-if="!saveM" type="text" onclick="this.select()" name="modelo" v-model="moto.modelo" class="form-control" required>
                                     <label name="modelo" v-if="saveM" class="form-control text-md-left">{{moto.modelo}}</label>
                                 </div>
+                                
+                            </div>
+                            <div class="row">
                                 <div class="col-4 form-group">
                                     <label for="version" class="col-form-label text-md-right">Versión:</label>
                                     <input type="text" v-if="!saveM" name="version" v-model="moto.version" class="form-control" required>
                                     <label name="version" v-if="saveM" class="form-control text-md-left">{{moto.version}}</label>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-4 form-group">
                                     <label for="anio" class="col-form-label text-md-right">Año:</label>
                                     <input type="text" v-if="!saveM" name="anio" v-model="moto.anio" class="form-control" required>
                                     <label name="anio" v-if="saveM" class="form-control text-md-left">{{moto.anio}}</label>
                                 </div>
-                                <div class="col-4 form-group">
-                                    <label for="serie" class="col-form-label text-md-right">Númeron de serie:</label>
-                                    <input type="text" v-if="!saveM" name="serie" v-model="moto.serie" class="form-control" required>
-                                    <label name="serie" v-if="saveM" class="form-control text-md-left">{{moto.serie}}</label>
-                                </div>
+                               
                                 <div class="col-4 form-group">
                                     <label for="km" class="col-form-label text-md-right">Kilometros:</label>
                                     <input type="text" v-if="!saveM" name="km" v-model="moto.km" class="form-control" required>
@@ -152,11 +159,11 @@
                     </div>
                     <div class="card-body">
                         <div class="card-header">
-                            Revisiones:
+                            Revisiones o reparaciones:
                         </div>
                         <div class="row">
                             <div class="col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group">
-                                <label for="revision" class="col-form-label text-md-right">Revisión:</label>
+                                <label for="revision" class="col-form-label text-md-right">Revisión/Reparacion:</label>
                                 <select class="form-control" name="revision" v-model="searchrev" required>
                                     <option value="">Otro</option>
                                     <option v-for="revision in revisiones" v-model="revision.nombre">{{revision.nombre}}</option>
@@ -177,6 +184,10 @@
                                         <span class="input-group-text">MXN</span>
                                     </div>
                                 </div>
+                             </div>
+                             <div class="col-4 col-sm-5 col-md-4 col-lg-4 col-xl-4 form-group">
+                                 <label for="comentario" class="col-form-label text-md-right">Comentario:</label>
+                                 <textarea name="comentario" class="form-control" rows="5" v-model="revisionS.comentario"></textarea>
                              </div>
                         </div>
                         <div class="row">
@@ -285,7 +296,7 @@
                             <div class="col col-lg-4 col-sm-5 col-md-4 col-xl-4">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <label class="input-group-text">Mano de obra:</label>
+                                        <label class="input-group-text">Mano de obra adicional:</label>
                                         <span class="input-group-text">$</span>
                                     </div>
                                     <input type="number" step="0.01" v-model="servicio.costo_obra" class="form-control" name="obra">
@@ -397,10 +408,11 @@ function Servicio({id,nombre,costo}){
     	data(){
             return{
                 servicio :{"id":"","moto_id":"","estado":"","comentario":"","detalle":"","costo_obra":0.00,"costo_revision":"","costo_refaccion":"","total":""},
-                revisionS:{'nombre':'','costo':''},
+                revisionS:{'nombre':'','costo':'','comentario':''},
                 revisiones:[],
-                refaccion: {'id':'', 'nombre':'','costo':'','comentarios':""},
+                refaccion: {'id':'', 'nombre':'','costo':'','comentario':""},
                 refacciones: [],
+                searchMarca:"",
                 searchref:"",
                 searchrev:"",
                 inServicioRev:[],
@@ -422,20 +434,35 @@ function Servicio({id,nombre,costo}){
             // this.debounceGetMoto = _.debounce(this.searchMoto,500);
     	},
         watch:{
-            "moto.marca": function(val){
-                var marca ={'marca':val};
-                this.searchMoto(marca);
+            "searchMarca": function(val){
+                if(val){
+                    console.log('si entra');
+                    console.log("val",val);
+                    var marca ={'marca':val};
+                    this.searchMoto(marca);
+                    
+                }
+                
                 // this.debounceGetMoto();
             },
             "moto.modelo":function(val) {
+                if(searchMarca){
+
+                }
                 var modelo = {'marca': this.moto.marca, 'modelo':val};
                 this.searchMoto(modelo);
             },
             "moto.version":function(val){
+                if(searchMarca){
+
+                }
                 var version = {'marca': this.moto.marca, 'modelo':this.moto.modelo, 'version':val};
                 this.searchMoto(version);
             },
             "moto.anio": function(val){
+                if(searchMarca){
+                    
+                }
                 var anio = {'marca': this.moto.marca, 'modelo':this.moto.modelo, 'version':this.moto.version, 'anio':val};
                 this.searchMoto(anio);
             },
@@ -445,7 +472,7 @@ function Servicio({id,nombre,costo}){
             },
             "searchrev":function(val){
                 if(val == ""){
-                    this.revisionS = {'nombre':'','costo':''};
+                    this.revisionS = {'nombre':'','costo':'','comentario':''};
                 }
                 else{
 
@@ -593,14 +620,25 @@ function Servicio({id,nombre,costo}){
                 });
             },
             searchMoto(query){
-                // console.log(this.moto);
-                // console.log(this.user.id);
+                    // console.log(this.user.id);
                 let url = `../user/${this.user.id}/searchMoto`;
-                axios.post(url,query).then(res=>{
-                    if(res.data.moto){
-                        this.moto = new Moto(res.data.moto);
-                    }
-                }).catch(err=>{});
+                console.log(query);
+                
+
+                    axios.post(url,query).then(res=>{
+                        if(res.data.moto){
+                            this.moto = new Moto(res.data.moto);
+                        }
+                        else{
+                            // if(Object.keys(query)){
+
+                            //     this.moto =  {"id":"","marca":query.marca,"modelo":query.modelo,"version":query.version,"user_id":"","anio":query.anio,"km":query.km,"serie":query.serie};
+                            // }
+                        }
+                    }).catch(err=>{
+                        // this.moto =  {"id":"","marca":query.marca,"modelo":query.modelo,"version":query.version,"user_id":"","anio":query.anio,"km":query.km,"serie":query.serie};
+                    });
+
 
             },
             selectMoto(){

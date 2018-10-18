@@ -281,6 +281,7 @@ class UserController extends Controller
         
         $inputs = $request->all();
         $moto = $user->motos();
+
         if(isset($inputs['marca']) ){
             $moto->where('marca',$inputs['marca']);
 
